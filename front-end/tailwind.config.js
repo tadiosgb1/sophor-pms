@@ -54,7 +54,7 @@ export default {
       colors: {//text-color,....
         darkBackground: '#1a202c', // Example of a dark background color
         darkText: '#ffffff', // White text for dark mode
-        primary: '#FA7118',
+        primary: '#22C55E',
         secondary: '#4f46e5',
         tertiary: '#c7d2fe',
         background: '#f0f4f8',

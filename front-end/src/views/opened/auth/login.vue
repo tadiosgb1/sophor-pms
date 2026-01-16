@@ -1,104 +1,108 @@
 <template>
-  <div class="min-h-screen flex flex-col bg-gradient-to-r from-blue-50 via-white to-green-50">
-    <!-- Header -->
-    <Header />
+  <div class="min-h-screen flex flex-col relative overflow-hidden bg-slate-50">
+    
+    <div class="absolute inset-0 z-0">
+      <div class="absolute -top-[10%] -left-[10%] w-[40%] h-[70%] bg-primary/5 -rotate-12 transform"></div>
+      <div class="absolute -bottom-[10%] -right-[10%] w-[50%] h-[60%] bg-secondary/5 rotate-12 transform"></div>
+    </div>
 
-    <!-- Login Section -->
-    <section class="flex-1 flex items-center justify-center py-20 ">
-      <div class="bg-white rounded-2xl w-full max-w-md p-8 border border-gray-300 mt-16 ">
-        <!-- Title -->
-        <h2 class="text-3xl font-bold text-center mb-6 text-green-700">
-          Login
-        </h2>
+    <section class="flex-1 flex items-center justify-center py-20 relative z-10 px-4">
+      <div class="bg-white/80 backdrop-blur-md rounded-2xl w-full max-w-md p-10 shadow-2xl border border-gray-100">
+        
+        <div class="flex justify-center mb-8">
+          <div class="w-24 h-24 flex items-center justify-center rounded-xl bg-white shadow-sm border border-gray-50 p-2">
+            <img src="" alt="Company Logo" class="max-w-full h-auto" />
+          </div>
+        </div>
 
-        <!-- Form -->
-        <form @submit.prevent="login" class="space-y-5">
-          <!-- Email -->
+        <div class="text-center mb-10">
+          <h2 class="text-3xl font-extrabold text-gray-800 tracking-tight">
+            Welcome <span class="text-primary">Back</span>
+          </h2>
+          <p class="text-gray-500 mt-2 text-sm">Property Management Portal</p>
+        </div>
+
+        <form @submit.prevent="login" class="space-y-6">
           <div>
-            <label class="block text-gray-700 font-semibold mb-1" for="email">
-              Email Address / Username
+            <label class="block text-gray-600 text-sm font-bold mb-2" for="email">
+              Email Address
             </label>
             <input
               id="email"
               type="email"
               v-model="form.email"
               required
-              placeholder="you@example.com or username"
-              class="text-black w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+              placeholder="name@company.com"
+              class="text-black w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
             />
           </div>
 
-          <!-- Password -->
           <div>
-            <label class="block text-gray-700 font-semibold mb-1" for="password">
-              Password
-            </label>
+            <div class="flex justify-between mb-2">
+              <label class="block text-gray-600 text-sm font-bold" for="password">
+                Password
+              </label>
+              <router-link
+                to="/forgot-password"
+                class="text-xs text-secondary font-semibold hover:text-primary transition-colors"
+              >
+                Forgot Password?
+              </router-link>
+            </div>
             <input
               id="password"
               type="password"
               v-model="form.password"
               required
               placeholder="••••••••"
-              class="text-black w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+              class="text-black w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
               minlength="2"
             />
-            <div class="text-right mt-1">
-              <router-link
-                to="/forgot-password"
-                class="text-sm text-green-600 font-semibold hover:underline"
-              >
-                Forgot your password?
-              </router-link>
-            </div>
           </div>
 
-          <!-- Error -->
-          <p v-if="error" class="text-red-600 text-sm font-semibold">
-            {{ error }}
-          </p>
+          <div v-if="error" class="bg-tertiary/10 border-l-4 border-tertiary p-3">
+            <p class="text-tertiary text-xs font-bold">
+              {{ error }}
+            </p>
+          </div>
 
-          <!-- Submit Button -->
           <button
             type="submit"
-            class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-md transition flex items-center justify-center"
+            class="w-full bg-primary hover:bg-green-600 text-white font-bold py-4 rounded-lg shadow-lg shadow-primary/30 transition-all transform hover:-translate-y-0.5 active:scale-[0.98] flex items-center justify-center"
             :disabled="loading"
           >
-            <span v-if="!loading">Login</span>
+            <span v-if="!loading">Sign In</span>
             <span v-else class="flex items-center">
-              <svg class="animate-spin h-5 w-5 mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <svg class="animate-spin h-5 w-5 mr-3 text-white" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
               </svg>
-              Logging in...
+              Processing...
             </span>
           </button>
         </form>
 
-        <!-- Register Link -->
-        <p class="mt-5 text-center text-sm text-gray-600">
+        <p class="mt-8 text-center text-sm text-gray-500">
           Don't have an account?
           <router-link
             to="/register"
-            class="text-green-700 font-semibold hover:underline ml-1"
+            class="text-secondary font-bold hover:underline ml-1"
           >
-            Register
+            Request Access
           </router-link>
         </p>
       </div>
     </section>
 
-    <!-- Footer -->
-    <Footer />
+    <footer class="py-6 text-center relative z-10">
+      <p class="text-gray-400 text-xs">© 2026 Property Management System. All rights reserved.</p>
+    </footer>
   </div>
 </template>
 
 <script>
-import Header from '../landing/header.vue';
-import Footer from '../landing/footer.vue';
-
 export default {
   name: "LoginPage",
-  components: { Header, Footer },
   data() {
     return {
       form: { email: "", password: "" },
@@ -113,17 +117,15 @@ export default {
       try {
         const payload = { ...this.form };
         const response = await this.$apiPost("/token", payload);
-
-        console.log("response",response);
-
+        
         localStorage.setItem("access", response.access);
         localStorage.setItem("refresh", response.refresh);
         localStorage.setItem("userId", response.user);
         localStorage.setItem("email", response.email);
 
-       this.$router.push({ path: "/dashboard/first-dash" });
+        this.$router.push({ path: "/dashboard/first-dash" });
       } catch (err) {
-        this.error = err.response?.data?.message || "Login failed. Check your credentials.";
+        this.error = err.response?.data?.message || "Invalid credentials. Please try again.";
       } finally {
         this.loading = false;
       }
@@ -133,7 +135,8 @@ export default {
 </script>
 
 <style scoped>
-body {
-  font-family: "Poppins", sans-serif;
+/* Custom subtle glass effect if needed */
+.backdrop-blur-md {
+  backdrop-filter: blur(12px);
 }
 </style>

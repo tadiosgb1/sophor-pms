@@ -108,66 +108,41 @@ export default {
       /* ============= CLEAN & RESTRUCTURED MENU ============= */
 
       menuItems: [
-{
-      name: "Income",
-      route: "Income-view",
-      icon: "fas fa-folder",
-      color: "#f97316"
-  },
 
-{
-      name: "Expense",
-      route: "Expense-view",
-      icon: "fas fa-folder",
-      color: "#f97316"
-  },
+  
 
+
+   
+
+
+  
 
         {
           name: "Dashboard",
           route: "first-dash",
           icon: "fas fa-gauge",
-          color: "#f97316",
+          color: "#10b981",
         },
-        {
-          name: "Commission",
-          route: "commissions",
-          icon: "fas fa-gauge",
-          color: "#f97316",
-        },
-
-       {
-          name: "Sites",
-          route: "Sites-view",
-          icon: "fas fa-gauge",
-          color: "#f97316",
-        },
-
-         {
-          name: "Properties",
-          route: "Property-view",
-          icon: "fas fa-gauge",
-          color: "#f97316",
-        },
+    
 
        
         
 
        
-        {
-          name: "System Settings",
-          icon: "fas fa-cogs",
-          color: "#22c55e",
-          children: [
-            {
-              name: "Configurations",
-              route: "configurations",
-              icon: "fas fa-gear",
-              color: "#22c55e",
-            },
+        // {
+        //   name: "System Settings",
+        //   icon: "fas fa-cogs",
+        //   color: "#22c55e",
+        //   children: [
+        //     {
+        //       name: "Configurations",
+        //       route: "configurations",
+        //       icon: "fas fa-gear",
+        //       color: "#22c55e",
+        //     },
             
-          ],
-        },
+        //   ],
+        // },
 
         /* USER MANAGEMENT SECTION */
 
@@ -179,23 +154,25 @@ export default {
           children: [
               {
               name: "Users",
-              route: "users",
-              icon: "fas fa-user",
-              color: "#60a5fa",
+              route: "Users-view",
+              icon: "fas fa-folder",
+              color: "#22c55e"
             },
             {
-              name: "Roles",
-              route: "roles",
-              icon: "fas fa-layer-group",
-              color: "#60a5fa",
+            name: "Roles",
+            route: "Roles-view",
+            icon: "fas fa-folder",
+            color: "#22c55e"
             },
-            {
+             {
               name: "Permissions",
-              route: "permissions",
-              icon: "fas fa-shield-halved",
-              color: "#10b981",
+              route: "Permissions-view",
+              icon: "fas fa-folder",
+              color: "#22c55e"
             },
-            
+
+
+  
            // {
             //   name: "Logined History",
             //   route: "permissions_view",
@@ -206,7 +183,20 @@ export default {
           ],
         },
 
-   
+    
+       {
+          name: "Sites",
+          route: "Sites-view",
+          icon: "fas fa-gauge",
+          color: "#10b981",
+        },
+
+         {
+          name: "Site units",
+          route: "Property-view",
+          icon: "fas fa-gauge",
+          color: "#10b981",
+        },
 
       
        

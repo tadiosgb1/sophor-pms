@@ -11,8 +11,7 @@ import Reset from '../views/opened/auth/reset.vue';
 import AccessDenied from "../views/opened/auth/accessDenied.vue";
 import first_dash from '../views/closed/first_dash.vue';
 import dashboard from '../views/closed/dashboard.vue';
-import User_view from '../views/closed/users/view.vue';
-import UserDetail from '../views/closed/users/detail.vue';
+
 import Permissions from '../views/closed/permissions/view.vue';
 import Roles from '../views/closed/groups/view.vue';
 import Notifications from '../views/closed/notifications/view.vue';
@@ -23,7 +22,7 @@ import Inbox  from '../views/closed/inbox/view.vue';
 const routes = [
 
   // Public routes
-  { path: "/", name: "home", component: Home, meta: { requiresGuest: true } },
+  { path: "/", name: "home", component: Login, meta: { requiresGuest: true } },
   { path: "/login", name: "login", component: Login, meta: { requiresGuest: true } },
   { path: "/register", name: "register", component: Registration, meta: { requiresGuest: true } },
   { path: "/contact-us", name: "contact-us", component: ContactUs, meta: { requiresGuest: true } },
@@ -41,78 +40,98 @@ const routes = [
     meta: { requiresGuest: true },
     children: [
       {
-        path: "incomes",
-        name: "Income-view",
-        component: () => import('../views/closed/Incomes/IncomeView.vue'),
+        path: "permissions",
+        name: "Permissions-view",
+        component: () => import('../views/closed/Permissions/PermissionsView.vue'),
       },
       {
-        path: "incomes/add",
-        name: "Income-add",
-        component: () => import('../views/closed/Incomes/AddIncome.vue'),
+        path: "permissions/add",
+        name: "Permissions-add",
+        component: () => import('../views/closed/Permissions/AddPermissions.vue'),
       },
       {
-        path: "incomes/edit/:id",
-        name: "Income-edit",
-        component: () => import('../views/closed/Incomes/EditIncome.vue'),
+        path: "permissions/edit/:id",
+        name: "Permissions-edit",
+        component: () => import('../views/closed/Permissions/EditPermissions.vue'),
         props: true,
       },
       {
-        path: "incomes/detail/:id",
-        name: "Income-detail",
-        component: () => import('../views/closed/Incomes/IncomeDetail.vue'),
+        path: "permissions/detail/:id",
+        name: "Permissions-detail",
+        component: () => import('../views/closed/Permissions/PermissionsDetail.vue'),
+        props: true,
+      },
+
+      {
+        path: "permissions",
+        name: "Permissions-view",
+        component: () => import('../views/closed/Permissions/PermissionsView.vue'),
+      },
+      {
+        path: "permissions/add",
+        name: "Permissions-add",
+        component: () => import('../views/closed/Permissions/AddPermissions.vue'),
+      },
+      {
+        path: "permissions/edit/:id",
+        name: "Permissions-edit",
+        component: () => import('../views/closed/Permissions/EditPermissions.vue'),
+        props: true,
+      },
+      {
+        path: "permissions/detail/:id",
+        name: "Permissions-detail",
+        component: () => import('../views/closed/Permissions/PermissionsDetail.vue'),
         props: true,
       },
 
       {
-        path: "expenses",
-        name: "Expense-view",
-        component: () => import('../views/closed/Expenses/ExpenseView.vue'),
+        path: "roles",
+        name: "Roles-view",
+        component: () => import('../views/closed/Roles/RolesView.vue'),
       },
       {
-        path: "expenses/add",
-        name: "Expense-add",
-        component: () => import('../views/closed/Expenses/AddExpense.vue'),
+        path: "roles/add",
+        name: "Roles-add",
+        component: () => import('../views/closed/Roles/AddRoles.vue'),
       },
       {
-        path: "expenses/edit/:id",
-        name: "Expense-edit",
-        component: () => import('../views/closed/Expenses/EditExpense.vue'),
+        path: "roles/edit/:id",
+        name: "Roles-edit",
+        component: () => import('../views/closed/Roles/EditRoles.vue'),
         props: true,
       },
       {
-        path: "expenses/detail/:id",
-        name: "Expense-detail",
-        component: () => import('../views/closed/Expenses/ExpenseDetail.vue'),
+        path: "roles/detail/:id",
+        name: "Roles-detail",
+        component: () => import('../views/closed/Roles/RolesDetail.vue'),
         props: true,
       },
 
-     
-
-      
-
-
       {
-        path: "iq",
-        name: "Iqies-view",
-        component: () => import('../views/closed/Iq/IqiesView.vue'),
+        path: "users",
+        name: "Users-view",
+        component: () => import('../views/closed/Users/UsersView.vue'),
       },
       {
-        path: "iq/add",
-        name: "Iqies-add",
-        component: () => import('../views/closed/Iq/AddIqies.vue'),
+        path: "users/add",
+        name: "Users-add",
+        component: () => import('../views/closed/Users/AddUsers.vue'),
       },
       {
-        path: "iq/edit/:id",
-        name: "Iqies-edit",
-        component: () => import('../views/closed/Iq/EditIqies.vue'),
+        path: "users/edit/:id",
+        name: "Users-edit",
+        component: () => import('../views/closed/Users/EditUsers.vue'),
         props: true,
       },
       {
-        path: "iq/detail/:id",
-        name: "Iqies-detail",
-        component: () => import('../views/closed/Iq/IqiesDetail.vue'),
+        path: "users/detail/:id",
+        name: "Users-detail",
+        component: () => import('../views/closed/Users/UsersDetail.vue'),
         props: true,
       },
+
+    
 
       {
         path: "sites",
@@ -164,10 +183,10 @@ const routes = [
 
       
        
-      { path: "users", name: "users", component: User_view },
+      
       { path: "roles", name: "roles", component: Roles },
       { path: "permissions", name: "permissions", component: Permissions },
-      { path: "user-detail/:id", name: "user-detail", component: UserDetail },
+
       { path: "first-dash", name: "first-dash", component: first_dash },
       { path: "messages", name: "messages", component: Messages},
       { path: "inbox", name: "inbox", component: Inbox},
