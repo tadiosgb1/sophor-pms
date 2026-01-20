@@ -19,7 +19,7 @@
           <!-- Logo and title -->
           <div class="flex items-center space-x-2">
             <img
-              src="../../assets/img/logo1.jpg"
+              src="../../assets/img/logo.png"
               alt="Logo"
               class="h-10 w-10 rounded-full flex-shrink-0"
             />

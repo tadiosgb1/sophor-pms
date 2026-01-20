@@ -11,7 +11,7 @@
         
         <div class="flex justify-center mb-8">
           <div class="w-24 h-24 flex items-center justify-center rounded-xl bg-white shadow-sm border border-gray-50 p-2">
-            <img src="" alt="Company Logo" class="max-w-full h-auto" />
+            <img src="../../../assets/img/logo.png" alt="Company Logo" class="max-w-full h-auto" />
           </div>
         </div>
 
