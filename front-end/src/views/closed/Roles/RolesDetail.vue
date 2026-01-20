@@ -12,13 +12,13 @@
     <!-- Detail Card -->
     <div class="bg-white overflow-hidden rounded-md border border-gray-200 p-4 hidden md:block space-y-2">
       <div><strong>ID:</strong> {{ item.id }}</div>
-      <div><strong>Name:</strong> {{ item.name }}</div><div><strong>Description:</strong> {{ item.description }}</div>
+      <div><strong>Name:</strong> {{ item.name }}</div><div><strong>Permissions:</strong> {{ item.permissions }}</div>
     </div>
 
     <!-- Mobile View -->
     <div class="md:hidden bg-white rounded-md border border-gray-200 p-4 space-y-2">
       <div><strong>ID:</strong> {{ item.id }}</div>
-      <div><strong>Name:</strong> {{ item.name }}</div><div><strong>Description:</strong> {{ item.description }}</div>
+      <div><strong>Name:</strong> {{ item.name }}</div><div><strong>Permissions:</strong> {{ item.permissions }}</div>
     </div>
 
     <button @click="$router.back()" class="mt-4 text-blue-600 hover:underline">Back</button>

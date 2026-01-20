@@ -10,20 +10,12 @@
       <form @submit.prevent="submitForm" class="space-y-4">
         
         <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Name</label>
-          <input v-model="form.name" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
+          <label class="block mb-1 text-sm font-medium text-gray-700">Key</label>
+          <input v-model="form.key" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
         </div>
         <div>
           <label class="block mb-1 text-sm font-medium text-gray-700">Description</label>
           <input v-model="form.description" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-        </div>
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Created_at</label>
-          <input v-model="form.created_at" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-        </div>
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Updated_at</label>
-          <input v-model="form.updated_at" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
         </div>
 
         <div class="flex justify-end gap-3 pt-2">
@@ -41,21 +33,20 @@ export default {
   data() {
     return {
       form: {
-        name: this.data?.name || '',
-        description: this.data?.description || '',
-        created_at: this.data?.created_at || '',
-        updated_at: this.data?.updated_at || ''
-        }
+        key: this.data?.key || '',
+        description: this.data?.description || ''
+      }
     };
   },
   methods: {
     async submitForm() {
       try {
         if ("Add" === "Add") {
-        const res= await this.$apiPost("/permissions/createpermission", this.form);
+        const res= await this.$apiPost("/permissions", this.form);
         if(res){
            this.$root.$refs.toast.showToast('Added successfully', 'success');
          }
+
         } else {
          const res= await this.$apiPut("/permissions",this.data.id ,this.form);
          if(res){

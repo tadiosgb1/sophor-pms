@@ -16,7 +16,7 @@
               class="h-10 w-10 rounded-full pl-1 pt-1"
             />
           </div>
-          <p class="mt-3">Alpha PMS</p>
+          <p class="mt-3">Sophor</p>
         </div>
 
         <!-- Navigation -->
@@ -108,14 +108,6 @@ export default {
       /* ============= CLEAN & RESTRUCTURED MENU ============= */
 
       menuItems: [
-
-  
-
-
-   
-
-
-  
 
         {
           name: "Dashboard",

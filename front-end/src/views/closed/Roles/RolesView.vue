@@ -35,14 +35,14 @@
           <thead class="bg-gray-100 text-gray-700 uppercase text-xs font-semibold">
             <tr>
               <th class="px-6 py-3 text-left">#</th>
-              <th class="px-6 py-3 text-left">Name</th><th class="px-6 py-3 text-left">Description</th>
+              <th class="px-6 py-3 text-left">Name</th><th class="px-6 py-3 text-left">Permissions</th>
               <th class="px-6 py-3 text-center">Actions</th>
             </tr>
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
             <tr v-for="(item, index) in items" :key="item.id" class="hover:bg-green-50 transition duration-150">
               <td class="px-6 py-4">{{ index + 1 }}</td>
-              <td class="px-6 py-4 whitespace-nowrap">{{ item.name }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.description }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">{{ item.name }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.permissions }}</td>
               <td class="px-6 py-4 text-center space-x-3">
                 <button @click="viewDetails(item.id)" class="text-green-500 hover:text-green-700"><i class="fas fa-eye"></i></button>
                 <button @click="editItem(item)" class="text-blue-500 hover:text-blue-700"><i class="fas fa-edit"></i></button>
@@ -75,8 +75,8 @@
               {{ item.name }}
             </div>
             <div class="col-span-2">
-              <span class="font-medium text-gray-600">Description:</span>
-              {{ item.description }}
+              <span class="font-medium text-gray-600">Permissions:</span>
+              {{ item.permissions }}
             </div>
         </div>
       </div>

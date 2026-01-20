@@ -35,14 +35,14 @@
           <thead class="bg-gray-100 text-gray-700 uppercase text-xs font-semibold">
             <tr>
               <th class="px-6 py-3 text-left">#</th>
-              <th class="px-6 py-3 text-left">Name</th><th class="px-6 py-3 text-left">Username</th><th class="px-6 py-3 text-left">Email</th><th class="px-6 py-3 text-left">Password</th><th class="px-6 py-3 text-left">Role</th>
+              <th class="px-6 py-3 text-left">Name</th><th class="px-6 py-3 text-left">Email</th><th class="px-6 py-3 text-left">Phone_number</th><th class="px-6 py-3 text-left">Address</th><th class="px-6 py-3 text-left">Official_website</th><th class="px-6 py-3 text-left">Password</th>
               <th class="px-6 py-3 text-center">Actions</th>
             </tr>
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
             <tr v-for="(item, index) in items" :key="item.id" class="hover:bg-green-50 transition duration-150">
               <td class="px-6 py-4">{{ index + 1 }}</td>
-              <td class="px-6 py-4 whitespace-nowrap">{{ item.name }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.username }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.email }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.password }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.role }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">{{ item.name }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.email }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.phone_number }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.address }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.official_website }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.password }}</td>
               <td class="px-6 py-4 text-center space-x-3">
                 <button @click="viewDetails(item.id)" class="text-green-500 hover:text-green-700"><i class="fas fa-eye"></i></button>
                 <button @click="editItem(item)" class="text-blue-500 hover:text-blue-700"><i class="fas fa-edit"></i></button>
@@ -50,7 +50,7 @@
               </td>
             </tr>
             <tr v-if="items.length === 0">
-              <td colspan="7" class="text-center py-6 text-gray-400 italic">No data found.</td>
+              <td colspan="8" class="text-center py-6 text-gray-400 italic">No data found.</td>
             </tr>
           </tbody>
         </table>
@@ -75,20 +75,24 @@
               {{ item.name }}
             </div>
             <div class="col-span-2">
-              <span class="font-medium text-gray-600">Username:</span>
-              {{ item.username }}
-            </div>
-            <div class="col-span-2">
               <span class="font-medium text-gray-600">Email:</span>
               {{ item.email }}
             </div>
             <div class="col-span-2">
-              <span class="font-medium text-gray-600">Password:</span>
-              {{ item.password }}
+              <span class="font-medium text-gray-600">Phone_number:</span>
+              {{ item.phone_number }}
             </div>
             <div class="col-span-2">
-              <span class="font-medium text-gray-600">Role:</span>
-              {{ item.role }}
+              <span class="font-medium text-gray-600">Address:</span>
+              {{ item.address }}
+            </div>
+            <div class="col-span-2">
+              <span class="font-medium text-gray-600">Official_website:</span>
+              {{ item.official_website }}
+            </div>
+            <div class="col-span-2">
+              <span class="font-medium text-gray-600">Password:</span>
+              {{ item.password }}
             </div>
         </div>
       </div>

@@ -35,14 +35,14 @@
           <thead class="bg-gray-100 text-gray-700 uppercase text-xs font-semibold">
             <tr>
               <th class="px-6 py-3 text-left">#</th>
-              <th class="px-6 py-3 text-left">Name</th><th class="px-6 py-3 text-left">Description</th><th class="px-6 py-3 text-left">Created_at</th><th class="px-6 py-3 text-left">Updated_at</th>
+              <th class="px-6 py-3 text-left">Key</th><th class="px-6 py-3 text-left">Description</th>
               <th class="px-6 py-3 text-center">Actions</th>
             </tr>
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
             <tr v-for="(item, index) in items" :key="item.id" class="hover:bg-green-50 transition duration-150">
               <td class="px-6 py-4">{{ index + 1 }}</td>
-              <td class="px-6 py-4 whitespace-nowrap">{{ item.name }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.description }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.created_at }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.updated_at }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">{{ item.key }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.description }}</td>
               <td class="px-6 py-4 text-center space-x-3">
                 <button @click="viewDetails(item.id)" class="text-green-500 hover:text-green-700"><i class="fas fa-eye"></i></button>
                 <button @click="editItem(item)" class="text-blue-500 hover:text-blue-700"><i class="fas fa-edit"></i></button>
@@ -50,7 +50,7 @@
               </td>
             </tr>
             <tr v-if="items.length === 0">
-              <td colspan="6" class="text-center py-6 text-gray-400 italic">No data found.</td>
+              <td colspan="4" class="text-center py-6 text-gray-400 italic">No data found.</td>
             </tr>
           </tbody>
         </table>
@@ -71,20 +71,12 @@
         <div class="grid grid-cols-2 gap-y-1 text-sm text-gray-700">
           
             <div class="col-span-2">
-              <span class="font-medium text-gray-600">Name:</span>
-              {{ item.name }}
+              <span class="font-medium text-gray-600">Key:</span>
+              {{ item.key }}
             </div>
             <div class="col-span-2">
               <span class="font-medium text-gray-600">Description:</span>
               {{ item.description }}
-            </div>
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">Created_at:</span>
-              {{ item.created_at }}
-            </div>
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">Updated_at:</span>
-              {{ item.updated_at }}
             </div>
         </div>
       </div>

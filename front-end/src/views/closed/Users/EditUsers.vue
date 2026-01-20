@@ -14,20 +14,24 @@
           <input v-model="form.name" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
         </div>
         <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Username</label>
-          <input v-model="form.username" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-        </div>
-        <div>
           <label class="block mb-1 text-sm font-medium text-gray-700">Email</label>
           <input v-model="form.email" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
         </div>
         <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Password</label>
-          <input v-model="form.password" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
+          <label class="block mb-1 text-sm font-medium text-gray-700">Phone_number</label>
+          <input v-model="form.phone_number" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
         </div>
         <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Role</label>
-          <input v-model="form.role" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
+          <label class="block mb-1 text-sm font-medium text-gray-700">Address</label>
+          <input v-model="form.address" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
+        </div>
+        <div>
+          <label class="block mb-1 text-sm font-medium text-gray-700">Official_website</label>
+          <input v-model="form.official_website" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
+        </div>
+        <div>
+          <label class="block mb-1 text-sm font-medium text-gray-700">Password</label>
+          <input v-model="form.password" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
         </div>
 
         <div class="flex justify-end gap-3 pt-2">
@@ -46,10 +50,11 @@ export default {
     return {
       form: {
         name: this.data?.name || '',
-        username: this.data?.username || '',
-        email: this.data?.email || '',
-        password: this.data?.password || '',
-        role: this.data?.role || ''
+email: this.data?.email || '',
+phone_number: this.data?.phone_number || '',
+address: this.data?.address || '',
+official_website: this.data?.official_website || '',
+password: this.data?.password || ''
       }
     };
   },

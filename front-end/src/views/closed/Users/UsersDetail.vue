@@ -12,13 +12,13 @@
     <!-- Detail Card -->
     <div class="bg-white overflow-hidden rounded-md border border-gray-200 p-4 hidden md:block space-y-2">
       <div><strong>ID:</strong> {{ item.id }}</div>
-      <div><strong>Name:</strong> {{ item.name }}</div><div><strong>Username:</strong> {{ item.username }}</div><div><strong>Email:</strong> {{ item.email }}</div><div><strong>Password:</strong> {{ item.password }}</div><div><strong>Role:</strong> {{ item.role }}</div>
+      <div><strong>Name:</strong> {{ item.name }}</div><div><strong>Email:</strong> {{ item.email }}</div><div><strong>Phone_number:</strong> {{ item.phone_number }}</div><div><strong>Address:</strong> {{ item.address }}</div><div><strong>Official_website:</strong> {{ item.official_website }}</div><div><strong>Password:</strong> {{ item.password }}</div>
     </div>
 
     <!-- Mobile View -->
     <div class="md:hidden bg-white rounded-md border border-gray-200 p-4 space-y-2">
       <div><strong>ID:</strong> {{ item.id }}</div>
-      <div><strong>Name:</strong> {{ item.name }}</div><div><strong>Username:</strong> {{ item.username }}</div><div><strong>Email:</strong> {{ item.email }}</div><div><strong>Password:</strong> {{ item.password }}</div><div><strong>Role:</strong> {{ item.role }}</div>
+      <div><strong>Name:</strong> {{ item.name }}</div><div><strong>Email:</strong> {{ item.email }}</div><div><strong>Phone_number:</strong> {{ item.phone_number }}</div><div><strong>Address:</strong> {{ item.address }}</div><div><strong>Official_website:</strong> {{ item.official_website }}</div><div><strong>Password:</strong> {{ item.password }}</div>
     </div>
 
     <button @click="$router.back()" class="mt-4 text-blue-600 hover:underline">Back</button>

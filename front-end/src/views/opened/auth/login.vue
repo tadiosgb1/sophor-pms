@@ -116,12 +116,18 @@ export default {
       this.loading = true;
       try {
         const payload = { ...this.form };
-        const response = await this.$apiPost("/token", payload);
-        
-        localStorage.setItem("access", response.access);
-        localStorage.setItem("refresh", response.refresh);
-        localStorage.setItem("userId", response.user);
-        localStorage.setItem("email", response.email);
+        const response = await this.$apiPost("/auth/login", payload);
+
+        console.log("respoonse login",response);
+
+        localStorage.setItem("access", response.data.accessToken);
+        localStorage.setItem("refresh", response.data.refreshToken);
+        localStorage.setItem("userId", response.data.user.id);
+        localStorage.setItem("email", response.data.user.email);
+        localStorage.setItem("name", response.data.user.name);
+
+        localStorage.setItem("roles", response.data.user.roles);
+        localStorage.setItem("permissions", response.data.user.permissions);
 
         this.$router.push({ path: "/dashboard/first-dash" });
       } catch (err) {

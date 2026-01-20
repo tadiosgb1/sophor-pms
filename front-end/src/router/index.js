@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Home from '../views/opened/landing/Home.vue';
+
 import Login from '../views/opened/auth/login.vue';
 import ContactUs from '../views/opened/landing/contactUs.vue';
 import Services from '../views/opened/landing/services.vue';
@@ -12,7 +12,7 @@ import AccessDenied from "../views/opened/auth/accessDenied.vue";
 import first_dash from '../views/closed/first_dash.vue';
 import dashboard from '../views/closed/dashboard.vue';
 
-import Permissions from '../views/closed/permissions/view.vue';
+
 import Roles from '../views/closed/groups/view.vue';
 import Notifications from '../views/closed/notifications/view.vue';
 import notificationDetail from '../views/closed/notifications/notificationDeatil.vue';
@@ -40,71 +40,25 @@ const routes = [
     meta: { requiresGuest: true },
     children: [
       {
-        path: "permissions",
-        name: "Permissions-view",
-        component: () => import('../views/closed/Permissions/PermissionsView.vue'),
-      },
-      {
-        path: "permissions/add",
-        name: "Permissions-add",
-        component: () => import('../views/closed/Permissions/AddPermissions.vue'),
-      },
-      {
-        path: "permissions/edit/:id",
-        name: "Permissions-edit",
-        component: () => import('../views/closed/Permissions/EditPermissions.vue'),
-        props: true,
-      },
-      {
-        path: "permissions/detail/:id",
-        name: "Permissions-detail",
-        component: () => import('../views/closed/Permissions/PermissionsDetail.vue'),
-        props: true,
-      },
-
-      {
-        path: "permissions",
-        name: "Permissions-view",
-        component: () => import('../views/closed/Permissions/PermissionsView.vue'),
-      },
-      {
-        path: "permissions/add",
-        name: "Permissions-add",
-        component: () => import('../views/closed/Permissions/AddPermissions.vue'),
-      },
-      {
-        path: "permissions/edit/:id",
-        name: "Permissions-edit",
-        component: () => import('../views/closed/Permissions/EditPermissions.vue'),
-        props: true,
-      },
-      {
-        path: "permissions/detail/:id",
-        name: "Permissions-detail",
-        component: () => import('../views/closed/Permissions/PermissionsDetail.vue'),
-        props: true,
-      },
-
-      {
         path: "roles",
         name: "Roles-view",
-        component: () => import('../views/closed/Roles/RolesView.vue'),
+        component: () => import('../views/closed/roles/RolesView.vue'),
       },
       {
         path: "roles/add",
         name: "Roles-add",
-        component: () => import('../views/closed/Roles/AddRoles.vue'),
+        component: () => import('../views/closed/roles/AddRoles.vue'),
       },
       {
         path: "roles/edit/:id",
         name: "Roles-edit",
-        component: () => import('../views/closed/Roles/EditRoles.vue'),
+        component: () => import('../views/closed/roles/EditRoles.vue'),
         props: true,
       },
       {
         path: "roles/detail/:id",
         name: "Roles-detail",
-        component: () => import('../views/closed/Roles/RolesDetail.vue'),
+        component: () => import('../views/closed/roles/RolesDetail.vue'),
         props: true,
       },
 
@@ -131,6 +85,34 @@ const routes = [
         props: true,
       },
 
+      {
+        path: "permissions",
+        name: "Permissions-view",
+        component: () => import('../views/closed/Permissions/PermissionsView.vue'),
+      },
+      {
+        path: "permissions/add",
+        name: "Permissions-add",
+        component: () => import('../views/closed/Permissions/AddPermissions.vue'),
+      },
+      {
+        path: "permissions/edit/:id",
+        name: "Permissions-edit",
+        component: () => import('../views/closed/Permissions/EditPermissions.vue'),
+        props: true,
+      },
+      {
+        path: "permissions/detail/:id",
+        name: "Permissions-detail",
+        component: () => import('../views/closed/Permissions/PermissionsDetail.vue'),
+        props: true,
+      },
+
+  
+
+     
+
+    
     
 
       {
@@ -185,8 +167,7 @@ const routes = [
        
       
       { path: "roles", name: "roles", component: Roles },
-      { path: "permissions", name: "permissions", component: Permissions },
-
+ 
       { path: "first-dash", name: "first-dash", component: first_dash },
       { path: "messages", name: "messages", component: Messages},
       { path: "inbox", name: "inbox", component: Inbox},

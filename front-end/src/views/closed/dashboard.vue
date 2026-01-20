@@ -27,7 +27,7 @@
               class="text-xl md:text-2xl font-extrabold text-blue-400 truncate"
               title="NePAF"
             >
-              MLM
+              Sophor
             </h1>
           </div>
         </div>

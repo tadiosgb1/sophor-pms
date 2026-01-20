@@ -117,12 +117,14 @@ export default {
     async submitForm() {
       this.loading = true;
       this.message = "";
+      const payload={
+        email:this.email
+      }
 
       try {
-        const response = await axios.post(
-          "https://alphapms.sunriseworld.org/api/send_password_reset_email",
-          { email: this.email }
-        );
+        const response = await this.$apiPost("/auth/forgot-password", payload);
+
+        console.log("response",response);
 
         this.showForm = false;
         this.showRestInfo = true;
