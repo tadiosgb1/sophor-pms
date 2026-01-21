@@ -11,7 +11,7 @@
 
     <!-- Detail Card -->
     <div class="bg-white overflow-hidden rounded-md border border-gray-200 p-4 hidden md:block space-y-2">
-      <div><strong>ID:</strong> {{ item.id }}</div>
+
       <div><strong>Name:</strong> {{ item.name }}</div><div><strong>Email:</strong> {{ item.email }}</div><div><strong>Phone_number:</strong> {{ item.phone_number }}</div><div><strong>Address:</strong> {{ item.address }}</div><div><strong>Official_website:</strong> {{ item.official_website }}</div><div><strong>Password:</strong> {{ item.password }}</div>
     </div>
 
@@ -40,8 +40,8 @@ export default {
     this.loading = true;
     const id = this.$route.params.id;
     try {
-      const response = await this.$apiGetById('/users', id);
-      this.item = response || {};
+      const response = await this.$apiGetById('/users/getUserById', id);
+      this.item = response.data || {};
     } catch (error) {
       console.error(error);
     } finally {

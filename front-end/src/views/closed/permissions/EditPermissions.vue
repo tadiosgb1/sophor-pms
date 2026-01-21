@@ -48,7 +48,7 @@ description: this.data?.description || ''
          }
 
         } else {
-         const res= await this.$apiPut("/permissions",this.data.id ,this.form);
+         const res= await this.$apiPatch("/permissions/updatePermission",this.data.id ,this.form);
          if(res){
            this.$root.$refs.toast.showToast('Edited successfully', 'success');
          }

@@ -114,6 +114,7 @@
                 <li>
                   <a
                     href="#"
+                    @click="changePassword=true"
                     class="flex items-center px-4 py-2 hover:bg-gray-100 text-gray-700"
                   >
                     <i class="fas fa-cog text-yellow-500 mr-2"></i>
@@ -180,7 +181,7 @@
   </main>
 </div>
 
-
+ <ChangePasswprd v-if="changePassword" @close="changePassword=false"/>
     <Profile
       :visible="showProfileModal"
       @close="closeProfile"
@@ -192,10 +193,11 @@
 <script>
 import Sidebar from "@/components/layouts/leftSidevar.vue";
 import Profile from "./Profile.vue";
+import ChangePasswprd from "./changePassword/changePasswprd.vue";
 
 export default {
   name: "AppLayout",
-  components: { Sidebar, Profile },
+  components: { Sidebar, Profile,ChangePasswprd },
   data() {
     return {
       showProfileModal: false,
@@ -203,6 +205,7 @@ export default {
       name: localStorage.getItem("name"),
       showSidebar: false,
       isLangOpen: false,
+      changePassword:false,
       isProfileDropdownOpen: false,
       isNotificationDropdownOpen: false,
       screenWidth: window.innerWidth,

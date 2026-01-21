@@ -35,14 +35,14 @@
           <thead class="bg-gray-100 text-gray-700 uppercase text-xs font-semibold">
             <tr>
               <th class="px-6 py-3 text-left">#</th>
-              <th class="px-6 py-3 text-left">Name</th><th class="px-6 py-3 text-left">Email</th><th class="px-6 py-3 text-left">Phone_number</th><th class="px-6 py-3 text-left">Address</th><th class="px-6 py-3 text-left">Official_website</th><th class="px-6 py-3 text-left">Password</th>
+              <th class="px-6 py-3 text-left">Name</th><th class="px-6 py-3 text-left">Email</th><th class="px-6 py-3 text-left">Phone_number</th><th class="px-6 py-3 text-left">Address</th><th class="px-6 py-3 text-left">Official_website</th>
               <th class="px-6 py-3 text-center">Actions</th>
             </tr>
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
             <tr v-for="(item, index) in items" :key="item.id" class="hover:bg-green-50 transition duration-150">
               <td class="px-6 py-4">{{ index + 1 }}</td>
-              <td class="px-6 py-4 whitespace-nowrap">{{ item.name }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.email }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.phone_number }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.address }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.official_website }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.password }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">{{ item.name }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.email }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.phone_number }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.address }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.official_website }}</td>
               <td class="px-6 py-4 text-center space-x-3">
                 <button @click="viewDetails(item.id)" class="text-green-500 hover:text-green-700"><i class="fas fa-eye"></i></button>
                 <button @click="editItem(item)" class="text-blue-500 hover:text-blue-700"><i class="fas fa-edit"></i></button>
@@ -90,10 +90,7 @@
               <span class="font-medium text-gray-600">Official_website:</span>
               {{ item.official_website }}
             </div>
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">Password:</span>
-              {{ item.password }}
-            </div>
+            
         </div>
       </div>
       <p v-if="items.length === 0" class="text-center text-gray-400 py-6 italic">No data found.</p>
@@ -163,11 +160,11 @@ export default {
       this.currentPage = page;
       const params = { page: this.currentPage, page_size: this.pageSize, search: this.searchQuery };
       try {
-        const response = await this.$apiGet('/users', params);
-        this.items = response.data;
-        this.count = response.count || 0;
-        this.nextPage = response.next || null;
-        this.previousPage = response.previous || null;
+        const response = await this.$apiGet('/users/getUsers', params);
+        this.items = response.data.data;
+        this.count = response.data.count || 0;
+        this.nextPage = response.data.next || null;
+        this.previousPage = response.data.previous || null;
       } catch(e) { console.error(e); }
       finally { this.loading = false; }
     },
@@ -184,7 +181,7 @@ export default {
 
     // Delete with toast
     async confirmDelete() {
-      const res = await this.$apiDelete('/users', this.deleteId);
+      const res = await this.$apiDelete('/users/deleteUser', this.deleteId);
       if(res) {
         this.$root.$refs.toast.showToast('Users deleted successfully', 'success');
       }

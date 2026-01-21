@@ -50,11 +50,11 @@ export default {
     return {
       form: {
         name: this.data?.name || '',
-email: this.data?.email || '',
-phone_number: this.data?.phone_number || '',
-address: this.data?.address || '',
-official_website: this.data?.official_website || '',
-password: this.data?.password || ''
+        email: this.data?.email || '',
+        phone_number: this.data?.phone_number || '',
+        address: this.data?.address || '',
+        official_website: this.data?.official_website || '',
+        password: this.data?.password || ''
       }
     };
   },

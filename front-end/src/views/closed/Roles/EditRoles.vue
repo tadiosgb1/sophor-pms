@@ -13,6 +13,10 @@
           <label class="block mb-1 text-sm font-medium text-gray-700">Name</label>
           <input v-model="form.name" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
         </div>
+         <div>
+          <label class="block mb-1 text-sm font-medium text-gray-700">Description</label>
+          <input v-model="form.description" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
+        </div>
         <div>
           <label class="block mb-1 text-sm font-medium text-gray-700">Permissions</label>
           <input v-model="form.permissions" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
@@ -34,7 +38,8 @@ export default {
     return {
       form: {
         name: this.data?.name || '',
-permissions: this.data?.permissions || ''
+        description: this.data?.description || '',
+        permissions: this.data?.permissions || ''
       }
     };
   },
@@ -42,13 +47,13 @@ permissions: this.data?.permissions || ''
     async submitForm() {
       try {
         if ("Edit" === "Add") {
-        const res= await this.$apiPost("/roles", this.form);
+        const res= await this.$apiPost("/roles/createRole", this.form);
         if(res){
            this.$root.$refs.toast.showToast('Added successfully', 'success');
          }
 
         } else {
-         const res= await this.$apiPut("/roles",this.data.id ,this.form);
+         const res= await this.$apiPatch("/roles/updateRole",this.data.id ,this.form);
          if(res){
            this.$root.$refs.toast.showToast('Edited successfully', 'success');
          }

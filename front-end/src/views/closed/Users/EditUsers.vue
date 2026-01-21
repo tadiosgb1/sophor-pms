@@ -29,10 +29,7 @@
           <label class="block mb-1 text-sm font-medium text-gray-700">Official_website</label>
           <input v-model="form.official_website" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
         </div>
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Password</label>
-          <input v-model="form.password" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-        </div>
+      
 
         <div class="flex justify-end gap-3 pt-2">
           <button type="button" @click="$emit('close')" class="px-4 py-2 border rounded-lg">Cancel</button>
@@ -50,11 +47,10 @@ export default {
     return {
       form: {
         name: this.data?.name || '',
-email: this.data?.email || '',
-phone_number: this.data?.phone_number || '',
-address: this.data?.address || '',
-official_website: this.data?.official_website || '',
-password: this.data?.password || ''
+        email: this.data?.email || '',
+        phone_number: this.data?.phone_number || '',
+        address: this.data?.address || '',
+        official_website: this.data?.official_website || '',
       }
     };
   },
@@ -68,7 +64,10 @@ password: this.data?.password || ''
          }
 
         } else {
-         const res= await this.$apiPut("/users",this.data.id ,this.form);
+          console.log("id and form",this.data.id,this.form);
+          
+         const res= await this.$apiPatch("/users/updateUser",this.data.id ,this.form);
+         
          if(res){
            this.$root.$refs.toast.showToast('Edited successfully', 'success');
          }

@@ -147,11 +147,14 @@ export default {
       this.currentPage = page;
       const params = { page: this.currentPage, page_size: this.pageSize, search: this.searchQuery };
       try {
-        const response = await this.$apiGet('/permissions', params);
-        this.items = response.data;
-        this.count = response.count || 0;
-        this.nextPage = response.next || null;
-        this.previousPage = response.previous || null;
+        const response = await this.$apiGet('/permissions/getPermissions', params);
+
+        console.log("response",response);
+
+        this.items = response.data.data;
+        this.count = response.data.count || 0;
+        this.nextPage = response.data.next || null;
+        this.previousPage = response.data.previous || null;
       } catch(e) { console.error(e); }
       finally { this.loading = false; }
     },
@@ -168,7 +171,7 @@ export default {
 
     // Delete with toast
     async confirmDelete() {
-      const res = await this.$apiDelete('/permissions', this.deleteId);
+      const res = await this.$apiDelete('/permissions/deletePermission', this.deleteId);
       if(res) {
         this.$root.$refs.toast.showToast('Permissions deleted successfully', 'success');
       }
