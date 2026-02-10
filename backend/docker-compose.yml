@@ -1,0 +1,30 @@
+version: "3.9"
+services:
+  api:
+    build: .
+    container_name: node_api
+    ports:
+      - "5000:5000"
+    environment:
+      DB_HOST: mysql
+      DB_USER: root
+      DB_PASSWORD: 
+      DB_NAME: ant_website
+    depends_on:
+      - mysql
+    restart: always
+
+  mysql:
+    image: mysql:8
+    container_name: mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: ant_website
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: always
+
+volumes:
+  mysql_data:

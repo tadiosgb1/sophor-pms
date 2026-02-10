@@ -34,7 +34,7 @@ export default {
     return {
       form: {
         key: this.data?.key || '',
-description: this.data?.description || ''
+        description: this.data?.description || ''
       }
     };
   },
