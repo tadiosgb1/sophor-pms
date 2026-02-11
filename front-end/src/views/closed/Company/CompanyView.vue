@@ -2,21 +2,21 @@
 <template>
   <div class="p-6 bg-gray-50 min-h-screen text-sm text-gray-800 relative">
     <!-- Loading -->
-    <Loading :visible="loading" message="Loading Permissions..." />
+    <Loading :visible="loading" message="Loading Company..." />
 
     <!-- Page Header -->
     <div class="flex items-center justify-between mb-6 border-b pb-4 border-gray-200">
-      <h1 class="text-lg font-bold text-gray-800">Permissions</h1>
-      <button @click="openAddModal" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-medium shadow-md flex items-center space-x-1 text-sm">
+      <h1 class="text-lg font-bold text-gray-800">Company</h1>
+      <button v-if="comapnyAdd==true"  @click="openAddModal" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-medium shadow-md flex items-center space-x-1 text-sm">
         <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
         </svg>
-        <span>Add Permissions</span>
+        <span>Add Company</span>
       </button>
     </div>
 
     <!-- Search + Page Size -->
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
+    <div v-if="comapnyAdd==true"  class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
       <input v-model="searchQuery" @input="fetchItems(1)" type="text" placeholder="Search..."
         class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
       <div class="flex items-center gap-2 text-sm text-gray-600">
@@ -35,21 +35,14 @@
           <thead class="bg-gray-100 text-gray-700 uppercase text-xs font-semibold">
             <tr>
               <th class="px-6 py-3 text-left">#</th>
-              <th class="px-6 py-3 text-left">
-                Name</th>
-                    <th class="px-6 py-3 text-left">
-                  Code</th>
-                <th class="px-6 py-3 text-left">
-                  Description</th>
+              <th class="px-6 py-3 text-left">Name</th><th class="px-6 py-3 text-left">Address</th><th class="px-6 py-3 text-left">Latitude</th><th class="px-6 py-3 text-left">Longitude</th><th class="px-6 py-3 text-left">Phone</th><th class="px-6 py-3 text-left">Official_email</th><th class="px-6 py-3 text-left">Website</th><th class="px-6 py-3 text-left">Logo</th><th class="px-6 py-3 text-left">Facebook</th><th class="px-6 py-3 text-left">Instagram</th><th class="px-6 py-3 text-left">Linkedin</th><th class="px-6 py-3 text-left">Twitter</th><th class="px-6 py-3 text-left">Telegram</th><th class="px-6 py-3 text-left">Description</th><th class="px-6 py-3 text-left">Owner_id</th>
               <th class="px-6 py-3 text-center">Actions</th>
             </tr>
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
             <tr v-for="(item, index) in items" :key="item.id" class="hover:bg-green-50 transition duration-150">
               <td class="px-6 py-4">{{ index + 1 }}</td>
-              <td class="px-6 py-4 whitespace-nowrap">{{ item.name }}</td>
-                 <td class="px-6 py-4 whitespace-nowrap">{{ item.code }}</td>
-              <td class="px-6 py-4 whitespace-nowrap">{{ item.description }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">{{ item.name }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.address }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.latitude }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.longitude }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.phone }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.official_email }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.website }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.logo }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.facebook }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.instagram }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.linkedin }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.twitter }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.telegram }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.description }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.owner_id }}</td>
               <td class="px-6 py-4 text-center space-x-3">
                 <button @click="viewDetails(item.id)" class="text-green-500 hover:text-green-700"><i class="fas fa-eye"></i></button>
                 <button @click="editItem(item)" class="text-blue-500 hover:text-blue-700"><i class="fas fa-edit"></i></button>
@@ -57,7 +50,7 @@
               </td>
             </tr>
             <tr v-if="items.length === 0">
-              <td colspan="4" class="text-center py-6 text-gray-400 italic">No data found.</td>
+              <td colspan="17" class="text-center py-6 text-gray-400 italic">No data found.</td>
             </tr>
           </tbody>
         </table>
@@ -68,7 +61,7 @@
     <div class="md:hidden space-y-4">
       <div v-for="(item, index) in items" :key="item.id" class="bg-white border border-gray-200 rounded-xl shadow p-4">
         <div class="flex justify-between mb-3">
-          <h2 class="font-bold text-gray-800">Permissions #{{ index + 1 }}</h2>
+          <h2 class="font-bold text-gray-800">Company #{{ index + 1 }}</h2>
           <div class="flex gap-3 text-sm">
             <button @click="viewDetails(item.id)" class="text-green-500 hover:text-green-700"><i class="fas fa-eye"></i></button>
             <button @click="editItem(item)" class="text-blue-500 hover:text-blue-700"><i class="fas fa-edit"></i></button>
@@ -81,14 +74,61 @@
               <span class="font-medium text-gray-600">Name:</span>
               {{ item.name }}
             </div>
-
-               <div class="col-span-2">
-              <span class="font-medium text-gray-600">Code:</span>
-              {{ item.code }}
+            <div class="col-span-2">
+              <span class="font-medium text-gray-600">Address:</span>
+              {{ item.address }}
+            </div>
+            <div class="col-span-2">
+              <span class="font-medium text-gray-600">Latitude:</span>
+              {{ item.latitude }}
+            </div>
+            <div class="col-span-2">
+              <span class="font-medium text-gray-600">Longitude:</span>
+              {{ item.longitude }}
+            </div>
+            <div class="col-span-2">
+              <span class="font-medium text-gray-600">Phone:</span>
+              {{ item.phone }}
+            </div>
+            <div class="col-span-2">
+              <span class="font-medium text-gray-600">Official_email:</span>
+              {{ item.official_email }}
+            </div>
+            <div class="col-span-2">
+              <span class="font-medium text-gray-600">Website:</span>
+              {{ item.website }}
+            </div>
+            <div class="col-span-2">
+              <span class="font-medium text-gray-600">Logo:</span>
+              {{ item.logo }}
+            </div>
+            <div class="col-span-2">
+              <span class="font-medium text-gray-600">Facebook:</span>
+              {{ item.facebook }}
+            </div>
+            <div class="col-span-2">
+              <span class="font-medium text-gray-600">Instagram:</span>
+              {{ item.instagram }}
+            </div>
+            <div class="col-span-2">
+              <span class="font-medium text-gray-600">Linkedin:</span>
+              {{ item.linkedin }}
+            </div>
+            <div class="col-span-2">
+              <span class="font-medium text-gray-600">Twitter:</span>
+              {{ item.twitter }}
+            </div>
+            <div class="col-span-2">
+              <span class="font-medium text-gray-600">Telegram:</span>
+              {{ item.telegram }}
             </div>
             <div class="col-span-2">
               <span class="font-medium text-gray-600">Description:</span>
               {{ item.description }}
+            </div>
+            <div class="col-span-2">
+              <span class="font-medium text-gray-600">Owner_id:</span>
+              {{ item.owner_id }}
             </div>
         </div>
       </div>
@@ -96,7 +136,7 @@
     </div>
 
     <!-- Pagination -->
-    <div class="flex items-center justify-between mt-6 text-sm text-gray-600">
+    <div  v-if="comapnyAdd==true"  class="flex items-center justify-between mt-6 text-sm text-gray-600">
       <span>
         Showing {{ (currentPage - 1) * pageSize + 1 }} 
         to {{ Math.min(currentPage * pageSize, count) }} 
@@ -112,14 +152,14 @@
     </div>
 
     <!-- Add/Edit Modal -->
-    <add-permissions v-if="showModal && !editMode" :data="selectedItem" @close="showModal=false" @saved="fetchItems"/>
-    <edit-permissions v-if="showModal && editMode" :data="selectedItem" @close="showModal=false" @saved="fetchItems"/>
+    <add-company v-if="showModal && !editMode" :data="selectedItem" @close="showModal=false" @saved="fetchItems"/>
+    <edit-company v-if="showModal && editMode" :data="selectedItem" @close="showModal=false" @saved="fetchItems"/>
 
     <!-- Delete Confirmation Modal -->
     <delete-confirm-modal 
       :visible="deleteModalVisible"
-      title="Delete Permissions"
-      message="Are you sure you want to delete this Permissions?"
+      title="Delete Company"
+      message="Are you sure you want to delete this Company?"
       @confirm="confirmDelete"
       @cancel="deleteModalVisible=false"
     />
@@ -127,13 +167,13 @@
 </template>
 
 <script>
-import AddPermissions from "./AddPermissions.vue";
-import EditPermissions from "./EditPermissions.vue";
+import AddCompany from "./AddCompany.vue";
+import EditCompany from "./EditCompany.vue";
 import Loading from "@/components/Loading.vue";
 import DeleteConfirmModal from "@/components/DeleteConfirmModal.vue";
 
 export default {
-  components: { AddPermissions, EditPermissions, Loading, DeleteConfirmModal },
+  components: { AddCompany, EditCompany, Loading, DeleteConfirmModal },
 
   data() {
     return {
@@ -159,10 +199,7 @@ export default {
       this.currentPage = page;
       const params = { page: this.currentPage, page_size: this.pageSize, search: this.searchQuery };
       try {
-        const response = await this.$apiGet('/permissions', params);
-
-        console.log("response",response);
-
+        const response = await this.$apiGet('/company', params);
         this.items = response.data;
         this.count = response.count || 0;
         this.nextPage = response.next || null;
@@ -176,16 +213,16 @@ export default {
     
     // Navigate using static route name
     viewDetails(id) { 
-      this.$router.push({ name: 'Permissions-detail', params: { id } });
+      this.$router.push({ name: 'Company-detail', params: { id } });
     },
 
     openDeleteModal(id) { this.deleteId = id; this.deleteModalVisible = true; },
 
     // Delete with toast
     async confirmDelete() {
-      const res = await this.$apiDelete('/permissions', this.deleteId);
+      const res = await this.$apiDelete('/company', this.deleteId);
       if(res) {
-        this.$root.$refs.toast.showToast('Permissions deleted successfully', 'success');
+        this.$root.$refs.toast.showToast('Company deleted successfully', 'success');
       }
       this.deleteModalVisible = false;
       this.fetchItems(this.currentPage);

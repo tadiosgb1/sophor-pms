@@ -40,8 +40,8 @@ export default {
     this.loading = true;
     const id = this.$route.params.id;
     try {
-      const response = await this.$apiGetById('/users/getUserById', id);
-      this.item = response.data || {};
+      const response = await this.$apiGetById('/users', id);
+      this.item = response || {};
     } catch (error) {
       console.error(error);
     } finally {

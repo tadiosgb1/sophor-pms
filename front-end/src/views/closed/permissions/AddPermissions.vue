@@ -10,8 +10,13 @@
       <form @submit.prevent="submitForm" class="space-y-4">
         
         <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Key</label>
-          <input v-model="form.key" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
+          <label class="block mb-1 text-sm font-medium text-gray-700">Name</label>
+          <input v-model="form.name" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
+        </div>
+
+         <div>
+          <label class="block mb-1 text-sm font-medium text-gray-700">Code</label>
+          <input v-model="form.code" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
         </div>
         <div>
           <label class="block mb-1 text-sm font-medium text-gray-700">Description</label>
@@ -33,7 +38,8 @@ export default {
   data() {
     return {
       form: {
-        key: this.data?.key || '',
+        name: this.data?.name || '',
+        code: this.data?.code || '',
         description: this.data?.description || ''
       }
     };

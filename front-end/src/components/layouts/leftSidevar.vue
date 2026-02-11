@@ -109,6 +109,8 @@ export default {
 
       menuItems: [
 
+
+
         {
           name: "Dashboard",
           route: "first-dash",
@@ -139,6 +141,12 @@ export default {
         /* USER MANAGEMENT SECTION */
 
 
+        {
+          name: "Company",
+          route: "Company-view",
+          icon: "fas fa-folder",
+          color: "#22c55e"
+        },
         {
           name: "Staff Management",
           icon: "fas fa-users-cog",

@@ -8,16 +8,18 @@
       </div>
 
       <form @submit.prevent="submitForm" class="space-y-4">
-        
         <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Key</label>
-          <input v-model="form.key" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
+          <label class="block mb-1 text-sm font-medium text-gray-700">Name</label>
+          <input v-model="form.name" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
+        </div>
+           <div>
+          <label class="block mb-1 text-sm font-medium text-gray-700">Code</label>
+          <input v-model="form.code" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
         </div>
         <div>
           <label class="block mb-1 text-sm font-medium text-gray-700">Description</label>
           <input v-model="form.description" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
         </div>
-
         <div class="flex justify-end gap-3 pt-2">
           <button type="button" @click="$emit('close')" class="px-4 py-2 border rounded-lg">Cancel</button>
           <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-lg">Edit</button>
@@ -33,7 +35,8 @@ export default {
   data() {
     return {
       form: {
-        key: this.data?.key || '',
+        name: this.data?.name || '',
+        code: this.data?.code || '',
         description: this.data?.description || ''
       }
     };
@@ -48,7 +51,7 @@ export default {
          }
 
         } else {
-         const res= await this.$apiPatch("/permissions/updatePermission",this.data.id ,this.form);
+         const res= await this.$apiPatch("/permissions",this.data.id ,this.form);
          if(res){
            this.$root.$refs.toast.showToast('Edited successfully', 'success');
          }

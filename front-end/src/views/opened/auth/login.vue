@@ -120,17 +120,18 @@ export default {
 
         console.log("respoonse login",response);
 
-        localStorage.setItem("access", response.data.accessToken);
-        localStorage.setItem("refresh", response.data.refreshToken);
-        localStorage.setItem("userId", response.data.user.id);
-        localStorage.setItem("email", response.data.user.email);
-        localStorage.setItem("name", response.data.user.name);
+        localStorage.setItem("access", response.accessToken);
+        localStorage.setItem("refresh", response.refreshToken);
+        localStorage.setItem("userId", response.id);
+        localStorage.setItem("email", response.email);
+        localStorage.setItem("name", response.name);
 
-        localStorage.setItem("roles", response.data.user.roles);
-        localStorage.setItem("permissions", response.data.user.permissions);
+        localStorage.setItem("roles", response.roles);
+        localStorage.setItem("permissions", response.permissions);
 
         this.$router.push({ path: "/dashboard/first-dash" });
       } catch (err) {
+        console.log("error",err);
         this.error = err.response?.data?.message || "Invalid credentials. Please try again.";
       } finally {
         this.loading = false;

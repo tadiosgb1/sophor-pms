@@ -27,7 +27,10 @@ async function seed() {
       { name: "Create Company", code: "create_company" },
       { name: "Edit Company", code: "edit_company" },
       { name: "Delete Company", code: "delete_company" },
-      { name: "View Company", code: "view_company" }
+      { name: "View Company", code: "view_company" },
+      {name:"Assign Permission",code:"assign_permission"},
+      {name:"Assign Role",code:"assign_role"},
+      
     ];
 
     const permissions = [];
@@ -63,17 +66,21 @@ async function seed() {
         first_name: "Super",
         middle_name: "Admin",
         last_name: "Admin",
-        email: "super@gmail.com",
+        email: "tadiosgb27@gmail.com",
         password: "1234",
-        roleName: "Super"
+        address:"Mekelle",
+        roleName: "Super",
+        phone:"0963275521",
       },
       {
         first_name: "Owner",
         middle_name: "User",
         last_name: "User",
-        email: "owner@gmail.com",
+        email: "tadiosgb26@gmail.com",
         password: "1234",
-        roleName: "Owner"
+        phone:"0967740501",
+        roleName: "Owner",
+        address:"Mekelle",
       }
     ];
 
@@ -88,7 +95,10 @@ async function seed() {
           first_name: u.first_name,
           middle_name: u.middle_name,
           last_name: u.last_name,
-          password: hashedPassword
+          phone:u.phone,
+          email:u.email,
+          password: hashedPassword,
+          address:u.address,
         }
       });
 

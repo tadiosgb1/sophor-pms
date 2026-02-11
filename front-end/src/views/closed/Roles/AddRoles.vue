@@ -65,7 +65,7 @@
                   class="accent-green-500"
                 />
                 <span class="text-gray-700">
-                  {{ permission.key }}
+                  {{ permission.code}}
                 </span>
               </div>
 
@@ -131,8 +131,10 @@ export default {
     async fetchPermissions() {
       this.loading = true;
       try {
-        const response = await this.$apiGet("/permissions/getPermissions");
-        this.permissions = response.data.data || [];
+        const response = await this.$apiGet("/permissions");
+        this.permissions = response.data || [];
+
+
       } catch (e) {
         console.error(e);
       } finally {
@@ -145,12 +147,12 @@ export default {
         const payload = {
           name: this.form.name,
           description: this.form.description,
-          permissions: this.form.permissions
+          permissionIds: this.form.permissions
         };
 
         console.log("role payload",payload);
 
-        const res = await this.$apiPost("/roles/createRole", payload);
+        const res = await this.$apiPost("/roles", payload);
 
         if (res) {
           this.$root.$refs.toast.showToast(

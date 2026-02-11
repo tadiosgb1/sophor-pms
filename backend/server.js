@@ -42,7 +42,7 @@ async function syncAndStart() {
     console.log("✅ Role & Permission tables synced");
 
     // 2️⃣ Sync User table
-   // await db.User.sync({ force: true });
+    await db.User.sync({ force: true });
     console.log("✅ User table synced");
 
     // 3️⃣ Sync association tables
@@ -59,7 +59,7 @@ async function syncAndStart() {
     await db.sequelize.query("SET FOREIGN_KEY_CHECKS = 1");
 
     // 5️⃣ Run seed
-   // await seed();
+    await seed();
     console.log("🎉 Seed executed successfully");
 
     // Start server

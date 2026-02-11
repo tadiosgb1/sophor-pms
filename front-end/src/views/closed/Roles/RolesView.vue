@@ -1,4 +1,3 @@
-
 <template>
   <div class="p-6 bg-gray-50 min-h-screen text-sm text-gray-800 relative">
     <!-- Loading -->
@@ -37,7 +36,6 @@
               <th class="px-6 py-3 text-left">#</th>
               <th class="px-6 py-3 text-left">Name</th>
               <th class="px-6 py-3 text-left">Description</th>
-              <th class="px-6 py-3 text-left">Permissions</th>
               <th class="px-6 py-3 text-center">Actions</th>
             </tr>
           </thead>
@@ -46,9 +44,10 @@
               <td class="px-6 py-4">{{ index + 1 }}</td>
               <td class="px-6 py-4 whitespace-nowrap">{{ item.name }}</td>
               <td class="px-6 py-4 whitespace-nowrap">{{ item.description }}</td>
-              <td class="px-6 py-4 whitespace-nowrap">{{ item.permissions }}</td>
               <td class="px-6 py-4 text-center space-x-3">
-                <button @click="viewDetails(item.id)" class="text-green-500 hover:text-green-700"><i class="fas fa-eye"></i></button>
+                <!-- OPEN MODAL INSTEAD OF ROUTE -->
+                <button @click="viewPermissions(item)" class="text-green-500 hover:text-green-700">View Permissions</button>
+                <button @click="viewDetails(item.id)" class="ml-2 text-green-500 hover:text-green-700"><i class="fas fa-eye"></i></button>
                 <button @click="editItem(item)" class="text-blue-500 hover:text-blue-700"><i class="fas fa-edit"></i></button>
                 <button @click="openDeleteModal(item.id)" class="text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button>
               </td>
@@ -73,19 +72,13 @@
           </div>
         </div>
         <div class="grid grid-cols-2 gap-y-1 text-sm text-gray-700">
-          
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">Name:</span>
-              {{ item.name }}
-            </div>
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">Description:</span>
-              {{ item.description }}
-            </div>
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">Permissions:</span>
-              {{ item.permissions }}
-            </div>
+          <div class="col-span-2">
+            <span class="font-medium text-gray-600">Name:</span> {{ item.name }}
+          </div>
+          <div class="col-span-2">
+            <span class="font-medium text-gray-600">Description:</span> {{ item.description }}
+          </div>
+          <button @click="viewPermissions(item)" class="text-green-500 hover:text-green-700">View Permissions</button>
         </div>
       </div>
       <p v-if="items.length === 0" class="text-center text-gray-400 py-6 italic">No data found.</p>
@@ -111,6 +104,13 @@
     <add-roles v-if="showModal && !editMode" :data="selectedItem" @close="showModal=false" @saved="fetchItems"/>
     <edit-roles v-if="showModal && editMode" :data="selectedItem" @close="showModal=false" @saved="fetchItems"/>
 
+    <!-- Role Permissions Modal -->
+    <role-permissions-modal
+      v-if="showPermissionsModal"
+      :roleId="selectedRole.id"
+      @close="showPermissionsModal = false"
+    />
+
     <!-- Delete Confirmation Modal -->
     <delete-confirm-modal 
       :visible="deleteModalVisible"
@@ -125,11 +125,12 @@
 <script>
 import AddRoles from "./AddRoles.vue";
 import EditRoles from "./EditRoles.vue";
+import RolePermissionsModal from "./permissionByrole.vue";
 import Loading from "@/components/Loading.vue";
 import DeleteConfirmModal from "@/components/DeleteConfirmModal.vue";
 
 export default {
-  components: { AddRoles, EditRoles, Loading, DeleteConfirmModal },
+  components: { AddRoles, EditRoles, RolePermissionsModal, Loading, DeleteConfirmModal },
 
   data() {
     return {
@@ -146,20 +147,28 @@ export default {
       loading: false,
       deleteModalVisible: false,
       deleteId: null,
+      // NEW: for permissions modal
+      showPermissionsModal: false,
+      selectedRole: null,
     };
   },
 
   methods: {
+    viewPermissions(role) {
+      this.selectedRole = role;
+      this.showPermissionsModal = true;
+    },
+
     async fetchItems(page = 1) {
       this.loading = true;
       this.currentPage = page;
       const params = { page: this.currentPage, page_size: this.pageSize, search: this.searchQuery };
       try {
-        const response = await this.$apiGet('/roles/getRoles', params);
-        this.items = response.data.data;
-        this.count = response.data.count || 0;
-        this.nextPage = response.data.next || null;
-        this.previousPage = response.data.previous || null;
+        const response = await this.$apiGet('/roles', params);
+        this.items = response.data;
+        this.count = response.count || 0;
+        this.nextPage = response.next || null;
+        this.previousPage = response.previous || null;
       } catch(e) { console.error(e); }
       finally { this.loading = false; }
     },
@@ -167,16 +176,14 @@ export default {
     openAddModal() { this.editMode = false; this.selectedItem = null; this.showModal = true; },
     editItem(item) { this.editMode = true; this.selectedItem = item; this.showModal = true; },
     
-    // Navigate using static route name
     viewDetails(id) { 
       this.$router.push({ name: 'Roles-detail', params: { id } });
     },
 
     openDeleteModal(id) { this.deleteId = id; this.deleteModalVisible = true; },
 
-    // Delete with toast
     async confirmDelete() {
-      const res = await this.$apiDelete('/roles/deleteRole', this.deleteId);
+      const res = await this.$apiDelete('/roles', this.deleteId);
       if(res) {
         this.$root.$refs.toast.showToast('Roles deleted successfully', 'success');
       }

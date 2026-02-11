@@ -39,6 +39,37 @@ const routes = [
     component: dashboard,
     meta: { requiresGuest: true },
     children: [
+   
+      {
+        path: "admin",
+        name: "Company-view",
+        component: () => import('../views/closed/Company/CompanyView.vue'),
+      },
+      {
+        path: "admin/add",
+        name: "Company-add",
+        component: () => import('../views/closed/Company/AddCompany.vue'),
+      },
+      {
+        path: "admin/edit/:id",
+        name: "Company-edit",
+        component: () => import('../views/closed/Company/EditCompany.vue'),
+        props: true,
+      },
+      {
+        path: "admin/detail/:id",
+        name: "Company-detail",
+        component: () => import('../views/closed/Company/CompanyDetail.vue'),
+        props: true,
+      },
+
+
+        {
+          path: "/roles/:id/permissions",
+          name: "RolePermissions",
+          component: () => import("../views/closed/roles/permissionByrole.vue"),
+        },
+
       {
         path: "roles",
         name: "Roles-view",

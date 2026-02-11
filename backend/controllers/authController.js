@@ -6,57 +6,76 @@ const generateAccessToken = user => jwt.sign({ id: user.id }, process.env.ACCESS
 const generateRefreshToken = user => jwt.sign({ id: user.id }, process.env.REFRESH_SECRET, { expiresIn: "7d" });
 const sendEmail = require("../utils/sendEmail");
 module.exports = {
-register: async (req, res) => {
-  
-  console.log("req.body",req.body);
+ register: async (req, res) => {
+    console.log("req.body", req.body);
 
-  try {
-    const { first_name, middle_name, last_name, phone, email, password } = req.body;
+    try {
+      const { first_name, middle_name, last_name, phone, email, password, roleIds, permissionIds } = req.body;
 
-    // Basic validation
-    if (!first_name || !last_name || !email || !password) {
-      return res.status(400).json({ error: "Missing required fields" });
+      // Basic validation
+      if (!first_name || !last_name || !email || !password) {
+        return res.status(400).json({ error: "Missing required fields" });
+      }
+
+      // Hash password
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      // Create user
+      const user = await User.create({
+        first_name,
+        middle_name,
+        last_name,
+        phone,
+        email,
+        password: hashedPassword
+      });
+
+      // Assign roles if provided
+      if (Array.isArray(roleIds) && roleIds.length > 0) {
+        const roles = await Role.findAll({ where: { id: roleIds } });
+        await user.setRoles(roles);
+      }
+
+      // Assign permissions if provided
+      if (Array.isArray(permissionIds) && permissionIds.length > 0) {
+        const permissions = await Permission.findAll({ where: { id: permissionIds } });
+        await user.setPermissions(permissions);
+      }
+
+      // Generate tokens
+      const accessToken = generateAccessToken(user);
+      const refreshToken = generateRefreshToken(user);
+
+      // Fetch user with roles & permissions
+      const userData = await User.findByPk(user.id, {
+        include: [Role, Permission]
+      });
+
+      // Flatten effective permissions
+      const effectivePermissions = [
+        ...new Set([
+          ...userData.Roles.flatMap(r => r.Permissions?.map(p => p.code) || []),
+          ...userData.Permissions.map(p => p.code)
+        ])
+      ];
+
+      // Respond
+      res.json({
+        id: user.id,
+        email: user.email,
+        roles: userData.Roles,
+        permissions: effectivePermissions,
+        accessToken,
+        refreshToken
+      });
+
+    } catch (e) {
+      console.error("Registration error:", e);
+      res.status(500).json({ error: e.message });
     }
+  },
 
-    const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = await User.create({
-      first_name,
-      middle_name,
-      last_name,
-      phone,
-      email,
-      password: hashedPassword
-    });
-
-    const accessToken = generateAccessToken(user);
-    const refreshToken = generateRefreshToken(user);
-
-    const userData = await User.findByPk(user.id, {
-      include: [Role, Permission]
-    });
-
-    const effectivePermissions = [
-      ...new Set([
-        ...userData.Roles.flatMap(r => r.Permissions.map(p => p.code)),
-        ...userData.Permissions.map(p => p.code)
-      ])
-    ];
-
-    res.json({
-      id: user.id,
-      email: user.email,
-      roles: userData.Roles,
-      permissions: effectivePermissions,
-      accessToken,
-      refreshToken
-    });
-
-  } catch (e) {
-    console.log("error", e);
-    res.status(500).json({ error: e.message });
-  }
-},
 
  login: async (req, res) => {
   console.log("the login please");
@@ -102,6 +121,7 @@ register: async (req, res) => {
     res.json({
       id: user.id,
       email: user.email,
+      name:user.first_name,
       accessToken,
       refreshToken,
       roles: user.Roles || [],

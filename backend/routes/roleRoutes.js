@@ -5,6 +5,7 @@ const authMiddleware = require("../middleware/authMiddleware");
 const permissionMiddleware = require("../middleware/permissionMiddleware");
 router.get("/", authMiddleware, permissionMiddleware("view_role"), roleController.getAll);
 router.get("/:id", authMiddleware, permissionMiddleware("view_role"), roleController.getOne);
+router.get("/:id/permissions", roleController.getPermissionsByRoleId);
 //router.post("/", authMiddleware, permissionMiddleware("create_role"), roleController.create);
 router.post("/", authMiddleware, roleController.create);
 router.put("/:id", authMiddleware, permissionMiddleware("edit_role"), roleController.update);

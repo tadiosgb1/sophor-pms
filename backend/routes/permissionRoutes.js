@@ -3,7 +3,7 @@ const router = express.Router();
 const permissionController = require("../controllers/permissionController");
 const authMiddleware = require("../middleware/authMiddleware");
 const permissionMiddleware = require("../middleware/permissionMiddleware");
-router.get("/", authMiddleware,  permissionController.getAll);
+router.get("/", authMiddleware, permissionMiddleware("view_permission"), permissionController.getAll);
 router.get("/:id", authMiddleware, permissionMiddleware("view_permission"), permissionController.getOne);
 //router.post("/", authMiddleware, permissionMiddleware("create_permission"), permissionController.create);
 router.post("/", authMiddleware, permissionController.create);
