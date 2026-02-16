@@ -1,0 +1,117 @@
+
+<template>
+  <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-sm p-6 text-sm">
+      <div class="flex justify-between items-center mb-4 border-b pb-2">
+        <h2 class="text-lg font-semibold text-gray-800 ">Add Site </h2>
+        <button @click="$emit('close')" class="text-gray-400 hover:text-gray-600">&times;</button>
+      </div>
+
+      <form @submit.prevent="submitForm" class="space-y-4">
+        
+        <div>
+          <label class="block mb-1 text-sm font-medium text-gray-700">Description</label>
+          <input v-model="form.description" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
+        </div>
+        <div>
+          <label class="block mb-1 text-sm font-medium text-gray-700">Site_type</label>
+          <input v-model="form.site_type" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
+        </div>
+        <div>
+          <label class="block mb-1 text-sm font-medium text-gray-700">Status</label>
+          <input v-model="form.status" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
+        </div>
+        <div>
+          <label class="block mb-1 text-sm font-medium text-gray-700">Latitude</label>
+          <input v-model="form.latitude" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
+        </div>
+        <div>
+          <label class="block mb-1 text-sm font-medium text-gray-700">Longitude</label>
+          <input v-model="form.longitude" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
+        </div>
+        <div>
+          <label class="block mb-1 text-sm font-medium text-gray-700">Country</label>
+          <input v-model="form.country" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
+        </div>
+        <div>
+          <label class="block mb-1 text-sm font-medium text-gray-700">State</label>
+          <input v-model="form.state" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
+        </div>
+        <div>
+          <label class="block mb-1 text-sm font-medium text-gray-700">City</label>
+          <input v-model="form.city" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
+        </div>
+        <div>
+          <label class="block mb-1 text-sm font-medium text-gray-700">Sub_city</label>
+          <input v-model="form.sub_city" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
+        </div>
+        <div>
+          <label class="block mb-1 text-sm font-medium text-gray-700">Street</label>
+          <input v-model="form.street" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
+        </div>
+        <div>
+          <label class="block mb-1 text-sm font-medium text-gray-700">Owner_id</label>
+          <input v-model="form.owner_id" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
+        </div>
+        <div>
+          <label class="block mb-1 text-sm font-medium text-gray-700">Created_by</label>
+          <input v-model="form.created_by" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
+        </div>
+        <div>
+          <label class="block mb-1 text-sm font-medium text-gray-700">Updated_by</label>
+          <input v-model="form.updated_by" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
+        </div>
+
+        <div class="flex justify-end gap-3 pt-2">
+          <button type="button" @click="$emit('close')" class="px-4 py-2 border rounded-lg">Cancel</button>
+          <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-lg">Add</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  props: { data: Object },
+  data() {
+    return {
+      form: {
+        description: this.data?.description || '',
+site_type: this.data?.site_type || '',
+status: this.data?.status || '',
+latitude: this.data?.latitude || '',
+longitude: this.data?.longitude || '',
+country: this.data?.country || '',
+state: this.data?.state || '',
+city: this.data?.city || '',
+sub_city: this.data?.sub_city || '',
+street: this.data?.street || '',
+owner_id: this.data?.owner_id || '',
+created_by: this.data?.created_by || '',
+updated_by: this.data?.updated_by || ''
+      }
+    };
+  },
+  methods: {
+    async submitForm() {
+      try {
+        if ("Add" === "Add") {
+        const res= await this.$apiPost("/site", this.form);
+        if(res){
+           this.$root.$refs.toast.showToast('Added successfully', 'success');
+         }
+
+        } else {
+         const res= await this.$apiPut("/site",this.data.id ,this.form);
+         if(res){
+           this.$root.$refs.toast.showToast('Edited successfully', 'success');
+         }
+        }
+        this.$emit("saved");
+        this.$emit("close");
+      } catch (e) { console.error(e); }
+    }
+  }
+}
+</script>

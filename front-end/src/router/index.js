@@ -39,6 +39,144 @@ const routes = [
     component: dashboard,
     meta: { requiresGuest: true },
     children: [
+      {
+        path: "rents",
+        name: "Rent-view",
+        component: () => import('../views/closed/Rents/RentView.vue'),
+      },
+      {
+        path: "rents/add",
+        name: "Rent-add",
+        component: () => import('../views/closed/Rents/AddRent.vue'),
+      },
+      {
+        path: "rents/edit/:id",
+        name: "Rent-edit",
+        component: () => import('../views/closed/Rents/EditRent.vue'),
+        props: true,
+      },
+      {
+        path: "rents/detail/:id",
+        name: "Rent-detail",
+        component: () => import('../views/closed/Rents/RentDetail.vue'),
+        props: true,
+      },
+
+      {
+        path: "sales",
+        name: "Sale-view",
+        component: () => import('../views/closed/Sales/SaleView.vue'),
+      },
+      {
+        path: "sales/add",
+        name: "Sale-add",
+        component: () => import('../views/closed/Sales/AddSale.vue'),
+      },
+      {
+        path: "sales/edit/:id",
+        name: "Sale-edit",
+        component: () => import('../views/closed/Sales/EditSale.vue'),
+        props: true,
+      },
+      {
+        path: "sales/detail/:id",
+        name: "Sale-detail",
+        component: () => import('../views/closed/Sales/SaleDetail.vue'),
+        props: true,
+      },
+
+      {
+        path: "units",
+        name: "Unit-view",
+        component: () => import('../views/closed/Units/UnitView.vue'),
+      },
+      {
+        path: "units/add",
+        name: "Unit-add",
+        component: () => import('../views/closed/Units/AddUnit.vue'),
+      },
+      {
+        path: "units/edit/:id",
+        name: "Unit-edit",
+        component: () => import('../views/closed/Units/EditUnit.vue'),
+        props: true,
+      },
+      {
+        path: "units/detail/:id",
+        name: "Unit-detail",
+        component: () => import('../views/closed/Units/UnitDetail.vue'),
+        props: true,
+      },
+
+      {
+        path: "types",
+        name: "Type-view",
+        component: () => import('../views/closed/Types/TypeView.vue'),
+      },
+      {
+        path: "types/add",
+        name: "Type-add",
+        component: () => import('../views/closed/Types/AddType.vue'),
+      },
+      {
+        path: "types/edit/:id",
+        name: "Type-edit",
+        component: () => import('../views/closed/Types/EditType.vue'),
+        props: true,
+      },
+      {
+        path: "types/detail/:id",
+        name: "Type-detail",
+        component: () => import('../views/closed/Types/TypeDetail.vue'),
+        props: true,
+      },
+
+      {
+        path: "amenity",
+        name: "Amenity-view",
+        component: () => import('../views/closed/Amenity/AmenityView.vue'),
+      },
+      {
+        path: "amenity/add",
+        name: "Amenity-add",
+        component: () => import('../views/closed/Amenity/AddAmenity.vue'),
+      },
+      {
+        path: "amenity/edit/:id",
+        name: "Amenity-edit",
+        component: () => import('../views/closed/Amenity/EditAmenity.vue'),
+        props: true,
+      },
+      {
+        path: "amenity/detail/:id",
+        name: "Amenity-detail",
+        component: () => import('../views/closed/Amenity/AmenityDetail.vue'),
+        props: true,
+      },
+
+      {
+        path: "site",
+        name: "Site-view",
+        component: () => import('../views/closed/Site/SiteView.vue'),
+      },
+      {
+        path: "site/add",
+        name: "Site-add",
+        component: () => import('../views/closed/Site/AddSite.vue'),
+      },
+      {
+        path: "site/edit/:id",
+        name: "Site-edit",
+        component: () => import('../views/closed/Site/EditSite.vue'),
+        props: true,
+      },
+      {
+        path: "site/detail/:id",
+        name: "Site-detail",
+        component: () => import('../views/closed/Site/SiteDetail.vue'),
+        props: true,
+      },
+
    
       {
         path: "admin",

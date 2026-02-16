@@ -125,7 +125,7 @@ export default {
         localStorage.setItem("userId", response.id);
         localStorage.setItem("email", response.email);
         localStorage.setItem("name", response.name);
-
+        localStorage.setItem("owner_id", response.owner_id);
         localStorage.setItem("roles", response.roles);
         localStorage.setItem("permissions", response.permissions);
 

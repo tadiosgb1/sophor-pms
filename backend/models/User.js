@@ -12,8 +12,8 @@ module.exports = (sequelize, DataTypes) => {
       resetToken: DataTypes.STRING,
       resetTokenExpiry: DataTypes.DATE,
 
-      // NEW FIELD
-      createdBy: {
+
+      owner_id: {
         type: DataTypes.INTEGER,
         allowNull: true, // can be null
         references: {
@@ -22,8 +22,32 @@ module.exports = (sequelize, DataTypes) => {
         },
         onUpdate: "CASCADE",
         onDelete: "SET NULL" // if creator is deleted, user remains
-      }
+      },
+      // NEW FIELD
+     created_by: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        references: {
+          model: "users",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
+      },
+
+      updated_by: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        references: {
+          model: "users",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
+      },
+    
     },
+    
     {
       tableName: "users",
       freezeTableName: true,

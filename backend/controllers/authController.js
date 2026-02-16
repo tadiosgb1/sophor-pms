@@ -10,7 +10,7 @@ module.exports = {
     console.log("req.body", req.body);
 
     try {
-      const { first_name, middle_name, last_name, phone, email, password, roleIds, permissionIds } = req.body;
+      const { first_name, middle_name, last_name, phone, address,email, password,owner_id,created_by, roleIds, permissionIds } = req.body;
 
       // Basic validation
       if (!first_name || !last_name || !email || !password) {
@@ -27,6 +27,9 @@ module.exports = {
         last_name,
         phone,
         email,
+        address,
+        owner_id,
+        created_by,
         password: hashedPassword
       });
 
@@ -122,6 +125,8 @@ module.exports = {
       id: user.id,
       email: user.email,
       name:user.first_name,
+      owner_id:user.owner_id,
+      created_by:user.created_by,
       accessToken,
       refreshToken,
       roles: user.Roles || [],

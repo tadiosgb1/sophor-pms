@@ -1,5 +1,17 @@
 require("dotenv").config();
 const express = require("express");
+
+const rentdocumentRoutes = require('./routes/rentdocumentRoutes.js');
+const rentRoutes = require('./routes/rentRoutes.js');
+const saledocumentRoutes = require('./routes/saledocumentRoutes.js');
+const saleRoutes = require('./routes/saleRoutes.js');
+const unitimageRoutes = require('./routes/unitimageRoutes.js');
+const typeRoutes = require('./routes/typeRoutes.js');
+const unitRoutes = require('./routes/unitRoutes.js');
+const siteamenityRoutes = require('./routes/siteamenityRoutes.js');
+const amenityRoutes = require('./routes/amenityRoutes.js');
+const siteimageRoutes = require('./routes/siteimageRoutes.js');
+const siteRoutes = require('./routes/siteRoutes.js');
 const cors = require("cors");
 
 const db = require("./models");
@@ -53,6 +65,20 @@ async function syncAndStart() {
 
     // 4️⃣ Sync Company last (depends on User)
     //await db.Company.sync({ force: true });
+   // await db.Site.sync({ force: true });
+    //await db.SiteImage.sync({ force: true });
+    //await db.Amenity.sync({ force: true });
+    //await db.SiteAmenity.sync({ force: true });
+   // await db.Type.sync({ force: true });
+   // await db.Site.sync({ force: true });
+   // await db.Unit.sync({ force: true });
+     //await db.UnitImage.sync({ force: true });
+
+   // await db.Sale.sync({ force: true });
+   // await db.SaleDocument.sync({ force: true });
+  //await db.Rent.sync({ force: true });
+    //await db.RentDocument.sync({ force: true });
+
     console.log("✅ Company table synced");
 
     // Re-enable foreign key checks
@@ -63,12 +89,26 @@ async function syncAndStart() {
     console.log("🎉 Seed executed successfully");
 
     // Start server
-    app.listen(PORT, () => {
-      console.log(`🚀 Server running on port ${PORT}`);
-    });
-  } catch (err) {
-    console.error("❌ DB Connection Error:", err);
-  }
+    app.use("/api/site", siteRoutes);
+    app.use("/api/siteimage", siteimageRoutes);
+    app.use("/api/amenity", amenityRoutes);
+    app.use("/api/siteamenity", siteamenityRoutes);
+    app.use("/api/unit", unitRoutes);
+app.use("/api/type", typeRoutes);
+
+
+
+app.use("/api/unitimage", unitimageRoutes);
+app.use("/api/sale", saleRoutes);
+app.use("/api/saledocument", saledocumentRoutes);
+app.use("/api/rent", rentRoutes);
+app.use("/api/rentdocument", rentdocumentRoutes);
+app.listen(PORT, () => {
+          console.log(`🚀 Server running on port ${PORT}`);
+        });
+      } catch (err) {
+        console.error("❌ DB Connection Error:", err);
+      }
 }
 
 

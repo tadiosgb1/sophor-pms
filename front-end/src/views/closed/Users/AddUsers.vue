@@ -135,8 +135,13 @@ export default {
         phone: "",
         address: "",
         password: "",
+
         roleIds: [],
-        permissionIds: []
+        permissionIds: [],
+
+        owner_id:localStorage.getItem('owner_id'),
+        created_by:localStorage.getItem('userId'),
+
       }
     };
   },
@@ -163,9 +168,7 @@ export default {
       try {
 
         console.log("the form",this.form);
-
         const res = await this.$apiPost("/auth/register", this.form);
-
         if (res) {
           this.$root.$refs.toast.showToast("User added successfully", "success");
         }

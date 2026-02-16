@@ -81,7 +81,41 @@ async function seed() {
         phone:"0967740501",
         roleName: "Owner",
         address:"Mekelle",
+      },
+
+       {
+        first_name: "Manager",
+        middle_name: "Manager",
+        last_name: "Manager",
+        email: "tadiosgb28@gmail.com",
+        password: "1234",
+        phone:"0967740501",
+        roleName: "Manager",
+        address:"Mekelle",
+      },
+        
+      {
+        first_name: "Staff",
+        middle_name: "Staff",
+        last_name: "Staff",
+        email: "tadiosgb29@gmail.com",
+        password: "1234",
+        phone:"0967740501",
+        roleName: "Staff",
+        address:"Mekelle",
+      },
+
+       {
+        first_name: "Tenant",
+        middle_name: "Tenant",
+        last_name: "tenant",
+        email: "tadiosgb30@gmail.com",
+        password: "1234",
+        phone:"0967740501",
+        roleName: "Tenant",
+        address:"Mekelle",
       }
+
     ];
 
     const users = [];

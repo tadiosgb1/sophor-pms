@@ -109,7 +109,15 @@ export default {
 
       menuItems: [
 
+  
 
+  
+
+
+   
+
+
+   
 
         {
           name: "Dashboard",
@@ -117,30 +125,7 @@ export default {
           icon: "fas fa-gauge",
           color: "#10b981",
         },
-    
-
-       
-        
-
-       
-        // {
-        //   name: "System Settings",
-        //   icon: "fas fa-cogs",
-        //   color: "#22c55e",
-        //   children: [
-        //     {
-        //       name: "Configurations",
-        //       route: "configurations",
-        //       icon: "fas fa-gear",
-        //       color: "#22c55e",
-        //     },
-            
-        //   ],
-        // },
-
-        /* USER MANAGEMENT SECTION */
-
-
+  
         {
           name: "Company",
           route: "Company-view",
@@ -148,7 +133,7 @@ export default {
           color: "#22c55e"
         },
         {
-          name: "Staff Management",
+          name: "Users Management",
           icon: "fas fa-users-cog",
           color: "#22c55e",
           children: [
@@ -173,53 +158,53 @@ export default {
 
 
   
-           // {
-            //   name: "Logined History",
-            //   route: "permissions_view",
-            //   icon: "fas fa-shield-halved",
-            //   color: "#10b981",
-            // },
+       
             
           ],
         },
+         {
+            name: "Types",
+            route: "Type-view",
+            icon: "fas fa-folder",
+            color: "#22c55e"
+          },
 
+      {
+          name: "Amenties",
+          route: "Amenity-view",
+          icon: "fas fa-gauge",
+          color: "#10b981",
+        },
     
        {
           name: "Sites",
-          route: "Sites-view",
+          route: "Site-view",
           icon: "fas fa-gauge",
           color: "#10b981",
         },
+     
+      {
+            name: "Units",
+            route: "Unit-view",
+            icon: "fas fa-folder",
+            color: "#22c55e"
+          },
+        {
+      name: "For Sale",
+      route: "Sale-view",
+      icon: "fas fa-folder",
+      color: "#22c55e"
+    },
 
-         {
-          name: "Site units",
-          route: "Property-view",
-          icon: "fas fa-gauge",
-          color: "#10b981",
-        },
+      {
+      name: "For Rent",
+      route: "Rent-view",
+      icon: "fas fa-folder",
+      color: "#22c55e"
+    },
 
       
-       
-        {
-          name: "Notifications",
-          route: "notifications",
-          icon: "fas fa-bell",
-          color: "#22c55e",
-        },
-            // {
-        //   name: "Messages",
-        //   route: "messages",
-        //   icon: "fas fa-tags",
-        //   color: "#22c55e",
-        // },
-
-        // {
-        //   name: "Inbox",
-        //   route: "inbox",
-        //   icon: "fas fa-tags",
-        //   color: "#22c55e",
-        // },
-
+      
       ],
     };
   },

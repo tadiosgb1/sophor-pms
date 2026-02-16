@@ -103,7 +103,6 @@
         </table>
       </div>
     </div>
-
     <!-- Pagination -->
     <div class="flex items-center justify-between mt-6 text-sm text-gray-600">
       <span>
