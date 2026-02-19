@@ -122,7 +122,6 @@ import DeleteConfirmModal from "@/components/DeleteConfirmModal.vue";
 
 export default {
   components: { AddType, EditType, Loading, DeleteConfirmModal },
-
   data() {
     return {
       items: [],
@@ -140,7 +139,6 @@ export default {
       deleteId: null,
     };
   },
-
   methods: {
     async fetchItems(page = 1) {
       this.loading = true;

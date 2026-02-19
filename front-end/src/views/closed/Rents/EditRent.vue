@@ -1,71 +1,100 @@
-
 <template>
   <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-    <div class="bg-white rounded-xl shadow-2xl w-full max-w-sm p-6 text-sm">
+    <div class="bg-white rounded-xl shadow-2xl w-full 
+                max-w-sm sm:max-w-md md:max-w-2xl lg:max-w-4xl xl:max-w-5xl
+                p-6 text-sm transition-all">
+
+      <!-- Header -->
       <div class="flex justify-between items-center mb-4 border-b pb-2">
-        <h2 class="text-lg font-semibold text-gray-800 ">Edit Rent </h2>
-        <button @click="$emit('close')" class="text-gray-400 hover:text-gray-600">&times;</button>
+        <h2 class="text-lg font-semibold text-gray-800">Edit Rent</h2>
+        <button @click="$emit('close')" class="text-gray-400 hover:text-gray-600 text-xl">
+          &times;
+        </button>
       </div>
 
+      <!-- Form -->
       <form @submit.prevent="submitForm" class="space-y-4">
-        
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Unit_id</label>
-          <input v-model="form.unit_id" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-        </div>
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Site_id</label>
-          <input v-model="form.site_id" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-        </div>
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Renter_id</label>
-          <input v-model="form.renter_id" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-        </div>
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Rent_amount</label>
-          <input v-model="form.rent_amount" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-        </div>
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Deposit_amount</label>
-          <input v-model="form.deposit_amount" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-        </div>
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Rent_period</label>
-          <input v-model="form.rent_period" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-        </div>
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Start_date</label>
-          <input v-model="form.start_date" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-        </div>
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Next_due_date</label>
-          <input v-model="form.next_due_date" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-        </div>
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Status</label>
-          <input v-model="form.status" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-        </div>
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Notes</label>
-          <input v-model="form.notes" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-        </div>
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Owner_id</label>
-          <input v-model="form.owner_id" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-        </div>
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Created_by</label>
-          <input v-model="form.created_by" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-        </div>
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Updated_by</label>
-          <input v-model="form.updated_by" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
+
+        <!-- Two columns on big screens -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+
+          <div>
+            <label class="block mb-1 font-medium text-gray-700">Unit_id</label>
+            <input v-model="form.unit_id" type="text" class="input-field" />
+          </div>
+
+          <div>
+            <label class="block mb-1 font-medium text-gray-700">Site_id</label>
+            <input v-model="form.site_id" type="text" class="input-field" />
+          </div>
+
+          <div>
+            <label class="block mb-1 font-medium text-gray-700">Renter_id</label>
+            <input v-model="form.renter_id" type="text" class="input-field" />
+          </div>
+
+          <div>
+            <label class="block mb-1 font-medium text-gray-700">Rent_amount</label>
+            <input v-model="form.rent_amount" type="text" class="input-field" />
+          </div>
+
+          <div>
+            <label class="block mb-1 font-medium text-gray-700">Deposit_amount</label>
+            <input v-model="form.deposit_amount" type="text" class="input-field" />
+          </div>
+
+          <div>
+            <label class="block mb-1 font-medium text-gray-700">Rent_period</label>
+            <input v-model="form.rent_period" type="text" class="input-field" />
+          </div>
+
+          <div>
+            <label class="block mb-1 font-medium text-gray-700">Start_date</label>
+            <input v-model="form.start_date" type="text" class="input-field" />
+          </div>
+
+          <div>
+            <label class="block mb-1 font-medium text-gray-700">Next_due_date</label>
+            <input v-model="form.next_due_date" type="text" class="input-field" />
+          </div>
+
+          <div>
+            <label class="block mb-1 font-medium text-gray-700">Status</label>
+            <input v-model="form.status" type="text" class="input-field" />
+          </div>
+
+          <div>
+            <label class="block mb-1 font-medium text-gray-700">Notes</label>
+            <input v-model="form.notes" type="text" class="input-field" />
+          </div>
+
+          <div>
+            <label class="block mb-1 font-medium text-gray-700">Owner_id</label>
+            <input v-model="form.owner_id" type="text" class="input-field" />
+          </div>
+
+          <div>
+            <label class="block mb-1 font-medium text-gray-700">Created_by</label>
+            <input v-model="form.created_by" type="text" class="input-field" />
+          </div>
+
+          <div class="lg:col-span-2">
+            <label class="block mb-1 font-medium text-gray-700">Updated_by</label>
+            <input v-model="form.updated_by" type="text" class="input-field" />
+          </div>
+
         </div>
 
+        <!-- Buttons -->
         <div class="flex justify-end gap-3 pt-2">
-          <button type="button" @click="$emit('close')" class="px-4 py-2 border rounded-lg">Cancel</button>
-          <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-lg">Edit</button>
+          <button type="button" @click="$emit('close')" class="px-4 py-2 border rounded-lg">
+            Cancel
+          </button>
+          <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-lg">
+            Edit
+          </button>
         </div>
+
       </form>
     </div>
   </div>
@@ -115,3 +144,12 @@ updated_by: this.data?.updated_by || ''
   }
 }
 </script>
+
+
+<style>
+.input-field {
+  @apply border border-gray-300 rounded-lg px-4 py-2 w-full 
+         focus:outline-none focus:ring-2 focus:ring-green-500 
+         shadow-sm transition duration-150;
+}
+</style>

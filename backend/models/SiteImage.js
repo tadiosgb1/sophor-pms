@@ -9,13 +9,11 @@ module.exports = (sequelize, Sequelize) => {
   }, {
     tableName: "site_images"
   });
-
   SiteImage.associate = (db) => {
     SiteImage.belongsTo(db.Site, { foreignKey: "site_id" });
     SiteImage.belongsTo(db.User, { foreignKey: "owner_id" });
     SiteImage.belongsTo(db.User, { foreignKey: "created_by" });
     SiteImage.belongsTo(db.User, { foreignKey: "updated_by" });
   };
-
   return SiteImage;
 };

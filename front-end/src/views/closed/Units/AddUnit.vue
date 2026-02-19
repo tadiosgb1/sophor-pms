@@ -1,84 +1,104 @@
-
 <template>
-  <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-    <div class="bg-white rounded-xl shadow-2xl w-full max-w-sm p-6 text-sm">
-      <div class="flex justify-between items-center mb-4 border-b pb-2">
-        <h2 class="text-lg font-semibold text-gray-800 ">Add Unit </h2>
-        <button @click="$emit('close')" class="text-gray-400 hover:text-gray-600">&times;</button>
+  <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-y-auto">
+    <!-- Modal container -->
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-md lg:max-w-5xl p-6 text-sm">
+      <!-- Header -->
+      <div class="flex justify-between items-center mb-6 border-b pb-2">
+        <h2 class="text-xl font-semibold text-gray-800">Add Unit</h2>
+        <button @click="$emit('close')" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
       </div>
 
-      <form @submit.prevent="submitForm" class="space-y-4">
-        
+      <!-- Form -->
+      <form @submit.prevent="submitForm" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <div>
           <label class="block mb-1 text-sm font-medium text-gray-700">Name</label>
-          <input v-model="form.name" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-        </div>
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Description</label>
-          <input v-model="form.description" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-        </div>
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Type_id</label>
-          <input v-model="form.type_id" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-        </div>
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Floor</label>
-          <input v-model="form.floor" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-        </div>
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">House_number</label>
-          <input v-model="form.house_number" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-        </div>
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Block_number</label>
-          <input v-model="form.block_number" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-        </div>
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Bedrooms</label>
-          <input v-model="form.bedrooms" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-        </div>
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Bathrooms</label>
-          <input v-model="form.bathrooms" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-        </div>
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Size</label>
-          <input v-model="form.size" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-        </div>
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Price</label>
-          <input v-model="form.price" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-        </div>
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Status</label>
-          <input v-model="form.status" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-        </div>
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Site_id</label>
-          <input v-model="form.site_id" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-        </div>
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Owner_id</label>
-          <input v-model="form.owner_id" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-        </div>
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Manager_id</label>
-          <input v-model="form.manager_id" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-        </div>
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Staff_id</label>
-          <input v-model="form.staff_id" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-        </div>
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Created_by</label>
-          <input v-model="form.created_by" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-        </div>
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Updated_by</label>
-          <input v-model="form.updated_by" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
+          <input v-model="form.name" type="text" required
+            class="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm" />
         </div>
 
-        <div class="flex justify-end gap-3 pt-2">
+        <div>
+          <label class="block mb-1 text-sm font-medium text-gray-700">Description</label>
+          <input v-model="form.description" type="text" required
+            class="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm" />
+        </div>
+
+        <div>
+          <label class="block mb-1 text-sm font-medium text-gray-700">Type_id</label>
+          <input v-model="form.type_id" type="text" required
+            class="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm" />
+        </div>
+
+        <div>
+          <label class="block mb-1 text-sm font-medium text-gray-700">Floor</label>
+          <input v-model="form.floor" type="text" required
+            class="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm" />
+        </div>
+
+        <div>
+          <label class="block mb-1 text-sm font-medium text-gray-700">House_number</label>
+          <input v-model="form.house_number" type="text" required
+            class="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm" />
+        </div>
+
+        <div>
+          <label class="block mb-1 text-sm font-medium text-gray-700">Block_number</label>
+          <input v-model="form.block_number" type="text" required
+            class="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm" />
+        </div>
+
+        <div>
+          <label class="block mb-1 text-sm font-medium text-gray-700">Bedrooms</label>
+          <input v-model="form.bedrooms" type="text" required
+            class="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm" />
+        </div>
+
+        <div>
+          <label class="block mb-1 text-sm font-medium text-gray-700">Bathrooms</label>
+          <input v-model="form.bathrooms" type="text" required
+            class="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm" />
+        </div>
+
+        <div>
+          <label class="block mb-1 text-sm font-medium text-gray-700">Size</label>
+          <input v-model="form.size" type="text" required
+            class="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm" />
+        </div>
+
+        <div>
+          <label class="block mb-1 text-sm font-medium text-gray-700">Price</label>
+          <input v-model="form.price" type="text" required
+            class="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm" />
+        </div>
+
+        <div>
+          <label class="block mb-1 text-sm font-medium text-gray-700">Status</label>
+          <input v-model="form.status" type="text" required
+            class="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm" />
+        </div>
+
+   
+        <div>
+          <label class="block mb-1 text-sm font-medium text-gray-700">Owner_id</label>
+          <input v-model="form.owner_id" type="text" required
+            class="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm" />
+        </div>
+
+        <div>
+          <label class="block mb-1 text-sm font-medium text-gray-700">Manager_id</label>
+          <input v-model="form.manager_id" type="text" required
+            class="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm" />
+        </div>
+
+        <div>
+          <label class="block mb-1 text-sm font-medium text-gray-700">Staff_id</label>
+          <input v-model="form.staff_id" type="text" required
+            class="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm" />
+        </div>
+
+    
+
+        <!-- Buttons span two columns -->
+        <div class="col-span-1 lg:col-span-2 flex justify-end gap-3 pt-4">
           <button type="button" @click="$emit('close')" class="px-4 py-2 border rounded-lg">Cancel</button>
           <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-lg">Add</button>
         </div>
@@ -86,6 +106,7 @@
     </div>
   </div>
 </template>
+
 
 <script>
 export default {

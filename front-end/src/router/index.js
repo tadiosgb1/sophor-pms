@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import Login from '../views/opened/auth/login.vue';
+import Cybersource from '../views/opened/PaymentButton.vue';
+
 import ContactUs from '../views/opened/landing/contactUs.vue';
 import Services from '../views/opened/landing/services.vue';
 import About from '../views/opened/landing/about.vue';
@@ -11,7 +13,7 @@ import Reset from '../views/opened/auth/reset.vue';
 import AccessDenied from "../views/opened/auth/accessDenied.vue";
 import first_dash from '../views/closed/first_dash.vue';
 import dashboard from '../views/closed/dashboard.vue';
-
+import Chat from '../views/closed/Chat/view.vue';
 
 import Roles from '../views/closed/groups/view.vue';
 import Notifications from '../views/closed/notifications/view.vue';
@@ -23,7 +25,10 @@ const routes = [
 
   // Public routes
   { path: "/", name: "home", component: Login, meta: { requiresGuest: true } },
+
   { path: "/login", name: "login", component: Login, meta: { requiresGuest: true } },
+  { path: "/cyber", name: "cyber", component: Cybersource, meta: { requiresGuest: true } },
+
   { path: "/register", name: "register", component: Registration, meta: { requiresGuest: true } },
   { path: "/contact-us", name: "contact-us", component: ContactUs, meta: { requiresGuest: true } },
   { path: "/about", name: "about", component: About, meta: { requiresGuest: true } },
@@ -39,6 +44,103 @@ const routes = [
     component: dashboard,
     meta: { requiresGuest: true },
     children: [
+      {
+        path: "chat",
+        name: "chat",
+        component: Chat,
+      },
+      {
+        path: "rentdocuments",
+        name: "RentDocument-view",
+        component: () => import('../views/closed/Rentdocuments/RentDocumentView.vue'),
+      },
+      {
+        path: "rentdocuments/add",
+        name: "RentDocument-add",
+        component: () => import('../views/closed/Rentdocuments/AddRentDocument.vue'),
+      },
+      {
+        path: "rentdocuments/edit/:id",
+        name: "RentDocument-edit",
+        component: () => import('../views/closed/Rentdocuments/EditRentDocument.vue'),
+        props: true,
+      },
+      {
+        path: "rentdocuments/detail/:id",
+        name: "RentDocument-detail",
+        component: () => import('../views/closed/Rentdocuments/RentDocumentDetail.vue'),
+        props: true,
+      },
+
+      {
+        path: "saledocuments",
+        name: "SaleDocument-view",
+        component: () => import('../views/closed/Saledocuments/SaleDocumentView.vue'),
+      },
+      {
+        path: "saledocuments/add",
+        name: "SaleDocument-add",
+        component: () => import('../views/closed/Saledocuments/AddSaleDocument.vue'),
+      },
+      {
+        path: "saledocuments/edit/:id",
+        name: "SaleDocument-edit",
+        component: () => import('../views/closed/Saledocuments/EditSaleDocument.vue'),
+        props: true,
+      },
+      {
+        path: "saledocuments/detail/:id",
+        name: "SaleDocument-detail",
+        component: () => import('../views/closed/Saledocuments/SaleDocumentDetail.vue'),
+        props: true,
+      },
+
+      {
+        path: "unitimages",
+        name: "UnitImage-view",
+        component: () => import('../views/closed/UnitImages/UnitImageView.vue'),
+      },
+      {
+        path: "unitimages/add",
+        name: "UnitImage-add",
+        component: () => import('../views/closed/UnitImages/AddUnitImage.vue'),
+      },
+      {
+        path: "unitimages/edit/:id",
+        name: "UnitImage-edit",
+        component: () => import('../views/closed/UnitImages/EditUnitImage.vue'),
+        props: true,
+      },
+      {
+        path: "unitimages/detail/:id",
+        name: "UnitImage-detail",
+        component: () => import('../views/closed/UnitImages/UnitImageDetail.vue'),
+        props: true,
+      },
+
+      {
+        path: "siteimages",
+        name: "SiteImage-view",
+        component: () => import('../views/closed/SiteImages/SiteImageView.vue'),
+      },
+      {
+        path: "siteimages/add",
+        name: "SiteImage-add",
+        component: () => import('../views/closed/SiteImages/AddSiteImage.vue'),
+      },
+      {
+        path: "siteimages/edit/:id",
+        name: "SiteImage-edit",
+        component: () => import('../views/closed/SiteImages/EditSiteImage.vue'),
+        props: true,
+      },
+      {
+        path: "siteimages/detail/:id",
+        name: "SiteImage-detail",
+        component: () => import('../views/closed/SiteImages/SiteImageDetail.vue'),
+        props: true,
+      },
+
       {
         path: "rents",
         name: "Rent-view",

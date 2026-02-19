@@ -28,6 +28,7 @@
     "qrcode": "^1.5.4",
     "rtcpeerconnection-shim": "^1.2.15",
     "sdp": "^3.2.1",
+    "socket.io-client": "^4.8.3",
     "swiper": "^11.2.10",
     "tailwindcss": "^3",
     "vue": "^3.4.21",

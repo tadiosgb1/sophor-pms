@@ -17,19 +17,6 @@
           <label class="block mb-1 text-sm font-medium text-gray-700">Description</label>
           <input v-model="form.description" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
         </div>
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Owner_id</label>
-          <input v-model="form.owner_id" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-        </div>
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Created_by</label>
-          <input v-model="form.created_by" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-        </div>
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Updated_by</label>
-          <input v-model="form.updated_by" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-        </div>
-
         <div class="flex justify-end gap-3 pt-2">
           <button type="button" @click="$emit('close')" class="px-4 py-2 border rounded-lg">Cancel</button>
           <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-lg">Add</button>
@@ -46,10 +33,10 @@ export default {
     return {
       form: {
         name: this.data?.name || '',
-description: this.data?.description || '',
-owner_id: this.data?.owner_id || '',
-created_by: this.data?.created_by || '',
-updated_by: this.data?.updated_by || ''
+        description: this.data?.description || '',
+        owner_id: localStorage.getItem("owner_id"),
+        created_by: localStorage.getItem("userId"),
+        updated_by: localStorage.getItem("userId"),
       }
     };
   },

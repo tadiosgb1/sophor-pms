@@ -109,6 +109,38 @@ export default {
 
       menuItems: [
 
+    // {
+    //   name: "RentDocument",
+    //   route: "RentDocument-view",
+    //   icon: "fas fa-folder",
+    //   color: "#22c55e"
+    // },
+
+
+    // {
+    //   name: "SaleDocument",
+    //   route: "SaleDocument-view",
+    //   icon: "fas fa-folder",
+    //   color: "#22c55e"
+    // },
+
+
+    // {
+    //   name: "UnitImage",
+    //   route: "UnitImage-view",
+    //   icon: "fas fa-folder",
+    //   color: "#22c55e"
+    // },
+
+
+    // {
+    //   name: "SiteImage",
+    //   route: "SiteImage-view",
+    //   icon: "fas fa-folder",
+    //   color: "#22c55e"
+    // },
+
+
   
 
   

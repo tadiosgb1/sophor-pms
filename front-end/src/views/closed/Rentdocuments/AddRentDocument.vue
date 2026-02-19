@@ -3,19 +3,23 @@
   <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
     <div class="bg-white rounded-xl shadow-2xl w-full max-w-sm p-6 text-sm">
       <div class="flex justify-between items-center mb-4 border-b pb-2">
-        <h2 class="text-lg font-semibold text-gray-800 ">Edit Amenity </h2>
+        <h2 class="text-lg font-semibold text-gray-800 ">Add RentDocument </h2>
         <button @click="$emit('close')" class="text-gray-400 hover:text-gray-600">&times;</button>
       </div>
 
       <form @submit.prevent="submitForm" class="space-y-4">
         
         <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Name</label>
-          <input v-model="form.name" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
+          <label class="block mb-1 text-sm font-medium text-gray-700">Rent_id</label>
+          <input v-model="form.rent_id" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
         </div>
         <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Description</label>
-          <input v-model="form.description" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
+          <label class="block mb-1 text-sm font-medium text-gray-700">Document_name</label>
+          <input v-model="form.document_name" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
+        </div>
+        <div>
+          <label class="block mb-1 text-sm font-medium text-gray-700">Document_url</label>
+          <input v-model="form.document_url" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
         </div>
         <div>
           <label class="block mb-1 text-sm font-medium text-gray-700">Owner_id</label>
@@ -25,14 +29,10 @@
           <label class="block mb-1 text-sm font-medium text-gray-700">Created_by</label>
           <input v-model="form.created_by" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
         </div>
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Updated_by</label>
-          <input v-model="form.updated_by" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-        </div>
 
         <div class="flex justify-end gap-3 pt-2">
           <button type="button" @click="$emit('close')" class="px-4 py-2 border rounded-lg">Cancel</button>
-          <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-lg">Edit</button>
+          <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-lg">Add</button>
         </div>
       </form>
     </div>
@@ -45,25 +45,25 @@ export default {
   data() {
     return {
       form: {
-        name: this.data?.name || '',
-        description: this.data?.description || '',
+        rent_id: this.data?.rent_id || '',
+        document_name: this.data?.document_name || '',
+        document_url: this.data?.document_url || '',
         owner_id: this.data?.owner_id || '',
-        created_by: this.data?.created_by || '',
-        updated_by: localStorage.getItem("userId"),
+        created_by: this.data?.created_by || ''
       }
     };
   },
   methods: {
     async submitForm() {
       try {
-        if ("Edit" === "Add") {
-        const res= await this.$apiPost("/amenity", this.form);
+        if ("Add" === "Add") {
+        const res= await this.$apiPost("/rentdocument", this.form);
         if(res){
            this.$root.$refs.toast.showToast('Added successfully', 'success');
          }
 
         } else {
-         const res= await this.$apiPut("/amenity",this.data.id ,this.form);
+         const res= await this.$apiPut("/rentdocument",this.data.id ,this.form);
          if(res){
            this.$root.$refs.toast.showToast('Edited successfully', 'success');
          }

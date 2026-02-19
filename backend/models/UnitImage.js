@@ -6,9 +6,11 @@ module.exports = (sequelize, Sequelize) => {
     owner_id: { type: Sequelize.INTEGER, references: { model: "users", key: "id" } },
     created_by: { type: Sequelize.INTEGER, references: { model: "users", key: "id" } },
     updated_by: { type: Sequelize.INTEGER, references: { model: "users", key: "id" } }
-  }, {
+  },
+   {
     tableName: "unit_images"
-  });
+  }
+);
 
   UnitImage.associate = (db) => {
     UnitImage.belongsTo(db.Unit, { foreignKey: "unit_id" });

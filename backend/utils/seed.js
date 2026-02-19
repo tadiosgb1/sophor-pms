@@ -72,6 +72,7 @@ async function seed() {
         roleName: "Super",
         phone:"0963275521",
       },
+      
       {
         first_name: "Owner",
         middle_name: "User",

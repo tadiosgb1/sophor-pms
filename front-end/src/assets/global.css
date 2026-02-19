@@ -1,95 +1,51 @@
-/* src/assets/global.css */
+/* 1. Imports */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-.custom-input {
-  @apply rounded-md w-full h-10 px-4 py-2 mt-2 border border-gray-300  shadow-sm bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 ease-in-out bg-gray-50 ;
-}
+/* 2. Tailwind Directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-.custom-input::placeholder {
-  @apply text-gray-500  text-xs;
-}
-
-.custom-input:hover {
-  @apply border-blue-400;
-}
-
-.custom-input:focus {
-  @apply bg-blue-100 border-blue-600 ring-2 ring-blue-300 transform scale-101 text-blue-500;
-}
-
-.custom-input-error {
-  @apply rounded-md w-full h-10 px-4 py-2 mt-2 border border-red-500  shadow-sm bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 ease-in-out bg-gray-50 ;
-}
-
-.custom-input-error::placeholder {
-  @apply text-gray-500  text-xs;
-}
-
-.custom-input-error:hover {
-  @apply border-blue-400;
-}
-
-.custom-input-error:focus {
-  @apply bg-blue-100 border-blue-600 ring-2 ring-blue-300 transform scale-101 text-blue-500;
-}
-
-
-.custom-text-area {
-  @apply rounded-md w-full h-20 px-4 py-2 mt-2 border border-gray-300  shadow-sm bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 ease-in-out bg-gray-50 ;
-}
-
-.custom-text-area::placeholder {
-  @apply text-gray-500  text-xs;
-}
-
-.custom-text-area:hover {
-  @apply border-blue-400;
-}
-
-.custom-text-area:focus {
-  @apply bg-blue-100 border-blue-600  ring-2 ring-blue-300 transform scale-101 text-blue-500;
-}
-
-  .custom-button {
-    @apply bg-blue-500 hover:scale-105 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ;
+/* 3. Base styles */
+@layer base {
+  body {
+    @apply font-sans bg-white text-gray-900;
   }
-  .custom-icon {
-    @apply text-white w-5 h-5 mr-2 hover:scale-105;
-  }
-  /* Custom Label Style */
-  .custom-label {
-    @apply block text-sm  text-blue-700 
-  }
+}
 
-  .custom-select {
-    @apply text-xs  rounded-md w-full h-8 px-3 mt-2 border border-gray-300  shadow-sm bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-gray-50;
-  }
-  .custom-select::placeholder {
-    @apply text-gray-500  text-xs;
-  }
-  /* Hover Effect */
-  .custom-select:hover {
-    @apply border-blue-400 bg-blue-50;
-  }
-  
-  /* Focus State */
-  .custom-select:focus {
-    @apply bg-white ring-4 ring-blue-300 transform scale-101;
-  }
-  
-  /* Active State */
-  .custom-select:active {
-    @apply border-blue-600 shadow-md;
-  }
-  
-  /* Disabled State */
-  .custom-select:disabled {
-    @apply bg-gray-100 text-gray-400 cursor-not-allowed border-gray-200;
-  }
+/* 4. Components */
+@layer components {
+  .custom-input { @apply rounded-md w-full h-11 px-4 py-2 mt-2 border border-gray-300 shadow-sm bg-gray-50 text-gray-800 placeholder:text-gray-400 placeholder:text-xs focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-300 ease-in-out hover:border-primary/50; }
+  .custom-button { @apply bg-primary hover:bg-primary/90 active:bg-primary/80 text-white font-bold py-2.5 px-6 rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-primary/30 flex items-center justify-center; }
+  .custom-label { @apply block text-xs font-bold text-primary uppercase tracking-wider mb-1; }
+  .custom-star { @apply text-secondary font-bold; }
+  .custom-icon { @apply text-white w-5 h-5 mr-2; }
+  .custom-select, .custom-text-area { @apply text-sm rounded-md w-full px-3 mt-2 border border-gray-300 shadow-sm bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary transition-all duration-200 ease-in-out hover:bg-gray-100; }
+  .custom-text-area { @apply h-24 py-2; }
+}
 
+/* 5. Utilities */
+@layer utilities {
+  .modal-scroll::-webkit-scrollbar { width: 1px; }
+  .modal-scroll::-webkit-scrollbar-thumb { @apply bg-primary/20 rounded-full hover:bg-primary/40; }
+}
 
-  .custom-star{
-    @apply  text-red-500;
-  }
-  .custom-font {
-    @apply font-sans text-lg font-semibold text-gray-900;
-  }
+/* 6. GLOBAL SCROLLBAR — MUST BE OUTSIDE ANY @layer */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 3px; /* thin */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 20px;
+}
+
+/* Firefox */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
