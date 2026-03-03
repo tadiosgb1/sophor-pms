@@ -11,9 +11,9 @@ module.exports = (sequelize, Sequelize) => {
   });
 
   RentDocument.associate = (db) => {
-    RentDocument.belongsTo(db.Rent, { foreignKey: "rent_id" });
-    RentDocument.belongsTo(db.User, { foreignKey: "owner_id" });
-    RentDocument.belongsTo(db.User, { foreignKey: "created_by" });
+    RentDocument.belongsTo(db.Rent, { foreignKey: "rent_id", as: "rent" });
+    RentDocument.belongsTo(db.User, { foreignKey: "owner_id", as: "owner" });
+    RentDocument.belongsTo(db.User, { foreignKey: "created_by", as: "createdBy" });
   };
 
   return RentDocument;

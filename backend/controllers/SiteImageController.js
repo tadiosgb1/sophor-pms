@@ -65,6 +65,35 @@ module.exports = {
     }
   },
 
+  async getBySiteId(req, res) {
+  try {
+    const include = [db.Site, db.User, db.User, db.User].filter(Boolean);
+    const opts = include.length ? { include } : {};
+
+    const data = await SiteImage.findAll({
+      where: { site_id: req.params.site_id },
+      ...opts
+    });
+
+    if (!data || data.length === 0)
+      return res.status(404).json({ error: "No images found for this site_id" });
+
+    const host = `${req.protocol}://${req.get("host")}`;
+
+    const result = data.map(item => {
+      const obj = item.toJSON();
+      if (obj.image_url)
+        obj.image_url = host + "/" + obj.image_url.replace(/\\/g, "/");
+      return obj;
+    });
+
+    res.json(result);
+
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+},
+
   async create(req, res) {
     try {
       const body = { ...req.body };

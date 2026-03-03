@@ -21,10 +21,13 @@ module.exports = (sequelize, Sequelize) => {
   Rent.associate = (db) => {
     Rent.belongsTo(db.Unit, { foreignKey: "unit_id" });
     Rent.belongsTo(db.Site, { foreignKey: "site_id" });
-    Rent.belongsTo(db.User, { foreignKey: "renter_id" });
-    Rent.belongsTo(db.User, { foreignKey: "owner_id" });
-    Rent.belongsTo(db.User, { foreignKey: "created_by" });
-    Rent.belongsTo(db.User, { foreignKey: "updated_by" });
+    Rent.belongsTo(db.User, { foreignKey: "renter_id", as: "renter" });
+    Rent.belongsTo(db.User, { foreignKey: "owner_id", as: "owner" });
+    Rent.belongsTo(db.User, { foreignKey: "created_by", as: "createdBy" });
+    Rent.belongsTo(db.User, { foreignKey: "updated_by", as: "updatedBy" });
+
+    // Optional: include related documents
+    Rent.hasMany(db.RentDocument, { foreignKey: "rent_id", as: "documents" });
   };
 
   return Rent;

@@ -25,11 +25,15 @@ module.exports = (sequelize, Sequelize) => {
   Unit.associate = (db) => {
     Unit.belongsTo(db.Type, { foreignKey: "type_id" });
     Unit.belongsTo(db.Site, { foreignKey: "site_id" });
-    Unit.belongsTo(db.User, { foreignKey: "owner_id" });
-    Unit.belongsTo(db.User, { foreignKey: "manager_id" });
-    Unit.belongsTo(db.User, { foreignKey: "staff_id" });
-    Unit.belongsTo(db.User, { foreignKey: "created_by" });
-    Unit.belongsTo(db.User, { foreignKey: "updated_by" });
+
+    Unit.belongsTo(db.User, { as: "owner", foreignKey: "owner_id" });
+    Unit.belongsTo(db.User, { as: "manager", foreignKey: "manager_id" });
+    Unit.belongsTo(db.User, { as: "staff", foreignKey: "staff_id" });
+    Unit.belongsTo(db.User, { as: "createdBy", foreignKey: "created_by" });
+    Unit.belongsTo(db.User, { as: "updatedBy", foreignKey: "updated_by" });
+
+    // Unit has many images
+    Unit.hasMany(db.UnitImage, { as: "images", foreignKey: "unit_id" });
   };
 
   return Unit;
