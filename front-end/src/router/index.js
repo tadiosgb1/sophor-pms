@@ -45,6 +45,78 @@ const routes = [
     meta: { requiresGuest: true },
     children: [
       {
+        path: "inventorytransactions",
+        name: "Inventorytransaction-view",
+        component: () => import('../views/closed/inventorytransactions/InventorytransactionView.vue'),
+      },
+      {
+        path: "inventorytransactions/add",
+        name: "Inventorytransaction-add",
+        component: () => import('../views/closed/inventorytransactions/AddInventorytransaction.vue'),
+      },
+      {
+        path: "inventorytransactions/edit/:id",
+        name: "Inventorytransaction-edit",
+        component: () => import('../views/closed/inventorytransactions/EditInventorytransaction.vue'),
+        props: true,
+      },
+      {
+        path: "inventorytransactions/detail/:id",
+        name: "Inventorytransaction-detail",
+        component: () => import('../views/closed/inventorytransactions/InventorytransactionDetail.vue'),
+        props: true,
+      },
+
+      {
+        path: "inventoryitems",
+        name: "Inventoryitem-view",
+        component: () => import('../views/closed/inventoryitems/InventoryitemView.vue'),
+      },
+      {
+        path: "inventoryitems/add",
+        name: "Inventoryitem-add",
+        component: () => import('../views/closed/inventoryitems/AddInventoryitem.vue'),
+      },
+      {
+        path: "inventoryitems/edit/:id",
+        name: "Inventoryitem-edit",
+        component: () => import('../views/closed/inventoryitems/EditInventoryitem.vue'),
+        props: true,
+      },
+      {
+        path: "inventoryitems/detail/:id",
+        name: "Inventoryitem-detail",
+        component: () => import('../views/closed/inventoryitems/InventoryitemDetail.vue'),
+        props: true,
+      },
+
+ 
+
+      {
+        path: "expenses",
+        name: "Expense-view",
+        component: () => import('../views/closed/Expenses/ExpenseView.vue'),
+      },
+      {
+        path: "expenses/add",
+        name: "Expense-add",
+        component: () => import('../views/closed/Expenses/AddExpense.vue'),
+      },
+      {
+        path: "expenses/edit/:id",
+        name: "Expense-edit",
+        component: () => import('../views/closed/Expenses/EditExpense.vue'),
+        props: true,
+      },
+      {
+        path: "expenses/detail/:id",
+        name: "Expense-detail",
+        component: () => import('../views/closed/Expenses/ExpenseDetail.vue'),
+        props: true,
+      },
+
+     
+      {
         path: "chat",
         name: "chat",
         component: Chat,

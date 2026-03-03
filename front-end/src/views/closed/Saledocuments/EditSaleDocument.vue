@@ -1,30 +1,33 @@
-
 <template>
   <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
     <div class="bg-white rounded-xl shadow-2xl w-full max-w-sm p-6 text-sm">
       <div class="flex justify-between items-center mb-4 border-b pb-2">
-        <h2 class="text-lg font-semibold text-gray-800 ">Edit SaleDocument </h2>
+        <h2 class="text-lg font-semibold text-gray-800 ">Edit SaleDocument</h2>
         <button @click="$emit('close')" class="text-gray-400 hover:text-gray-600">&times;</button>
       </div>
 
-      <form @submit.prevent="submitForm" class="space-y-4">
+      <form @submit.prevent="submitForm" class="space-y-4" enctype="multipart/form-data">
         
         <div>
           <label class="block mb-1 text-sm font-medium text-gray-700">Sale_id</label>
           <input v-model="form.sale_id" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
         </div>
+
         <div>
           <label class="block mb-1 text-sm font-medium text-gray-700">Document_name</label>
           <input v-model="form.document_name" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
         </div>
+
         <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Document_url</label>
-          <input v-model="form.document_url" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
+          <label class="block mb-1 text-sm font-medium text-gray-700">Document_file</label>
+          <input @change="handleFileChange" type="file" class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
         </div>
+
         <div>
           <label class="block mb-1 text-sm font-medium text-gray-700">Owner_id</label>
           <input v-model="form.owner_id" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
         </div>
+
         <div>
           <label class="block mb-1 text-sm font-medium text-gray-700">Created_by</label>
           <input v-model="form.created_by" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
@@ -46,31 +49,48 @@ export default {
     return {
       form: {
         sale_id: this.data?.sale_id || '',
-document_name: this.data?.document_name || '',
-document_url: this.data?.document_url || '',
-owner_id: this.data?.owner_id || '',
-created_by: this.data?.created_by || ''
-      }
+        document_name: this.data?.document_name || '',
+        owner_id: this.data?.owner_id || '',
+        created_by: this.data?.created_by || ''
+      },
+      file: null // store selected file
     };
   },
   methods: {
+    handleFileChange(e) {
+      this.file = e.target.files[0] || null;
+    },
     async submitForm() {
       try {
-        if ("Edit" === "Add") {
-        const res= await this.$apiPost("/saledocument", this.form);
-        if(res){
-           this.$root.$refs.toast.showToast('Added successfully', 'success');
-         }
+        const formData = new FormData();
+        formData.append("sale_id", this.form.sale_id);
+        formData.append("document_name", this.form.document_name);
+        formData.append("owner_id", this.form.owner_id);
+        formData.append("created_by", this.form.created_by);
+        if (this.file) formData.append("document_url", this.file);
 
-        } else {
-         const res= await this.$apiPut("/saledocument",this.data.id ,this.form);
-         if(res){
-           this.$root.$refs.toast.showToast('Edited successfully', 'success');
-         }
+        const headers={
+          "Content-Type": "multipart/form-data"
         }
+
+        let res;
+        if ("Edit" === "Add") {
+          res = await this.$apiPost("/saledocument", formData, 
+            headers
+          );
+          if (res) this.$root.$refs.toast.showToast('Added successfully', 'success');
+        } else {
+          res = await this.$apiPut(`/saledocument`,this.data.id, formData, 
+            headers
+          );
+          if (res) this.$root.$refs.toast.showToast('Edited successfully', 'success');
+        }
+
         this.$emit("saved");
         this.$emit("close");
-      } catch (e) { console.error(e); }
+      } catch (e) {
+        console.error(e);
+      }
     }
   }
 }

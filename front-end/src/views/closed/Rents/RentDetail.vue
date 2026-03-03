@@ -56,8 +56,8 @@
         </button>
       </div>
 
-      <div v-if="rentDocuments.length" class="space-y-2">
-        <div v-for="doc in rentDocuments" :key="doc.id" class="bg-white border rounded-md p-2 flex justify-between items-center">
+      <div  class="space-y-2">
+        <div v-for="doc in item.documents" :key="doc.id" class="bg-white border rounded-md p-2 flex justify-between items-center">
           <div>
             <strong>{{ doc.document_name }}</strong>
             <a :href="doc.document_url" target="_blank" class="text-blue-600 hover:underline ml-2">View</a>
@@ -68,7 +68,7 @@
           </div>
         </div>
       </div>
-      <div v-else class="text-gray-500">No documents added yet.</div>
+      
     </div>
 
     <!-- Add/Edit Modals -->
@@ -107,7 +107,6 @@ export default {
   },
   async mounted() {
     await this.fetchRent();
-    if (this.item.id) await this.fetchDocuments();
   },
   methods: {
     async fetchRent() {
@@ -119,13 +118,7 @@ export default {
       } catch (e) { console.error(e); }
       finally { this.loading = false; }
     },
-    async fetchDocuments() {
-      if (!this.item.id) return;
-      try {
-        const res = await this.$apiGet('/rentdocument', { rent_id: this.item.id });
-        this.rentDocuments = res || [];
-      } catch (e) { console.error(e); }
-    },
+ 
     editDocument(doc) {
       this.editingDocument = doc;
     },

@@ -4,7 +4,6 @@
       <aside
         class="w-64 flex flex-col z-40 md:fixed md:top-16 md:left-0 md:h-[calc(100vh-4rem)] md:overflow-y-auto transition-all duration-300 bg-white mt-0 lg:mt-1 shadow-md"
       >
-        <!-- Sidebar Title -->
         <div
           v-if="showTitle"
           class="flex flex-row space-x-4 p-4 text-center font-bold text-lg text-white bg-orange-500 sticky top-0 z-10"
@@ -109,47 +108,10 @@ export default {
 
       menuItems: [
 
-    // {
-    //   name: "RentDocument",
-    //   route: "RentDocument-view",
-    //   icon: "fas fa-folder",
-    //   color: "#22c55e"
-    // },
-
-
-    // {
-    //   name: "SaleDocument",
-    //   route: "SaleDocument-view",
-    //   icon: "fas fa-folder",
-    //   color: "#22c55e"
-    // },
-
-
-    // {
-    //   name: "UnitImage",
-    //   route: "UnitImage-view",
-    //   icon: "fas fa-folder",
-    //   color: "#22c55e"
-    // },
-
-
-    // {
-    //   name: "SiteImage",
-    //   route: "SiteImage-view",
-    //   icon: "fas fa-folder",
-    //   color: "#22c55e"
-    // },
-
-
-  
-
-  
 
 
    
 
-
-   
 
         {
           name: "Dashboard",
@@ -164,7 +126,8 @@ export default {
           icon: "fas fa-folder",
           color: "#22c55e"
         },
-        {
+
+         {
           name: "Users Management",
           icon: "fas fa-users-cog",
           color: "#22c55e",
@@ -187,13 +150,33 @@ export default {
               icon: "fas fa-folder",
               color: "#22c55e"
             },
-
-
-  
-       
-            
           ],
+          },
+             {
+            name: "Inventory items",
+            route: "Inventoryitem-view",
+            icon: "fas fa-folder",
+            color: "#22c55e"
+          },
+
+          {
+            name: "Inventory transactions",
+            route: "Inventorytransaction-view",
+            icon: "fas fa-folder",
+            color: "#22c55e"
+          },
+
+
+       
+         {
+          name: "Expenses",
+          route: "Expense-view",
+          icon: "fas fa-folder",
+          color: "#22c55e"
         },
+
+
+
          {
             name: "Types",
             route: "Type-view",

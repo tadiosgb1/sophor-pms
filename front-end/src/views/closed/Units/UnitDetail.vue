@@ -27,16 +27,16 @@
         <button @click="showAddImage = true" class="px-3 py-1 bg-green-500 text-white rounded-lg">Add Image</button>
       </div>
 
-      <div v-if="unitImages.length" class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div v-for="image in unitImages" :key="image.id" class="bg-white rounded-md shadow p-2 flex flex-col items-center">
-          <img :src="image.image" alt="Unit Image" class="w-full h-32 object-cover rounded-md mb-2" />
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div v-for="image in item.images" :key="image.id" class="bg-white rounded-md shadow p-2 flex flex-col items-center">
+          <img :src="image.image_url" alt="Unit Image" class="w-full h-32 object-cover rounded-md mb-2" />
           <div class="flex gap-2">
             <button @click="editImage(image)" class="px-2 py-1 bg-blue-500 text-white rounded text-xs">Edit</button>
             <button @click="deleteImage(image.id)" class="px-2 py-1 bg-red-500 text-white rounded text-xs">Delete</button>
           </div>
         </div>
       </div>
-      <div v-else class="text-gray-500">No images added yet.</div>
+      
     </div>
 
     <!-- Add/Edit Modals -->
@@ -63,7 +63,7 @@ export default {
   },
   async mounted() {
     await this.fetchUnit();
-    await this.fetchImages();
+ 
   },
   methods: {
     async fetchUnit() {
@@ -75,12 +75,7 @@ export default {
       } catch (e) { console.error(e); }
       finally { this.loading = false; }
     },
-    async fetchImages() {
-      try {
-        const res = await this.$apiGet('/unitimage', { unit_id: this.item.id });
-        this.unitImages = res || [];
-      } catch (e) { console.error(e); }
-    },
+  
     editImage(image) {
       this.editingImage = image;
     },

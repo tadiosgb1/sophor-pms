@@ -1,51 +1,46 @@
 <template>
-  <div class="p-6 bg-gray-50 min-h-screen flex flex-col md:flex-row gap-6 text-sm text-gray-800">
+  <div class="p-6 bg-gray-50 min-h-screen flex flex-col md:flex-row gap-6 text-sm">
 
-    <!-- Users List -->
-    <div class="w-full md:w-1/3 bg-white rounded-xl border border-gray-200 overflow-y-auto h-[80vh]">
-      <div class="p-4 border-b border-gray-200 font-semibold">Users</div>
+    <!-- USERS LIST -->
+    <div class="w-full md:w-1/3 bg-white rounded-xl border overflow-y-auto h-[80vh]">
+      <div class="p-4 border-b font-semibold">Users</div>
 
-      <div
-        v-for="user in users"
-        :key="user.id"
-        @click="selectUser(user)"
+      <div v-for="u in users" :key="u.id"
+        @click="selectUser(u)"
         class="flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-green-50"
-        :class="{'bg-green-100': selectedUser?.id === user.id}"
+        :class="{'bg-green-100': selectedUser?.id === u.id}"
       >
         <div class="flex items-center gap-3">
           <div class="w-3 h-3 rounded-full"
-               :class="userOnline(user.id) ? 'bg-green-500' : 'bg-gray-300'"></div>
-          <span>{{ user.first_name }} {{ user.last_name }}</span>
+               :class="onlineUsers.includes(u.id) ? 'bg-green-500' : 'bg-gray-300'"></div>
+          <span>{{ u.first_name }} {{ u.last_name }}</span>
         </div>
 
-        <span v-if="unreadMessages[user.id]"
-              class="text-xs bg-red-500 text-white px-2 py-0.5 rounded-full">
-          {{ unreadMessages[user.id] }}
+        <span v-if="unreadMessages[u.id]"
+          class="text-xs bg-red-500 text-white px-2 py-0.5 rounded-full">
+          {{ unreadMessages[u.id] }}
         </span>
       </div>
     </div>
 
-    <!-- Chat Box -->
-    <div class="w-full md:w-2/3 flex flex-col bg-white rounded-xl border border-gray-200 h-[80vh]">
+    <!-- CHAT BOX -->
+    <div class="w-full md:w-2/3 flex flex-col bg-white rounded-xl border h-[80vh]">
 
-      <!-- Header -->
+      <!-- HEADER -->
       <div class="p-4 border-b flex justify-between">
         <h2 class="font-semibold">
           {{ selectedUser ? selectedUser.first_name + ' ' + selectedUser.last_name : 'Select a user' }}
         </h2>
-
-        <span v-if="selectedUser" class="text-sm">
-          {{ userOnline(selectedUser.id) ? 'Online' : 'Offline' }}
+        <span v-if="selectedUser">
+          {{ onlineUsers.includes(selectedUser.id) ? 'Online' : 'Offline' }}
         </span>
       </div>
 
-      <!-- Messages -->
+      <!-- MESSAGES -->
       <div class="flex-1 p-4 overflow-y-auto space-y-2" ref="messagesContainer">
-        <div
-          v-for="msg in messages"
-          :key="msg.id"
-          :class="{ 'text-right': msg.senderId === currentUserId }"
-        >
+        <div v-for="msg in messages" :key="msg.id"
+          :class="{ 'text-right': msg.senderId === currentUserId }">
+
           <div
             :class="msg.senderId === currentUserId ? 'bg-green-200' : 'bg-gray-200'"
             class="inline-block px-3 py-2 rounded-lg max-w-[70%]"
@@ -59,7 +54,7 @@
         </div>
       </div>
 
-      <!-- Chat Input -->
+      <!-- INPUT -->
       <div class="p-4 border-t flex gap-2">
         <input
           v-model="newMessage"
@@ -78,6 +73,7 @@
           Send
         </button>
       </div>
+
     </div>
 
   </div>
@@ -97,7 +93,7 @@ export default {
       newMessage: "",
       typingUser: null,
       currentUserId: null,
-      unreadMessages: {},
+      unreadMessages: {}
     };
   },
 
@@ -108,11 +104,13 @@ export default {
     },
 
     async selectUser(user) {
-      if (!user) return;
       this.selectedUser = user;
       this.unreadMessages[user.id] = 0;
 
-      this.socket.emit("join_room", { user1: this.currentUserId, user2: user.id });
+      this.socket.emit("join_room", {
+        user1: this.currentUserId,
+        user2: user.id
+      });
 
       const res = await this.$apiGet(`/chat/room/${this.currentUserId}/${user.id}`);
       this.messages = res.data || [];
@@ -120,29 +118,23 @@ export default {
     },
 
     sendMessage() {
-      //if (!this.newMessage.trim() || !this.selectedUser) return;
+      if (!this.newMessage.trim()) return;
 
-
-    
-      const payload = {
+      this.socket.emit("send_message", {
         senderId: this.currentUserId,
         receiverId: this.selectedUser.id,
         message: this.newMessage
-      };
-
-      this.socket.emit("send_message", payload);
+      });
 
       this.newMessage = "";
-      this.scrollToBottom();
     },
 
     emitTyping() {
       if (!this.selectedUser) return;
-      this.socket.emit("typing", { senderId: this.currentUserId, receiverId: this.selectedUser.id });
-    },
-
-    userOnline(id) {
-      return this.onlineUsers.includes(id);
+      this.socket.emit("typing", {
+        senderId: this.currentUserId,
+        receiverId: this.selectedUser.id
+      });
     },
 
     scrollToBottom() {
@@ -166,7 +158,9 @@ export default {
       this.onlineUsers = users;
     });
 
+    // Receiving messages
     this.socket.on("receive_message", msg => {
+      // if message belongs to selected chat
       if (
         this.selectedUser &&
         [msg.senderId, msg.receiverId].includes(this.selectedUser.id)
@@ -174,29 +168,19 @@ export default {
         this.messages.push(msg);
         this.scrollToBottom();
       } else {
-        this.unreadMessages[msg.senderId] = (this.unreadMessages[msg.senderId] || 0) + 1;
+        // unread count
+        this.unreadMessages[msg.senderId] =
+          (this.unreadMessages[msg.senderId] || 0) + 1;
       }
     });
 
+    // Typing indicator
     this.socket.on("user_typing", ({ userId }) => {
       if (this.selectedUser?.id === userId) {
         this.typingUser = this.users.find(u => u.id === userId);
-        setTimeout(() => { this.typingUser = null; }, 2000);
+        setTimeout(() => (this.typingUser = null), 2000);
       }
     });
   }
 };
 </script>
-
-
-<style scoped>
-/* Optional: smooth scrolling for chat */
-.messagesContainer::-webkit-scrollbar {
-  width: 4px;
-}
-
-.messagesContainer::-webkit-scrollbar-thumb {
-  background-color: rgba(0,0,0,0.2);
-  border-radius: 2px;
-}
-</style>

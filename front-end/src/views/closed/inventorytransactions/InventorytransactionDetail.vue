@@ -2,23 +2,23 @@
 <template>
   <div class="p-6 bg-gray-50 min-h-screen text-sm text-gray-800">
     <!-- Loading -->
-    <Loading :visible="loading" message="Loading Expense..." />
+    <Loading :visible="loading" message="Loading Inventorytransaction..." />
 
     <!-- Page Header -->
     <div class="flex items-center justify-between mb-6 border-b pb-4 border-gray-200">
-      <h1 class="text-lg font-bold text-gray-800">Expense Detail</h1>
+      <h1 class="text-lg font-bold text-gray-800">Inventorytransaction Detail</h1>
     </div>
 
     <!-- Detail Card -->
     <div class="bg-white overflow-hidden rounded-md border border-gray-200 p-4 hidden md:block space-y-2">
       <div><strong>ID:</strong> {{ item.id }}</div>
-      <div><strong>Category:</strong> {{ item.category }}</div><div><strong>Amount:</strong> {{ item.amount }}</div><div><strong>Description:</strong> {{ item.description }}</div><div><strong>Expense_date:</strong> {{ item.expense_date }}</div><div><strong>Site_id:</strong> {{ item.site_id }}</div><div><strong>Updated_by:</strong> {{ item.updated_by }}</div><div><strong>Created_by:</strong> {{ item.created_by }}</div>
+      <div><strong>action:</strong> {{ item.action }}</div><div><strong>Quantity:</strong> {{ item.quantity }}</div><div><strong>Note:</strong> {{ item.note }}</div><div><strong>Transaction_date:</strong> {{ item.transaction_date }}</div><div><strong>Created_by:</strong> {{ item.created_by }}</div><div><strong>CreatedAt:</strong> {{ item.createdAt }}</div><div><strong>UpdatedAt:</strong> {{ item.updatedAt }}</div>
     </div>
 
     <!-- Mobile View -->
     <div class="md:hidden bg-white rounded-md border border-gray-200 p-4 space-y-2">
       <div><strong>ID:</strong> {{ item.id }}</div>
-      <div><strong>Category:</strong> {{ item.category }}</div><div><strong>Amount:</strong> {{ item.amount }}</div><div><strong>Description:</strong> {{ item.description }}</div><div><strong>Expense_date:</strong> {{ item.expense_date }}</div><div><strong>Site_id:</strong> {{ item.site_id }}</div><div><strong>Updated_by:</strong> {{ item.updated_by }}</div><div><strong>Created_by:</strong> {{ item.created_by }}</div>
+      <div><strong>action:</strong> {{ item.action }}</div><div><strong>Quantity:</strong> {{ item.quantity }}</div><div><strong>Note:</strong> {{ item.note }}</div><div><strong>Transaction_date:</strong> {{ item.transaction_date }}</div><div><strong>Created_by:</strong> {{ item.created_by }}</div><div><strong>CreatedAt:</strong> {{ item.createdAt }}</div><div><strong>UpdatedAt:</strong> {{ item.updatedAt }}</div>
     </div>
 
     <button @click="$router.back()" class="mt-4 text-blue-600 hover:underline">Back</button>
@@ -40,7 +40,7 @@ export default {
     this.loading = true;
     const id = this.$route.params.id;
     try {
-      const response = await this.$apiGetById('/expense', id);
+      const response = await this.$apiGetById('/inventorytransaction', id);
       this.item = response || {};
     } catch (error) {
       console.error(error);

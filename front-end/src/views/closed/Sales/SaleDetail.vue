@@ -31,8 +31,8 @@
         <button @click="showAddDocument = true" class="px-3 py-1 bg-green-500 text-white rounded-lg">Add Document</button>
       </div>
 
-      <div v-if="saleDocuments.length" class="space-y-2">
-        <div v-for="doc in saleDocuments" :key="doc.id" class="bg-white border rounded-md p-2 flex justify-between items-center">
+      <div  class="space-y-2">
+        <div v-for="doc in item.documents" :key="doc.id" class="bg-white border rounded-md p-2 flex justify-between items-center">
           <div>
             <strong>{{ doc.document_name }}</strong>
             <a :href="doc.document_url" target="_blank" class="text-blue-600 hover:underline ml-2">View</a>
@@ -43,7 +43,7 @@
           </div>
         </div>
       </div>
-      <div v-else class="text-gray-500">No documents added yet.</div>
+     
     </div>
 
     <!-- Add/Edit Modals -->
@@ -80,7 +80,7 @@ export default {
   },
   async mounted() {
     await this.fetchSale();
-    await this.fetchDocuments();
+    
   },
   methods: {
     async fetchSale() {
@@ -92,12 +92,7 @@ export default {
       } catch (e) { console.error(e); }
       finally { this.loading = false; }
     },
-    async fetchDocuments() {
-      try {
-        const res = await this.$apiGet('/saledocument', { sale_id: this.item.id });
-        this.saleDocuments = res || [];
-      } catch (e) { console.error(e); }
-    },
+
     editDocument(doc) {
       this.editingDocument = doc;
     },
