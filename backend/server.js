@@ -29,6 +29,7 @@ const userRoutes = require("./routes/userRoutes");
 const roleRoutes = require("./routes/roleRoutes");
 const permissionRoutes = require("./routes/permissionRoutes");
 const companyRoutes = require("./routes/companyRoutes.js");
+const dashboardRoutes = require('./routes/dashboardRoutes.js');
 
 // Models
 const db = require("./models");
@@ -220,6 +221,7 @@ async function syncAndStart() {
     app.use("/api/expense", expenseRoutes);
     app.use("/api/inventoryitem", inventoryitemRoutes);
     app.use("/api/inventorytransaction", inventorytransactionRoutes);
+    app.use("/api/dashboard", dashboardRoutes);
     server.listen(PORT, () => console.log("Server running on " + PORT));
   } catch (e) {
     console.error(e);
