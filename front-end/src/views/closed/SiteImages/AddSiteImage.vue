@@ -1,42 +1,51 @@
 <template>
   <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-    <div class="bg-white rounded-xl shadow-2xl w-full max-w-sm p-6 text-sm">
-      <div class="flex justify-between items-center mb-4 border-b pb-2">
-        <h2 class="text-lg font-semibold text-gray-800">Add SiteImage</h2>
-        <button @click="$emit('close')" class="text-gray-400 hover:text-gray-600">&times;</button>
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md text-sm overflow-hidden">
+
+      <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center text-green-500">
+            <i class="fas fa-image text-sm"></i>
+          </div>
+          <div>
+            <h2 class="font-semibold text-gray-800">Add Site Image</h2>
+            <p class="text-xs text-gray-400">Upload a photo for this site</p>
+          </div>
+        </div>
+        <button @click="$emit('close')"
+          class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-400 text-lg leading-none">&times;</button>
       </div>
 
-      <form @submit.prevent="submitForm" enctype="multipart/form-data" class="space-y-4">
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Site_id</label>
-          <input v-model="form.site_id" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-        </div>
+      <div class="px-6 py-5 space-y-4">
 
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Image</label>
-          <input @change="handleFileUpload" type="file" accept="image/*" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
+        <!-- Drop zone -->
+        <div class="border-2 border-dashed border-gray-300 rounded-xl overflow-hidden hover:border-orange-400 transition-colors cursor-pointer"
+          @click="$refs.fileInput.click()">
+          <div v-if="!preview" class="p-8 text-center">
+            <i class="fas fa-cloud-arrow-up text-3xl text-gray-300 mb-2 block"></i>
+            <p class="text-xs text-gray-400">Click to select an image</p>
+            <p class="text-[10px] text-gray-300 mt-1">JPG, PNG, WEBP supported</p>
+          </div>
+          <img v-else :src="preview" class="w-full h-48 object-cover" alt="Preview" />
         </div>
+        <input ref="fileInput" type="file" accept="image/*" class="hidden" @change="handleFile" />
 
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Owner_id</label>
-          <input v-model="form.owner_id" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-        </div>
+        <p v-if="file" class="text-xs text-green-600 flex items-center gap-1">
+          <i class="fas fa-check-circle"></i> {{ file.name }}
+        </p>
 
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Created_by</label>
-          <input v-model="form.created_by" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-        </div>
+      </div>
 
-        <div>
-          <label class="block mb-1 text-sm font-medium text-gray-700">Updated_by</label>
-          <input v-model="form.updated_by" type="text" required class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-        </div>
-
-        <div class="flex justify-end gap-3 pt-2">
-          <button type="button" @click="$emit('close')" class="px-4 py-2 border rounded-lg">Cancel</button>
-          <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-lg">Add</button>
-        </div>
-      </form>
+      <div class="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-100 bg-gray-50">
+        <button type="button" @click="$emit('close')"
+          class="px-4 py-2 text-sm border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-100">Cancel</button>
+        <button @click="submitForm" :disabled="submitting || !file"
+          class="px-5 py-2 text-sm bg-orange-500 hover:bg-orange-600 disabled:opacity-50 text-white rounded-lg font-medium flex items-center gap-2">
+          <i v-if="submitting" class="fas fa-spinner fa-spin text-xs"></i>
+          <i v-else class="fas fa-upload text-xs"></i>
+          Upload
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -46,45 +55,33 @@ export default {
   props: { data: Object },
   data() {
     return {
-      form: {
-        site_id: this.data?.site_id || '',
-        owner_id: this.data?.owner_id || '',
-        created_by: this.data?.created_by || '',
-        updated_by: this.data?.updated_by || ''
-      },
       file: null,
+      preview: null,
+      submitting: false,
     };
   },
   methods: {
-    handleFileUpload(e) {
-      this.file = e.target.files[0];
+    handleFile(e) {
+      const f = e.target.files[0];
+      if (!f) return;
+      this.file = f;
+      this.preview = URL.createObjectURL(f);
     },
-
     async submitForm() {
+      if (!this.file) return;
+      this.submitting = true;
       try {
-        const formData = new FormData();
-        formData.append('site_id', this.form.site_id);
-        formData.append('owner_id', this.form.owner_id);
-        formData.append('created_by', this.form.created_by);
-        formData.append('updated_by', this.form.updated_by);
-        if (this.file) formData.append('image_url', this.file);
-
-        const headers={
-           'Content-Type': 'multipart/form-data' 
-        }
-
-        const res = await this.$apiPost('/siteimage', formData, 
-          headers);
-        if (res) {
-          this.$root.$refs.toast.showToast('Added successfully', 'success');
-        }
-
+        const fd = new FormData();
+        fd.append('site_id',    this.data?.site_id || '');
+        fd.append('owner_id',   parseInt(localStorage.getItem('userId')) || '');
+        fd.append('created_by', parseInt(localStorage.getItem('userId')) || '');
+        fd.append('image_url',  this.file);
+        await this.$apiPost('/siteimage', fd, { 'Content-Type': 'multipart/form-data' });
         this.$emit('saved');
         this.$emit('close');
-      } catch (e) {
-        console.error(e);
-      }
-    }
-  }
+      } catch (e) { console.error(e); }
+      finally { this.submitting = false; }
+    },
+  },
 };
 </script>

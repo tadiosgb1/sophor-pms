@@ -30,7 +30,10 @@ module.exports = {
         where,
         order,
         offset,
-        limit: page_size
+        limit: page_size,
+        include: [
+          { model: db.Site, attributes: ["id", "name", "city"] }
+        ]
       });
 
       const baseUrl = `${req.protocol}://${req.get("host")}${req.path}`;
@@ -50,7 +53,13 @@ module.exports = {
 
   async getOne(req, res) {
     try {
-      const data = await InventoryItem.findByPk(req.params.id);
+      const data = await InventoryItem.findByPk(req.params.id, {
+        include: [
+          { model: db.Site, attributes: ["id", "name", "city"] },
+          { model: db.User, as: "creator", attributes: ["id", "first_name", "last_name"] },
+          { model: db.User, as: "updater", attributes: ["id", "first_name", "last_name"] }
+        ]
+      });
       if (!data) return res.status(404).json({ error: "Not found" });
       res.json(data);
     } catch (e) { res.status(500).json({ error: e.message }); }

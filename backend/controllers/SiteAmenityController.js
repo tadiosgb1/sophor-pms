@@ -55,14 +55,19 @@ module.exports = {
       const opts = include.length ? { include } : {};
       const data = await SiteAmenity.findByPk(req.params.id, opts);
       if (!data) return res.status(404).json({ error: "Not found" });
-
       const obj = data.toJSON();
-      const host = `${req.protocol}://${req.get("host")}`;
-      
       res.json(obj);
-    } catch (e) {
-      res.status(500).json({ error: e.message });
-    }
+    } catch (e) { res.status(500).json({ error: e.message }); }
+  },
+
+  async getBySiteId(req, res) {
+    try {
+      const items = await SiteAmenity.findAll({
+        where: { site_id: req.params.site_id },
+        include: [{ model: db.Amenity }]
+      });
+      res.json(items.map(i => i.toJSON()));
+    } catch (e) { res.status(500).json({ error: e.message }); }
   },
 
   async create(req, res) {

@@ -1,4 +1,3 @@
-
 module.exports = (sequelize, Sequelize) => {
   const InventoryItem = sequelize.define("InventoryItem", {
     id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
@@ -13,10 +12,11 @@ module.exports = (sequelize, Sequelize) => {
     tableName: "inventoryitems"
   });
 
-  // Setup associations for FK
-  InventoryItem.associate = (db) => { InventoryItem.belongsTo(db.Site, { foreignKey: "site_id" }); };
-  InventoryItem.associate = (db) => { InventoryItem.belongsTo(db.User, { foreignKey: "created_by" }); };
-  InventoryItem.associate = (db) => { InventoryItem.belongsTo(db.User, { foreignKey: "updated_by" }); };
+  InventoryItem.associate = (db) => {
+    InventoryItem.belongsTo(db.Site, { foreignKey: "site_id" });
+    InventoryItem.belongsTo(db.User, { foreignKey: "created_by", as: "creator" });
+    InventoryItem.belongsTo(db.User, { foreignKey: "updated_by", as: "updater" });
+  };
 
   return InventoryItem;
 };

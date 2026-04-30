@@ -1,136 +1,191 @@
-
 <template>
-  <div class="p-6 bg-gray-50 min-h-screen text-sm text-gray-800 relative">
-    <!-- Loading -->
-    <Loading :visible="loading" message="Loading inventorytransaction..." />
+  <div class="p-6 bg-gray-50 min-h-screen text-sm text-gray-800">
+    <Loading :visible="loading" message="Loading transactions..." />
 
-    <!-- Page Header -->
+    <!-- Header -->
     <div class="flex items-center justify-between mb-6 border-b pb-4 border-gray-200">
-      <h1 class="text-lg font-bold text-gray-800">Inventorytransaction</h1>
-      <button @click="openAddModal" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-medium shadow-md flex items-center space-x-1 text-sm">
-        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-        </svg>
-        <span>Add Inventorytransaction</span>
+      <div>
+        <h1 class="text-xl font-bold text-gray-800">Inventory Transactions</h1>
+        <p class="text-xs text-gray-400 mt-0.5">All stock movements — in and out</p>
+      </div>
+      <button @click="openAddModal"
+        class="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-medium shadow transition-colors">
+        <i class="fas fa-plus text-xs"></i> Add Transaction
       </button>
     </div>
 
-    <!-- Search + Page Size -->
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
-      <input v-model="searchQuery" @input="fetchItems(1)" type="text" placeholder="Search..."
-        class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-      <div class="flex items-center gap-2 text-sm text-gray-600">
-        <label>Show</label>
-        <select v-model="pageSize" @change="fetchItems(1)" class="border border-gray-300 rounded-lg px-2 py-1 text-sm bg-white focus:ring-green-500 focus:border-green-500">
-          <option v-for="size in [5,10,20,50,100]" :key="size" :value="size">{{ size }}</option>
+    <!-- Search + filter + page size -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
+      <div class="flex items-center gap-2 flex-1">
+        <div class="relative w-full sm:max-w-xs">
+          <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+          <input v-model="searchQuery" @input="fetchItems(1)" type="text" placeholder="Search by action, note…"
+            class="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-400" />
+        </div>
+        <!-- Action filter -->
+        <select v-model="actionFilter" @change="fetchItems(1)"
+          class="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:ring-orange-400">
+          <option value="">All Actions</option>
+          <option value="stock_in">Stock In</option>
+          <option value="stock_out">Stock Out</option>
+          <option value="adjustment">Adjustment</option>
+        </select>
+      </div>
+      <div class="flex items-center gap-2 text-sm text-gray-500">
+        <span>Show</span>
+        <select v-model="pageSize" @change="fetchItems(1)"
+          class="border border-gray-300 rounded-lg px-2 py-1 text-sm bg-white">
+          <option v-for="s in [5,10,20,50]" :key="s" :value="s">{{ s }}</option>
         </select>
         <span>entries</span>
       </div>
     </div>
 
-    <!-- Desktop Table -->
-    <div class="bg-white overflow-hidden rounded-xl border border-gray-200 hidden md:block">
-      <div class="overflow-x-auto">
-        <table class="min-w-full text-sm divide-y divide-gray-200">
-          <thead class="bg-gray-100 text-gray-700 uppercase text-xs font-semibold">
-            <tr>
-              <th class="px-6 py-3 text-left">#</th>
-              <th class="px-6 py-3 text-left">action</th><th class="px-6 py-3 text-left">Quantity</th><th class="px-6 py-3 text-left">Note</th><th class="px-6 py-3 text-left">Transaction_date</th><th class="px-6 py-3 text-left">Created_by</th><th class="px-6 py-3 text-left">CreatedAt</th><th class="px-6 py-3 text-left">UpdatedAt</th>
-              <th class="px-6 py-3 text-center">Actions</th>
-            </tr>
-          </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
-            <tr v-for="(item, index) in items" :key="item.id" class="hover:bg-green-50 transition duration-150">
-              <td class="px-6 py-4">{{ index + 1 }}</td>
-              <td class="px-6 py-4 whitespace-nowrap">{{ item.action }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.quantity }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.note }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.transaction_date }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.created_by }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.createdAt }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.updatedAt }}</td>
-              <td class="px-6 py-4 text-center space-x-3">
-                <button @click="viewDetails(item.id)" class="text-green-500 hover:text-green-700"><i class="fas fa-eye"></i></button>
-                <button @click="editItem(item)" class="text-blue-500 hover:text-blue-700"><i class="fas fa-edit"></i></button>
-                <button @click="openDeleteModal(item.id)" class="text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button>
-              </td>
-            </tr>
-            <tr v-if="items.length === 0">
-              <td colspan="9" class="text-center py-6 text-gray-400 italic">No data found.</td>
-            </tr>
-          </tbody>
-        </table>
+    <!-- Summary cards -->
+    <div class="grid grid-cols-3 gap-4 mb-5">
+      <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-4 flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-green-100 flex items-center justify-center text-green-600 shrink-0">
+          <i class="fas fa-arrow-down text-sm"></i>
+        </div>
+        <div>
+          <p class="text-xs text-gray-400">Stock In</p>
+          <p class="text-lg font-bold text-green-600">{{ stockInCount }}</p>
+        </div>
+      </div>
+      <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-4 flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-red-100 flex items-center justify-center text-red-500 shrink-0">
+          <i class="fas fa-arrow-up text-sm"></i>
+        </div>
+        <div>
+          <p class="text-xs text-gray-400">Stock Out</p>
+          <p class="text-lg font-bold text-red-500">{{ stockOutCount }}</p>
+        </div>
+      </div>
+      <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-4 flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-blue-100 flex items-center justify-center text-blue-500 shrink-0">
+          <i class="fas fa-list text-sm"></i>
+        </div>
+        <div>
+          <p class="text-xs text-gray-400">Total</p>
+          <p class="text-lg font-bold text-gray-800">{{ count }}</p>
+        </div>
       </div>
     </div>
 
-    <!-- Mobile Cards -->
-    <div class="md:hidden space-y-4">
-      <div v-for="(item, index) in items" :key="item.id" class="bg-white border border-gray-200 rounded-xl shadow p-4">
-        <div class="flex justify-between mb-3">
-          <h2 class="font-bold text-gray-800">Inventorytransaction #{{ index + 1 }}</h2>
-          <div class="flex gap-3 text-sm">
-            <button @click="viewDetails(item.id)" class="text-green-500 hover:text-green-700"><i class="fas fa-eye"></i></button>
-            <button @click="editItem(item)" class="text-blue-500 hover:text-blue-700"><i class="fas fa-edit"></i></button>
-            <button @click="openDeleteModal(item.id)" class="text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button>
+    <!-- Table (desktop) -->
+    <div class="hidden md:block bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+      <table class="min-w-full text-sm divide-y divide-gray-100">
+        <thead class="bg-gray-50 text-xs uppercase text-gray-500 font-semibold tracking-wide">
+          <tr>
+            <th class="px-5 py-3 text-left">#</th>
+            <th class="px-5 py-3 text-left">Action</th>
+            <th class="px-5 py-3 text-right">Quantity</th>
+            <th class="px-5 py-3 text-left">Note</th>
+            <th class="px-5 py-3 text-left">Date</th>
+            <th class="px-5 py-3 text-left">Created By</th>
+            <th class="px-5 py-3 text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+          <tr v-for="(item, index) in items" :key="item.id" class="hover:bg-orange-50 transition-colors">
+            <td class="px-5 py-3 text-gray-400">{{ (currentPage-1)*pageSize + index + 1 }}</td>
+
+            <!-- Action badge -->
+            <td class="px-5 py-3">
+              <div class="flex items-center gap-2">
+                <div :class="actionIconClass(item.action)"
+                  class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0">
+                  <i :class="actionIcon(item.action)" class="text-xs"></i>
+                </div>
+                <span :class="actionBadgeClass(item.action)"
+                  class="px-2 py-0.5 rounded-full text-xs font-medium capitalize">
+                  {{ formatAction(item.action) }}
+                </span>
+              </div>
+            </td>
+
+            <!-- Quantity -->
+            <td class="px-5 py-3 text-right">
+              <span :class="item.action === 'stock_in' ? 'text-green-600' : 'text-red-500'" class="font-semibold">
+                {{ item.action === 'stock_in' ? '+' : '-' }}{{ item.quantity }}
+              </span>
+            </td>
+
+            <!-- Note -->
+            <td class="px-5 py-3 text-gray-600 max-w-xs truncate">{{ item.note || '—' }}</td>
+
+            <!-- Date -->
+            <td class="px-5 py-3 text-gray-600">{{ formatDate(item.transaction_date) }}</td>
+
+            <!-- Created by -->
+            <td class="px-5 py-3 text-gray-600">
+              {{ item.User ? item.User.first_name + ' ' + item.User.last_name : '—' }}
+            </td>
+
+            <!-- Actions -->
+            <td class="px-5 py-3 text-center">
+              <div class="flex items-center justify-center gap-3">
+                <button @click="viewDetails(item.id)" class="text-orange-500 hover:text-orange-700"><i class="fas fa-eye"></i></button>
+                <button @click="editItem(item)" class="text-blue-500 hover:text-blue-700"><i class="fas fa-pen"></i></button>
+                <button @click="openDeleteModal(item.id)" class="text-red-400 hover:text-red-600"><i class="fas fa-trash"></i></button>
+              </div>
+            </td>
+          </tr>
+          <tr v-if="items.length === 0 && !loading">
+            <td colspan="7" class="text-center py-10 text-gray-400 italic">No transactions found.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Mobile cards -->
+    <div class="md:hidden space-y-3">
+      <div v-for="item in items" :key="item.id" class="bg-white border border-gray-200 rounded-xl shadow-sm p-4">
+        <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center gap-2">
+            <div :class="actionIconClass(item.action)" class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0">
+              <i :class="actionIcon(item.action)" class="text-xs"></i>
+            </div>
+            <div>
+              <span :class="actionBadgeClass(item.action)" class="px-2 py-0.5 rounded-full text-xs font-medium capitalize">
+                {{ formatAction(item.action) }}
+              </span>
+              <p class="text-xs text-gray-400 mt-0.5">{{ formatDate(item.transaction_date) }}</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <span :class="item.action === 'stock_in' ? 'text-green-600' : 'text-red-500'" class="font-bold text-sm">
+              {{ item.action === 'stock_in' ? '+' : '-' }}{{ item.quantity }}
+            </span>
+            <div class="flex gap-2 text-sm">
+              <button @click="viewDetails(item.id)" class="text-orange-500"><i class="fas fa-eye"></i></button>
+              <button @click="editItem(item)" class="text-blue-500"><i class="fas fa-pen"></i></button>
+              <button @click="openDeleteModal(item.id)" class="text-red-400"><i class="fas fa-trash"></i></button>
+            </div>
           </div>
         </div>
-        <div class="grid grid-cols-2 gap-y-1 text-sm text-gray-700">
-          
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">action:</span>
-              {{ item.action }}
-            </div>
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">Quantity:</span>
-              {{ item.quantity }}
-            </div>
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">Note:</span>
-              {{ item.note }}
-            </div>
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">Transaction_date:</span>
-              {{ item.transaction_date }}
-            </div>
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">Created_by:</span>
-              {{ item.created_by }}
-            </div>
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">CreatedAt:</span>
-              {{ item.createdAt }}
-            </div>
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">UpdatedAt:</span>
-              {{ item.updatedAt }}
-            </div>
-        </div>
+        <p v-if="item.note" class="text-xs text-gray-500 truncate">{{ item.note }}</p>
       </div>
-      <p v-if="items.length === 0" class="text-center text-gray-400 py-6 italic">No data found.</p>
+      <p v-if="items.length === 0 && !loading" class="text-center text-gray-400 py-8 italic">No transactions found.</p>
     </div>
 
     <!-- Pagination -->
-    <div class="flex items-center justify-between mt-6 text-sm text-gray-600">
-      <span>
-        Showing {{ (currentPage - 1) * pageSize + 1 }} 
-        to {{ Math.min(currentPage * pageSize, count) }} 
-        of {{ count }} total entries
-      </span>
+    <div class="flex items-center justify-between mt-5 text-xs text-gray-500">
+      <span>Showing {{ items.length ? (currentPage-1)*pageSize+1 : 0 }}–{{ Math.min(currentPage*pageSize, count) }} of {{ count }}</span>
       <div class="flex items-center gap-2">
-        <button @click="fetchItems(currentPage - 1)" :disabled="!previousPage"
-          class="px-3 py-1 border border-gray-300 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition duration-150">← Previous</button>
-        <span class="px-3 py-1 bg-green-600 text-white rounded-lg font-medium">{{ currentPage }}</span>
-        <button @click="fetchItems(currentPage + 1)" :disabled="!nextPage"
-          class="px-3 py-1 border border-gray-300 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition duration-150">Next →</button>
+        <button @click="fetchItems(currentPage-1)" :disabled="!previousPage"
+          class="px-3 py-1.5 border rounded-lg hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed">← Prev</button>
+        <span class="px-3 py-1.5 bg-orange-500 text-white rounded-lg font-semibold">{{ currentPage }}</span>
+        <button @click="fetchItems(currentPage+1)" :disabled="!nextPage"
+          class="px-3 py-1.5 border rounded-lg hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed">Next →</button>
       </div>
     </div>
 
-    <!-- Add/Edit Modal -->
-    <add-inventorytransaction v-if="showModal && !editMode" :data="selectedItem" @close="showModal=false" @saved="fetchItems"/>
-    <edit-inventorytransaction v-if="showModal && editMode" :data="selectedItem" @close="showModal=false" @saved="fetchItems"/>
-
-    <!-- Delete Confirmation Modal -->
-    <delete-confirm-modal 
-      :visible="deleteModalVisible"
-      title="Delete Inventorytransaction"
-      message="Are you sure you want to delete this inventorytransaction?"
-      @confirm="confirmDelete"
-      @cancel="deleteModalVisible=false"
-    />
+    <add-inventorytransaction v-if="showModal && !editMode" @close="showModal=false" @saved="fetchItems" />
+    <edit-inventorytransaction v-if="showModal && editMode" :data="selectedItem" @close="showModal=false" @saved="fetchItems" />
+    <delete-confirm-modal :visible="deleteModalVisible" title="Delete Transaction"
+      message="Are you sure you want to delete this transaction?"
+      @confirm="confirmDelete" @cancel="deleteModalVisible=false" />
   </div>
 </template>
 
@@ -142,61 +197,58 @@ import DeleteConfirmModal from "@/components/DeleteConfirmModal.vue";
 
 export default {
   components: { AddInventorytransaction, EditInventorytransaction, Loading, DeleteConfirmModal },
-
   data() {
     return {
-      items: [],
-      count: 0,
-      nextPage: null,
-      previousPage: null,
-      currentPage: 1,
-      pageSize: 10,
-      searchQuery: "",
-      showModal: false,
-      editMode: false,
-      selectedItem: null,
-      loading: false,
-      deleteModalVisible: false,
-      deleteId: null,
+      items: [], count: 0, nextPage: null, previousPage: null,
+      currentPage: 1, pageSize: 10, searchQuery: "", actionFilter: "",
+      showModal: false, editMode: false, selectedItem: null,
+      loading: false, deleteModalVisible: false, deleteId: null,
     };
   },
-
+  computed: {
+    stockInCount() { return this.items.filter(i => i.action === 'stock_in').length; },
+    stockOutCount() { return this.items.filter(i => i.action === 'stock_out').length; },
+  },
   methods: {
     async fetchItems(page = 1) {
       this.loading = true;
       this.currentPage = page;
-      const params = { page: this.currentPage, page_size: this.pageSize, search: this.searchQuery };
       try {
-        const response = await this.$apiGet('/inventorytransaction', params);
-        this.items = response.data;
-        this.count = response.count || 0;
-        this.nextPage = response.next || null;
-        this.previousPage = response.previous || null;
-      } catch(e) { console.error(e); }
+        const params = { page: this.currentPage, page_size: this.pageSize, search: this.searchQuery };
+        if (this.actionFilter) params.action = this.actionFilter;
+        const res = await this.$apiGet('/inventorytransaction', params);
+        this.items = res.data || [];
+        this.count = res.count || 0;
+        this.nextPage = res.next || null;
+        this.previousPage = res.previous || null;
+      } catch (e) { console.error(e); }
       finally { this.loading = false; }
     },
-
     openAddModal() { this.editMode = false; this.selectedItem = null; this.showModal = true; },
-    editItem(item) { this.editMode = true; this.selectedItem = item; this.showModal = true; },
-    
-    // Navigate using static route name
-    viewDetails(id) { 
-      this.$router.push({ name: 'Inventorytransaction-detail', params: { id } });
-    },
-
+    editItem(item) { this.editMode = true; this.selectedItem = { ...item }; this.showModal = true; },
+    viewDetails(id) { this.$router.push({ name: 'Inventorytransaction-detail', params: { id } }); },
     openDeleteModal(id) { this.deleteId = id; this.deleteModalVisible = true; },
-
-    // Delete with toast
     async confirmDelete() {
-      const res = await this.$apiDelete('/inventorytransaction', this.deleteId);
-      if(res) {
-        this.$root.$refs.toast.showToast('Inventorytransaction deleted successfully', 'success');
-      }
-      this.deleteModalVisible = false;
-      this.fetchItems(this.currentPage);
+      try { await this.$apiDelete('/inventorytransaction', this.deleteId); this.fetchItems(this.currentPage); }
+      catch (e) { console.error(e); } finally { this.deleteModalVisible = false; }
+    },
+    actionIconClass(a) {
+      return { stock_in: 'bg-green-100 text-green-600', stock_out: 'bg-red-100 text-red-500', adjustment: 'bg-blue-100 text-blue-500' }[a] || 'bg-gray-100 text-gray-500';
+    },
+    actionIcon(a) {
+      return { stock_in: 'fas fa-arrow-down', stock_out: 'fas fa-arrow-up', adjustment: 'fas fa-sliders' }[a] || 'fas fa-circle';
+    },
+    actionBadgeClass(a) {
+      return { stock_in: 'bg-green-100 text-green-700', stock_out: 'bg-red-100 text-red-600', adjustment: 'bg-blue-100 text-blue-600' }[a] || 'bg-gray-100 text-gray-500';
+    },
+    formatAction(a) {
+      return { stock_in: 'Stock In', stock_out: 'Stock Out', adjustment: 'Adjustment' }[a] || a;
+    },
+    formatDate(ts) {
+      if (!ts) return '—';
+      return new Date(ts).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
     },
   },
-
   mounted() { this.fetchItems(); }
 };
 </script>

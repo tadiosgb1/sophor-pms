@@ -82,20 +82,34 @@ async getOne(req, res) {
         { model: db.User, as: "owner" },
         { model: db.User, as: "createdBy" },
         { model: db.User, as: "updatedBy" },
-        { model: db.SaleDocument, as: "documents" }
+        { model: db.SaleDocument, as: "documents" },
+        {
+          model: db.SalePayment, as: "payments",
+          order: [["createdAt", "DESC"]],
+          include: [
+            { model: db.User, as: "payer",    attributes: ["id", "first_name", "last_name", "phone"] },
+            { model: db.User, as: "verifier", attributes: ["id", "first_name", "last_name"] },
+          ]
+        }
       ]
     });
 
     if (!sale) return res.status(404).json({ error: "Not found" });
 
-    const obj = sale.toJSON();
+    const obj  = sale.toJSON();
     const host = `${req.protocol}://${req.get("host")}`;
 
-    // Fix document URLs
     if (obj.documents && obj.documents.length > 0) {
       obj.documents = obj.documents.map(doc => ({
         ...doc,
         document_url: doc.document_url ? host + "/" + doc.document_url.replace(/\\/g, "/") : null
+      }));
+    }
+
+    if (obj.payments && obj.payments.length > 0) {
+      obj.payments = obj.payments.map(p => ({
+        ...p,
+        screenshot_url: p.screenshot_url ? host + "/" + p.screenshot_url.replace(/\\/g, "/") : null
       }));
     }
 
@@ -119,9 +133,18 @@ async getOne(req, res) {
   async update(req, res) {
     try {
       const body = { ...req.body };
-      
       await Sale.update(body, { where: { id: req.params.id } });
-      const updated = await Sale.findByPk(req.params.id);
+      const updated = await Sale.findByPk(req.params.id, {
+        include: [
+          { model: db.Unit },
+          { model: db.Site },
+          { model: db.User, as: "buyer" },
+          { model: db.User, as: "owner" },
+          { model: db.User, as: "createdBy" },
+          { model: db.User, as: "updatedBy" },
+          { model: db.SaleDocument, as: "documents" }
+        ]
+      });
       res.json(updated);
     } catch (e) {
       res.status(500).json({ error: e.message });

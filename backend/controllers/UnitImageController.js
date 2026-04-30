@@ -65,6 +65,19 @@ module.exports = {
     }
   },
 
+  async getByUnitId(req, res) {
+    try {
+      const images = await UnitImage.findAll({ where: { unit_id: req.params.unit_id } });
+      const host = `${req.protocol}://${req.get("host")}`;
+      const result = images.map(img => {
+        const obj = img.toJSON();
+        if (obj.image_url) obj.image_url = host + "/" + obj.image_url.replace(/\\/g, "/");
+        return obj;
+      });
+      res.json(result);
+    } catch (e) { res.status(500).json({ error: e.message }); }
+  },
+
   async create(req, res) {
     try {
       const body = { ...req.body };

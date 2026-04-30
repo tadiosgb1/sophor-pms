@@ -43,8 +43,13 @@ module.exports = (sequelize, Sequelize) => {
     // 🔥 Add SiteImage relation (this was missing)
     Site.hasMany(db.SiteImage, {
       foreignKey: "site_id",
-      as: "images" // Must match controller include!
+      as: "images"
     });
+
+    Site.hasMany(db.SiteAmenity, { foreignKey: "site_id", as: "siteAmenities" });
+    Site.hasMany(db.MaintenanceRequest, { foreignKey: "site_id", as: "maintenanceRequests" });
+    Site.hasMany(db.Rent, { foreignKey: "site_id", as: "rents" });
+    Site.hasMany(db.Sale, { foreignKey: "site_id", as: "sales" });
   };
 
   return Site;

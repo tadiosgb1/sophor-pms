@@ -1,167 +1,199 @@
-
 <template>
-  <div class="p-6 bg-gray-50 min-h-screen text-sm text-gray-800 relative">
-    <!-- Loading -->
-    <Loading :visible="loading" message="Loading Company..." />
+  <div class="p-6 bg-gray-50 min-h-screen text-sm text-gray-800">
+    <Loading :visible="loading" message="Loading companies..." />
 
-    <!-- Page Header -->
+    <!-- Header -->
     <div class="flex items-center justify-between mb-6 border-b pb-4 border-gray-200">
-      <h1 class="text-lg font-bold text-gray-800">Company</h1>
-      <button v-if="comapnyAdd==true"  @click="openAddModal" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-medium shadow-md flex items-center space-x-1 text-sm">
-        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-        </svg>
-        <span>Add Company</span>
+      <div>
+        <h1 class="text-xl font-bold text-gray-800">Companies</h1>
+        <p class="text-xs text-gray-400 mt-0.5">Manage all registered companies</p>
+      </div>
+      <button
+        @click="openAddModal"
+        class="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-medium shadow transition-colors"
+      >
+        <i class="fas fa-plus text-xs"></i>
+        Add Company
       </button>
     </div>
 
-    <!-- Search + Page Size -->
-    <div v-if="comapnyAdd==true"  class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
-      <input v-model="searchQuery" @input="fetchItems(1)" type="text" placeholder="Search..."
-        class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-      <div class="flex items-center gap-2 text-sm text-gray-600">
-        <label>Show</label>
-        <select v-model="pageSize" @change="fetchItems(1)" class="border border-gray-300 rounded-lg px-2 py-1 text-sm bg-white focus:ring-green-500 focus:border-green-500">
-          <option v-for="size in [5,10,20,50,100]" :key="size" :value="size">{{ size }}</option>
+    <!-- Search + page size -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
+      <div class="relative w-full sm:max-w-xs">
+        <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+        <input
+          v-model="searchQuery"
+          @input="fetchItems(1)"
+          type="text"
+          placeholder="Search by name, email, phone…"
+          class="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
+        />
+      </div>
+      <div class="flex items-center gap-2 text-sm text-gray-500">
+        <span>Show</span>
+        <select
+          v-model="pageSize"
+          @change="fetchItems(1)"
+          class="border border-gray-300 rounded-lg px-2 py-1 text-sm bg-white focus:ring-orange-400"
+        >
+          <option v-for="s in [5, 10, 20, 50]" :key="s" :value="s">{{ s }}</option>
         </select>
         <span>entries</span>
       </div>
     </div>
 
-    <!-- Desktop Table -->
-    <div class="bg-white overflow-hidden rounded-xl border border-gray-200 hidden md:block">
-      <div class="overflow-x-auto">
-        <table class="min-w-full text-sm divide-y divide-gray-200">
-          <thead class="bg-gray-100 text-gray-700 uppercase text-xs font-semibold">
-            <tr>
-              <th class="px-6 py-3 text-left">#</th>
-              <th class="px-6 py-3 text-left">Name</th><th class="px-6 py-3 text-left">Address</th><th class="px-6 py-3 text-left">Latitude</th><th class="px-6 py-3 text-left">Longitude</th><th class="px-6 py-3 text-left">Phone</th><th class="px-6 py-3 text-left">Official_email</th><th class="px-6 py-3 text-left">Website</th><th class="px-6 py-3 text-left">Logo</th><th class="px-6 py-3 text-left">Facebook</th><th class="px-6 py-3 text-left">Instagram</th><th class="px-6 py-3 text-left">Linkedin</th><th class="px-6 py-3 text-left">Twitter</th><th class="px-6 py-3 text-left">Telegram</th><th class="px-6 py-3 text-left">Description</th><th class="px-6 py-3 text-left">Owner_id</th>
-              <th class="px-6 py-3 text-center">Actions</th>
-            </tr>
-          </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
-            <tr v-for="(item, index) in items" :key="item.id" class="hover:bg-green-50 transition duration-150">
-              <td class="px-6 py-4">{{ index + 1 }}</td>
-              <td class="px-6 py-4 whitespace-nowrap">{{ item.name }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.address }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.latitude }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.longitude }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.phone }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.official_email }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.website }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.logo }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.facebook }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.instagram }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.linkedin }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.twitter }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.telegram }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.description }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.owner_id }}</td>
-              <td class="px-6 py-4 text-center space-x-3">
-                <button @click="viewDetails(item.id)" class="text-green-500 hover:text-green-700"><i class="fas fa-eye"></i></button>
-                <button @click="editItem(item)" class="text-blue-500 hover:text-blue-700"><i class="fas fa-edit"></i></button>
-                <button @click="openDeleteModal(item.id)" class="text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button>
-              </td>
-            </tr>
-            <tr v-if="items.length === 0">
-              <td colspan="17" class="text-center py-6 text-gray-400 italic">No data found.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <!-- Table (desktop) -->
+    <div class="hidden md:block bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+      <table class="min-w-full text-sm divide-y divide-gray-100">
+        <thead class="bg-gray-50 text-xs uppercase text-gray-500 font-semibold tracking-wide">
+          <tr>
+            <th class="px-5 py-3 text-left">#</th>
+            <th class="px-5 py-3 text-left">Company</th>
+            <th class="px-5 py-3 text-left">Contact</th>
+            <th class="px-5 py-3 text-left">Address</th>
+            <th class="px-5 py-3 text-left">Website</th>
+            <th class="px-5 py-3 text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+          <tr
+            v-for="(item, index) in items"
+            :key="item.id"
+            class="hover:bg-orange-50 transition-colors"
+          >
+            <td class="px-5 py-3 text-gray-400">{{ (currentPage - 1) * pageSize + index + 1 }}</td>
+
+            <!-- Company name + logo -->
+            <td class="px-5 py-3">
+              <div class="flex items-center gap-3">
+                <img
+                  v-if="item.logo"
+                  :src="item.logo"
+                  class="w-8 h-8 rounded-full object-cover border border-gray-200"
+                  alt="logo"
+                />
+                <div
+                  v-else
+                  class="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-bold text-xs uppercase"
+                >
+                  {{ item.name?.[0] || '?' }}
+                </div>
+                <span class="font-medium text-gray-800">{{ item.name }}</span>
+              </div>
+            </td>
+
+            <!-- Contact -->
+            <td class="px-5 py-3">
+              <div class="text-gray-700">{{ item.phone }}</div>
+              <div class="text-gray-400 text-xs">{{ item.official_email }}</div>
+            </td>
+
+            <!-- Address -->
+            <td class="px-5 py-3 text-gray-600">{{ item.address || '—' }}</td>
+
+            <!-- Website -->
+            <td class="px-5 py-3">
+              <a
+                v-if="item.website"
+                :href="item.website"
+                target="_blank"
+                class="text-orange-500 hover:underline truncate max-w-[140px] block"
+              >{{ item.website }}</a>
+              <span v-else class="text-gray-400">—</span>
+            </td>
+
+            <!-- Actions -->
+            <td class="px-5 py-3 text-center">
+              <div class="flex items-center justify-center gap-3">
+                <button @click="viewDetails(item.id)" title="View" class="text-orange-500 hover:text-orange-700">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button @click="editItem(item)" title="Edit" class="text-blue-500 hover:text-blue-700">
+                  <i class="fas fa-pen"></i>
+                </button>
+                <button @click="openDeleteModal(item.id)" title="Delete" class="text-red-400 hover:text-red-600">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+
+          <tr v-if="items.length === 0 && !loading">
+            <td colspan="6" class="text-center py-10 text-gray-400 italic">No companies found.</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
-    <!-- Mobile Cards -->
-    <div class="md:hidden space-y-4">
-      <div v-for="(item, index) in items" :key="item.id" class="bg-white border border-gray-200 rounded-xl shadow p-4">
-        <div class="flex justify-between mb-3">
-          <h2 class="font-bold text-gray-800">Company #{{ index + 1 }}</h2>
+    <!-- Mobile cards -->
+    <div class="md:hidden space-y-3">
+      <div
+        v-for="item in items"
+        :key="item.id"
+        class="bg-white border border-gray-200 rounded-xl shadow-sm p-4"
+      >
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-3">
+            <img
+              v-if="item.logo"
+              :src="item.logo"
+              class="w-9 h-9 rounded-full object-cover border"
+              alt="logo"
+            />
+            <div
+              v-else
+              class="w-9 h-9 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-bold text-sm uppercase"
+            >
+              {{ item.name?.[0] || '?' }}
+            </div>
+            <span class="font-semibold text-gray-800">{{ item.name }}</span>
+          </div>
           <div class="flex gap-3 text-sm">
-            <button @click="viewDetails(item.id)" class="text-green-500 hover:text-green-700"><i class="fas fa-eye"></i></button>
-            <button @click="editItem(item)" class="text-blue-500 hover:text-blue-700"><i class="fas fa-edit"></i></button>
-            <button @click="openDeleteModal(item.id)" class="text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button>
+            <button @click="viewDetails(item.id)" class="text-orange-500"><i class="fas fa-eye"></i></button>
+            <button @click="editItem(item)" class="text-blue-500"><i class="fas fa-pen"></i></button>
+            <button @click="openDeleteModal(item.id)" class="text-red-400"><i class="fas fa-trash"></i></button>
           </div>
         </div>
-        <div class="grid grid-cols-2 gap-y-1 text-sm text-gray-700">
-          
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">Name:</span>
-              {{ item.name }}
-            </div>
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">Address:</span>
-              {{ item.address }}
-            </div>
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">Latitude:</span>
-              {{ item.latitude }}
-            </div>
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">Longitude:</span>
-              {{ item.longitude }}
-            </div>
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">Phone:</span>
-              {{ item.phone }}
-            </div>
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">Official_email:</span>
-              {{ item.official_email }}
-            </div>
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">Website:</span>
-              {{ item.website }}
-            </div>
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">Logo:</span>
-              {{ item.logo }}
-            </div>
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">Facebook:</span>
-              {{ item.facebook }}
-            </div>
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">Instagram:</span>
-              {{ item.instagram }}
-            </div>
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">Linkedin:</span>
-              {{ item.linkedin }}
-            </div>
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">Twitter:</span>
-              {{ item.twitter }}
-            </div>
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">Telegram:</span>
-              {{ item.telegram }}
-            </div>
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">Description:</span>
-              {{ item.description }}
-            </div>
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">Owner_id:</span>
-              {{ item.owner_id }}
-            </div>
+        <div class="text-xs text-gray-500 space-y-1">
+          <div><i class="fas fa-phone w-4 text-gray-400"></i> {{ item.phone || '—' }}</div>
+          <div><i class="fas fa-envelope w-4 text-gray-400"></i> {{ item.official_email || '—' }}</div>
+          <div><i class="fas fa-map-marker-alt w-4 text-gray-400"></i> {{ item.address || '—' }}</div>
         </div>
       </div>
-      <p v-if="items.length === 0" class="text-center text-gray-400 py-6 italic">No data found.</p>
+      <p v-if="items.length === 0 && !loading" class="text-center text-gray-400 py-8 italic">No companies found.</p>
     </div>
 
     <!-- Pagination -->
-    <div  v-if="comapnyAdd==true"  class="flex items-center justify-between mt-6 text-sm text-gray-600">
+    <div class="flex items-center justify-between mt-5 text-xs text-gray-500">
       <span>
-        Showing {{ (currentPage - 1) * pageSize + 1 }} 
-        to {{ Math.min(currentPage * pageSize, count) }} 
-        of {{ count }} total entries
+        Showing {{ items.length ? (currentPage - 1) * pageSize + 1 : 0 }}–{{ Math.min(currentPage * pageSize, count) }}
+        of {{ count }} entries
       </span>
       <div class="flex items-center gap-2">
-        <button @click="fetchItems(currentPage - 1)" :disabled="!previousPage"
-          class="px-3 py-1 border border-gray-300 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition duration-150">← Previous</button>
-        <span class="px-3 py-1 bg-green-600 text-white rounded-lg font-medium">{{ currentPage }}</span>
-        <button @click="fetchItems(currentPage + 1)" :disabled="!nextPage"
-          class="px-3 py-1 border border-gray-300 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition duration-150">Next →</button>
+        <button
+          @click="fetchItems(currentPage - 1)"
+          :disabled="!previousPage"
+          class="px-3 py-1.5 border rounded-lg hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed"
+        >← Prev</button>
+        <span class="px-3 py-1.5 bg-orange-500 text-white rounded-lg font-semibold">{{ currentPage }}</span>
+        <button
+          @click="fetchItems(currentPage + 1)"
+          :disabled="!nextPage"
+          class="px-3 py-1.5 border rounded-lg hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed"
+        >Next →</button>
       </div>
     </div>
 
-    <!-- Add/Edit Modal -->
-    <add-company v-if="showModal && !editMode" :data="selectedItem" @close="showModal=false" @saved="fetchItems"/>
-    <edit-company v-if="showModal && editMode" :data="selectedItem" @close="showModal=false" @saved="fetchItems"/>
+    <!-- Modals -->
+    <add-company v-if="showModal && !editMode" @close="showModal = false" @saved="fetchItems" />
+    <edit-company v-if="showModal && editMode" :data="selectedItem" @close="showModal = false" @saved="fetchItems" />
 
-    <!-- Delete Confirmation Modal -->
-    <delete-confirm-modal 
+    <delete-confirm-modal
       :visible="deleteModalVisible"
       title="Delete Company"
-      message="Are you sure you want to delete this Company?"
+      message="Are you sure you want to delete this company? This action cannot be undone."
       @confirm="confirmDelete"
-      @cancel="deleteModalVisible=false"
+      @cancel="deleteModalVisible = false"
     />
   </div>
 </template>
@@ -197,38 +229,58 @@ export default {
     async fetchItems(page = 1) {
       this.loading = true;
       this.currentPage = page;
-      const params = { page: this.currentPage, page_size: this.pageSize, search: this.searchQuery };
       try {
-        const response = await this.$apiGet('/company', params);
-        this.items = response.data;
-        this.count = response.count || 0;
-        this.nextPage = response.next || null;
-        this.previousPage = response.previous || null;
-      } catch(e) { console.error(e); }
-      finally { this.loading = false; }
-    },
-
-    openAddModal() { this.editMode = false; this.selectedItem = null; this.showModal = true; },
-    editItem(item) { this.editMode = true; this.selectedItem = item; this.showModal = true; },
-    
-    // Navigate using static route name
-    viewDetails(id) { 
-      this.$router.push({ name: 'Company-detail', params: { id } });
-    },
-
-    openDeleteModal(id) { this.deleteId = id; this.deleteModalVisible = true; },
-
-    // Delete with toast
-    async confirmDelete() {
-      const res = await this.$apiDelete('/company', this.deleteId);
-      if(res) {
-        this.$root.$refs.toast.showToast('Company deleted successfully', 'success');
+        const res = await this.$apiGet("/company", {
+          page: this.currentPage,
+          page_size: this.pageSize,
+          search: this.searchQuery,
+        });
+        this.items = res.data || [];
+        this.count = res.count || 0;
+        this.nextPage = res.next || null;
+        this.previousPage = res.previous || null;
+      } catch (e) {
+        console.error("fetchItems error:", e);
+      } finally {
+        this.loading = false;
       }
-      this.deleteModalVisible = false;
-      this.fetchItems(this.currentPage);
+    },
+
+    openAddModal() {
+      this.editMode = false;
+      this.selectedItem = null;
+      this.showModal = true;
+    },
+
+    editItem(item) {
+      this.editMode = true;
+      this.selectedItem = { ...item };
+      this.showModal = true;
+    },
+
+    viewDetails(id) {
+      this.$router.push({ name: "Company-detail", params: { id } });
+    },
+
+    openDeleteModal(id) {
+      this.deleteId = id;
+      this.deleteModalVisible = true;
+    },
+
+    async confirmDelete() {
+      try {
+        await this.$apiDelete("/company", this.deleteId);
+        this.fetchItems(this.currentPage);
+      } catch (e) {
+        console.error("delete error:", e);
+      } finally {
+        this.deleteModalVisible = false;
+      }
     },
   },
 
-  mounted() { this.fetchItems(); }
+  mounted() {
+    this.fetchItems();
+  },
 };
 </script>

@@ -1,147 +1,183 @@
-
 <template>
-  <div class="p-6 bg-gray-50 min-h-screen text-sm text-gray-800 relative">
-    <!-- Loading -->
-    <Loading :visible="loading" message="Loading Sale..." />
+  <div class="p-6 bg-gray-50 min-h-screen text-sm text-gray-800">
+    <Loading :visible="loading" message="Loading sales..." />
 
-    <!-- Page Header -->
+    <!-- Header -->
     <div class="flex items-center justify-between mb-6 border-b pb-4 border-gray-200">
-      <h1 class="text-lg font-bold text-gray-800">Sale</h1>
-      <button @click="openAddModal" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-medium shadow-md flex items-center space-x-1 text-sm">
-        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-        </svg>
-        <span>Add Sale</span>
+      <div>
+        <h1 class="text-xl font-bold text-gray-800">Sales</h1>
+        <p class="text-xs text-gray-400 mt-0.5">All property sale transactions</p>
+      </div>
+      <button @click="openAddModal"
+        class="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-medium shadow transition-colors">
+        <i class="fas fa-plus text-xs"></i> New Sale
       </button>
     </div>
 
-    <!-- Search + Page Size -->
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
-      <input v-model="searchQuery" @input="fetchItems(1)" type="text" placeholder="Search..."
-        class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-full sm:max-w-xs focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition duration-150" />
-      <div class="flex items-center gap-2 text-sm text-gray-600">
-        <label>Show</label>
-        <select v-model="pageSize" @change="fetchItems(1)" class="border border-gray-300 rounded-lg px-2 py-1 text-sm bg-white focus:ring-green-500 focus:border-green-500">
-          <option v-for="size in [5,10,20,50,100]" :key="size" :value="size">{{ size }}</option>
+    <!-- Summary cards -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-5">
+      <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
+        <p class="text-xs text-gray-400">Total Sales</p>
+        <p class="text-2xl font-bold text-gray-800 mt-1">{{ count }}</p>
+      </div>
+      <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
+        <p class="text-xs text-gray-400">Completed</p>
+        <p class="text-2xl font-bold text-green-600 mt-1">{{ items.filter(i=>i.status==='completed').length }}</p>
+      </div>
+      <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
+        <p class="text-xs text-gray-400">Pending</p>
+        <p class="text-2xl font-bold text-yellow-500 mt-1">{{ items.filter(i=>i.status==='pending').length }}</p>
+      </div>
+      <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
+        <p class="text-xs text-gray-400">Total Revenue</p>
+        <p class="text-lg font-bold text-orange-500 mt-1">ETB {{ totalRevenue }}</p>
+      </div>
+    </div>
+
+    <!-- Search + status filter + page size -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
+      <div class="flex items-center gap-2 flex-1">
+        <div class="relative w-full sm:max-w-xs">
+          <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+          <input v-model="searchQuery" @input="fetchItems(1)" type="text"
+            placeholder="Search by status, notes…"
+            class="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-400" />
+        </div>
+        <select v-model="statusFilter" @change="fetchItems(1)"
+          class="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:ring-orange-400">
+          <option value="">All Statuses</option>
+          <option value="pending">Pending</option>
+          <option value="completed">Completed</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+      </div>
+      <div class="flex items-center gap-2 text-sm text-gray-500">
+        <span>Show</span>
+        <select v-model="pageSize" @change="fetchItems(1)"
+          class="border border-gray-300 rounded-lg px-2 py-1 text-sm bg-white">
+          <option v-for="s in [5,10,20,50]" :key="s" :value="s">{{ s }}</option>
         </select>
         <span>entries</span>
       </div>
     </div>
 
-    <!-- Desktop Table -->
-    <div class="bg-white overflow-hidden rounded-xl border border-gray-200 hidden md:block">
-      <div class="overflow-x-auto">
-        <table class="min-w-full text-sm divide-y divide-gray-200">
-          <thead class="bg-gray-100 text-gray-700 uppercase text-xs font-semibold">
-            <tr>
-              <th class="px-6 py-3 text-left">#</th>
-              <th class="px-6 py-3 text-left">Unit_id</th><th class="px-6 py-3 text-left">Site_id</th><th class="px-6 py-3 text-left">Buyer_id</th><th class="px-6 py-3 text-left">Sale_price</th><th class="px-6 py-3 text-left">Sale_date</th><th class="px-6 py-3 text-left">Status</th><th class="px-6 py-3 text-left">Notes</th><th class="px-6 py-3 text-left">Owner_id</th><th class="px-6 py-3 text-left">Created_by</th><th class="px-6 py-3 text-left">Updated_by</th>
-              <th class="px-6 py-3 text-center">Actions</th>
-            </tr>
-          </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
-            <tr v-for="(item, index) in items" :key="item.id" class="hover:bg-green-50 transition duration-150">
-              <td class="px-6 py-4">{{ index + 1 }}</td>
-              <td class="px-6 py-4 whitespace-nowrap">{{ item.unit_id }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.site_id }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.buyer_id }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.sale_price }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.sale_date }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.status }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.notes }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.owner_id }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.created_by }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.updated_by }}</td>
-              <td class="px-6 py-4 text-center space-x-3">
-                <button @click="viewDetails(item.id)" class="text-green-500 hover:text-green-700"><i class="fas fa-eye"></i></button>
-                <button @click="editItem(item)" class="text-blue-500 hover:text-blue-700"><i class="fas fa-edit"></i></button>
-                <button @click="openDeleteModal(item.id)" class="text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button>
-              </td>
-            </tr>
-            <tr v-if="items.length === 0">
-              <td colspan="12" class="text-center py-6 text-gray-400 italic">No data found.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <!-- Table (desktop) -->
+    <div class="hidden md:block bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+      <table class="min-w-full text-sm divide-y divide-gray-100">
+        <thead class="bg-gray-50 text-xs uppercase text-gray-500 font-semibold tracking-wide">
+          <tr>
+            <th class="px-5 py-3 text-left">#</th>
+            <th class="px-5 py-3 text-left">Unit</th>
+            <th class="px-5 py-3 text-left">Site</th>
+            <th class="px-5 py-3 text-left">Buyer</th>
+            <th class="px-5 py-3 text-right">Sale Price</th>
+            <th class="px-5 py-3 text-left">Sale Date</th>
+            <th class="px-5 py-3 text-left">Status</th>
+            <th class="px-5 py-3 text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+          <tr v-for="(item, index) in items" :key="item.id" class="hover:bg-orange-50 transition-colors">
+            <td class="px-5 py-3 text-gray-400">{{ (currentPage-1)*pageSize + index + 1 }}</td>
+
+            <!-- Unit -->
+            <td class="px-5 py-3">
+              <div class="flex items-center gap-2">
+                <div class="w-7 h-7 rounded-lg bg-teal-100 flex items-center justify-center text-teal-600 shrink-0">
+                  <i class="fas fa-door-open text-xs"></i>
+                </div>
+                <div>
+                  <p class="font-medium text-gray-800">{{ item.Unit?.name || '—' }}</p>
+                  <p class="text-xs text-gray-400">{{ item.Unit?.house_number ? '#' + item.Unit.house_number : '' }}</p>
+                </div>
+              </div>
+            </td>
+
+            <!-- Site -->
+            <td class="px-5 py-3 text-gray-600">{{ item.Site?.name || '—' }}</td>
+
+            <!-- Buyer -->
+            <td class="px-5 py-3">
+              <div v-if="item.buyer" class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 text-xs font-bold shrink-0">
+                  {{ item.buyer.first_name?.[0] }}
+                </div>
+                <span class="text-gray-700 text-xs">{{ item.buyer.first_name }} {{ item.buyer.last_name }}</span>
+              </div>
+              <span v-else class="text-gray-400">—</span>
+            </td>
+
+            <!-- Price -->
+            <td class="px-5 py-3 text-right font-semibold text-gray-800">
+              ETB {{ Number(item.sale_price).toLocaleString() }}
+            </td>
+
+            <!-- Date -->
+            <td class="px-5 py-3 text-gray-600">{{ formatDate(item.sale_date) }}</td>
+
+            <!-- Status -->
+            <td class="px-5 py-3">
+              <span :class="statusBadge(item.status)" class="px-2 py-0.5 rounded-full text-xs font-medium capitalize">
+                {{ item.status }}
+              </span>
+            </td>
+
+            <!-- Actions -->
+            <td class="px-5 py-3 text-center">
+              <div class="flex items-center justify-center gap-3">
+                <button @click="viewDetails(item.id)" class="text-orange-500 hover:text-orange-700"><i class="fas fa-eye"></i></button>
+                <button @click="editItem(item)" class="text-blue-500 hover:text-blue-700"><i class="fas fa-pen"></i></button>
+                <button @click="openDeleteModal(item.id)" class="text-red-400 hover:text-red-600"><i class="fas fa-trash"></i></button>
+              </div>
+            </td>
+          </tr>
+          <tr v-if="items.length === 0 && !loading">
+            <td colspan="8" class="text-center py-10 text-gray-400 italic">No sales found.</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
-    <!-- Mobile Cards -->
-    <div class="md:hidden space-y-4">
-      <div v-for="(item, index) in items" :key="item.id" class="bg-white border border-gray-200 rounded-xl shadow p-4">
-        <div class="flex justify-between mb-3">
-          <h2 class="font-bold text-gray-800">Sale #{{ index + 1 }}</h2>
+    <!-- Mobile cards -->
+    <div class="md:hidden space-y-3">
+      <div v-for="item in items" :key="item.id" class="bg-white border border-gray-200 rounded-xl shadow-sm p-4">
+        <div class="flex items-center justify-between mb-2">
+          <div>
+            <p class="font-semibold text-gray-800">{{ item.Unit?.name || 'Unit —' }}</p>
+            <p class="text-xs text-gray-400">{{ item.Site?.name || '—' }}</p>
+          </div>
           <div class="flex gap-3 text-sm">
-            <button @click="viewDetails(item.id)" class="text-green-500 hover:text-green-700"><i class="fas fa-eye"></i></button>
-            <button @click="editItem(item)" class="text-blue-500 hover:text-blue-700"><i class="fas fa-edit"></i></button>
-            <button @click="openDeleteModal(item.id)" class="text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button>
+            <button @click="viewDetails(item.id)" class="text-orange-500"><i class="fas fa-eye"></i></button>
+            <button @click="editItem(item)" class="text-blue-500"><i class="fas fa-pen"></i></button>
+            <button @click="openDeleteModal(item.id)" class="text-red-400"><i class="fas fa-trash"></i></button>
           </div>
         </div>
-        <div class="grid grid-cols-2 gap-y-1 text-sm text-gray-700">
-          
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">Unit_id:</span>
-              {{ item.unit_id }}
-            </div>
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">Site_id:</span>
-              {{ item.site_id }}
-            </div>
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">Buyer_id:</span>
-              {{ item.buyer_id }}
-            </div>
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">Sale_price:</span>
-              {{ item.sale_price }}
-            </div>
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">Sale_date:</span>
-              {{ item.sale_date }}
-            </div>
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">Status:</span>
-              {{ item.status }}
-            </div>
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">Notes:</span>
-              {{ item.notes }}
-            </div>
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">Owner_id:</span>
-              {{ item.owner_id }}
-            </div>
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">Created_by:</span>
-              {{ item.created_by }}
-            </div>
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">Updated_by:</span>
-              {{ item.updated_by }}
-            </div>
+        <div class="flex items-center justify-between text-xs text-gray-500">
+          <span>{{ item.buyer?.first_name }} {{ item.buyer?.last_name }}</span>
+          <span class="font-semibold text-gray-800">ETB {{ Number(item.sale_price).toLocaleString() }}</span>
+          <span :class="statusBadge(item.status)" class="px-2 py-0.5 rounded-full text-xs font-medium capitalize">{{ item.status }}</span>
         </div>
       </div>
-      <p v-if="items.length === 0" class="text-center text-gray-400 py-6 italic">No data found.</p>
+      <p v-if="items.length === 0 && !loading" class="text-center text-gray-400 py-8 italic">No sales found.</p>
     </div>
 
     <!-- Pagination -->
-    <div class="flex items-center justify-between mt-6 text-sm text-gray-600">
-      <span>
-        Showing {{ (currentPage - 1) * pageSize + 1 }} 
-        to {{ Math.min(currentPage * pageSize, count) }} 
-        of {{ count }} total entries
-      </span>
+    <div class="flex items-center justify-between mt-5 text-xs text-gray-500">
+      <span>Showing {{ items.length ? (currentPage-1)*pageSize+1 : 0 }}–{{ Math.min(currentPage*pageSize, count) }} of {{ count }}</span>
       <div class="flex items-center gap-2">
-        <button @click="fetchItems(currentPage - 1)" :disabled="!previousPage"
-          class="px-3 py-1 border border-gray-300 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition duration-150">← Previous</button>
-        <span class="px-3 py-1 bg-green-600 text-white rounded-lg font-medium">{{ currentPage }}</span>
-        <button @click="fetchItems(currentPage + 1)" :disabled="!nextPage"
-          class="px-3 py-1 border border-gray-300 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition duration-150">Next →</button>
+        <button @click="fetchItems(currentPage-1)" :disabled="!previousPage"
+          class="px-3 py-1.5 border rounded-lg hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed">← Prev</button>
+        <span class="px-3 py-1.5 bg-orange-500 text-white rounded-lg font-semibold">{{ currentPage }}</span>
+        <button @click="fetchItems(currentPage+1)" :disabled="!nextPage"
+          class="px-3 py-1.5 border rounded-lg hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed">Next →</button>
       </div>
     </div>
 
-    <!-- Add/Edit Modal -->
-    <add-sale v-if="showModal && !editMode" :data="selectedItem" @close="showModal=false" @saved="fetchItems"/>
-    <edit-sale v-if="showModal && editMode" :data="selectedItem" @close="showModal=false" @saved="fetchItems"/>
-    <!-- Delete Confirmation Modal -->
-    <delete-confirm-modal 
-      :visible="deleteModalVisible"
-      title="Delete Sale"
-      message="Are you sure you want to delete this Sale?"
-      @confirm="confirmDelete"
-      @cancel="deleteModalVisible=false"
-    />
+    <add-sale v-if="showModal && !editMode" @close="showModal=false" @saved="fetchItems" />
+    <edit-sale v-if="showModal && editMode" :data="selectedItem" @close="showModal=false" @saved="fetchItems" />
+    <delete-confirm-modal :visible="deleteModalVisible" title="Delete Sale"
+      message="Are you sure you want to delete this sale?"
+      @confirm="confirmDelete" @cancel="deleteModalVisible=false" />
   </div>
 </template>
 
@@ -150,64 +186,54 @@ import AddSale from "./AddSale.vue";
 import EditSale from "./EditSale.vue";
 import Loading from "@/components/Loading.vue";
 import DeleteConfirmModal from "@/components/DeleteConfirmModal.vue";
+
 export default {
   components: { AddSale, EditSale, Loading, DeleteConfirmModal },
-
   data() {
     return {
-      items: [],
-      count: 0,
-      nextPage: null,
-      previousPage: null,
-      currentPage: 1,
-      pageSize: 10,
-      searchQuery: "",
-      showModal: false,
-      editMode: false,
-      selectedItem: null,
-      loading: false,
-      deleteModalVisible: false,
-      deleteId: null,
+      items: [], count: 0, nextPage: null, previousPage: null,
+      currentPage: 1, pageSize: 10, searchQuery: "", statusFilter: "",
+      showModal: false, editMode: false, selectedItem: null,
+      loading: false, deleteModalVisible: false, deleteId: null,
     };
   },
-
+  computed: {
+    totalRevenue() {
+      return this.items.filter(i => i.status === 'completed')
+        .reduce((s, i) => s + Number(i.sale_price || 0), 0).toLocaleString();
+    },
+  },
   methods: {
     async fetchItems(page = 1) {
       this.loading = true;
       this.currentPage = page;
-      const params = { page: this.currentPage, page_size: this.pageSize, search: this.searchQuery };
       try {
-        const response = await this.$apiGet('/sale', params);
-        this.items = response.data;
-        this.count = response.count || 0;
-        this.nextPage = response.next || null;
-        this.previousPage = response.previous || null;
-      } catch(e) { console.error(e); }
+        const params = { page: this.currentPage, page_size: this.pageSize, search: this.searchQuery };
+        if (this.statusFilter) params.status = this.statusFilter;
+        const res = await this.$apiGet('/sale', params);
+        this.items = res.data || [];
+        this.count = res.count || 0;
+        this.nextPage = res.next || null;
+        this.previousPage = res.previous || null;
+      } catch (e) { console.error(e); }
       finally { this.loading = false; }
     },
-
     openAddModal() { this.editMode = false; this.selectedItem = null; this.showModal = true; },
-    editItem(item) { this.editMode = true; this.selectedItem = item; this.showModal = true; },
-    
-    // Navigate using static route name
-    viewDetails(id) { 
-     
-      this.$router.push({ name: 'Sale-detail', params: { id } });
-    },
-
+    editItem(item) { this.editMode = true; this.selectedItem = { ...item }; this.showModal = true; },
+    viewDetails(id) { this.$router.push({ name: 'Sale-detail', params: { id } }); },
     openDeleteModal(id) { this.deleteId = id; this.deleteModalVisible = true; },
-
-    // Delete with toast
     async confirmDelete() {
-      const res = await this.$apiDelete('/sale', this.deleteId);
-      if(res) {
-        this.$root.$refs.toast.showToast('Sale deleted successfully', 'success');
-      }
-      this.deleteModalVisible = false;
-      this.fetchItems(this.currentPage);
+      try { await this.$apiDelete('/sale', this.deleteId); this.fetchItems(this.currentPage); }
+      catch (e) { console.error(e); } finally { this.deleteModalVisible = false; }
+    },
+    statusBadge(s) {
+      return { completed: 'bg-green-100 text-green-700', pending: 'bg-yellow-100 text-yellow-700', cancelled: 'bg-red-100 text-red-600' }[s] || 'bg-gray-100 text-gray-500';
+    },
+    formatDate(ts) {
+      if (!ts) return '—';
+      return new Date(ts).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
     },
   },
-
   mounted() { this.fetchItems(); }
 };
 </script>

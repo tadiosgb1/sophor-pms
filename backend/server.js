@@ -8,9 +8,12 @@ const { Server } = require("socket.io");
 const cors = require("cors");
 
 // Property routes
+const maintenanceRoutes = require('./routes/maintenanceRoutes.js');
 const rentdocumentRoutes = require('./routes/rentdocumentRoutes.js');
+const rentpaymentRoutes = require('./routes/rentpaymentRoutes.js');
 const rentRoutes = require('./routes/rentRoutes.js');
 const saledocumentRoutes = require('./routes/saledocumentRoutes.js');
+const salepaymentRoutes = require('./routes/salepaymentRoutes.js');
 const saleRoutes = require('./routes/saleRoutes.js');
 const unitimageRoutes = require('./routes/unitimageRoutes.js');
 const typeRoutes = require('./routes/typeRoutes.js');
@@ -55,39 +58,39 @@ const PORT = process.env.PORT || 5000;
 /* -------------------------------------------------------------------------- */
 
 const ChatController = {
-  /** FIXED: Works in MySQL with clean JOIN */
+  /**
+   * Find or create a private 1-on-1 room between two users.
+   * Uses raw SQL to avoid the broken Sequelize GROUP BY / HAVING approach.
+   */
   async getOrCreateRoom(user1, user2) {
     const id1 = parseInt(user1);
     const id2 = parseInt(user2);
 
-    const room = await ChatRoom.findOne({
-      where: { isGroup: false },
-      include: [
-        {
-          model: UserRoom,
-          where: { userId: [id1, id2] },
-          required: true
-        }
-      ],
-      group: ["ChatRoom.id"],
-      having: db.sequelize.literal(
-        `COUNT(UserRooms.userId) = 2`
-      )
-    });
+    const [rows] = await db.sequelize.query(
+      `SELECT r.id
+       FROM ChatRooms r
+       WHERE r.isGroup = false
+         AND EXISTS (SELECT 1 FROM UserRooms ur WHERE ur.roomId = r.id AND ur.userId = :u1)
+         AND EXISTS (SELECT 1 FROM UserRooms ur WHERE ur.roomId = r.id AND ur.userId = :u2)
+       LIMIT 1`,
+      { replacements: { u1: id1, u2: id2 } }
+    );
 
-    if (room) return room;
+    if (rows.length > 0) {
+      return ChatRoom.findByPk(rows[0].id);
+    }
 
-    // Create room
-    const newRoom = await ChatRoom.create({ isGroup: false });
-
+    const room = await ChatRoom.create({ isGroup: false });
     await UserRoom.bulkCreate([
-      { userId: id1, roomId: newRoom.id },
-      { userId: id2, roomId: newRoom.id }
+      { userId: id1, roomId: room.id },
+      { userId: id2, roomId: room.id }
     ]);
-
-    return newRoom;
+    return room;
   },
 
+  /**
+   * Persist a message and push it to both participants via their socket IDs.
+   */
   async sendMessage(io, senderId, receiverId, message) {
     const room = await this.getOrCreateRoom(senderId, receiverId);
 
@@ -98,17 +101,20 @@ const ChatController = {
       message
     });
 
-    // Emit to receiver
-    const receivers = await UserOnline.findAll({ where: { userId: receiverId } });
-    receivers.forEach(s => io.to(s.socketId).emit("receive_message", chat));
+    const plain = chat.toJSON();
 
-    // Emit back to sender
-    const senders = await UserOnline.findAll({ where: { userId: senderId } });
-    senders.forEach(s => io.to(s.socketId).emit("receive_message", chat));
+    // Deliver to every active socket of receiver and sender
+    const targets = await UserOnline.findAll({
+      where: { userId: [senderId, receiverId] }
+    });
+    targets.forEach(t => io.to(t.socketId).emit("receive_message", plain));
 
-    return chat;
+    return plain;
   },
 
+  /**
+   * Return full message history for a conversation, oldest first.
+   */
   async getRoomMessages(user1, user2) {
     const room = await this.getOrCreateRoom(user1, user2);
     return ChatMessage.findAll({
@@ -125,15 +131,7 @@ const ChatController = {
 async function syncAndStart() {
   try {
     await db.sequelize.query("SET FOREIGN_KEY_CHECKS = 0");
-
-    // await db.User.sync();
-    // await ChatRoom.sync();
-    // await UserRoom.sync();
-    // await ChatMessage.sync();
-    // await UserOnline.sync();
-//      await db.Expense.sync();
-//     await db.InventoryItem.sync();
-// await db.InventoryTransaction.sync();
+    await db.sequelize.sync({ alter: true });
     await db.sequelize.query("SET FOREIGN_KEY_CHECKS = 1");
 
     await seed();
@@ -142,39 +140,55 @@ async function syncAndStart() {
     const io = new Server(server, { cors: { origin: "*" } });
 
     io.on("connection", (socket) => {
-      console.log("User connected:", socket.id);
+      console.log("Socket connected:", socket.id);
 
+      // Register user as online
       socket.on("user_online", async (userId) => {
-        await UserOnline.upsert({ userId, socketId: socket.id });
-        const users = await UserOnline.findAll();
-        io.emit("update_online", users.map(u => u.userId));
+        try {
+          await UserOnline.upsert({ userId: parseInt(userId), socketId: socket.id });
+          const online = await UserOnline.findAll();
+          io.emit("update_online", online.map(u => u.userId));
+        } catch (e) { console.error("user_online error:", e.message); }
       });
 
-      socket.on("typing", async ({ senderId, receiverId }) => {
-        const receivers = await UserOnline.findAll({ where: { userId: receiverId } });
-        receivers.forEach(s =>
-          io.to(s.socketId).emit("user_typing", { userId: senderId })
-        );
-      });
-
-      socket.on("send_message", async ({ senderId, receiverId, message }) => {
-        await ChatController.sendMessage(io, senderId, receiverId, message);
-      });
-
+      // Join the private room socket channel
       socket.on("join_room", async ({ user1, user2 }) => {
-        const room = await ChatController.getOrCreateRoom(user1, user2);
-        socket.join(String(room.id));
+        try {
+          const room = await ChatController.getOrCreateRoom(user1, user2);
+          socket.join(String(room.id));
+        } catch (e) { console.error("join_room error:", e.message); }
       });
 
+      // Send a message
+      socket.on("send_message", async ({ senderId, receiverId, message }) => {
+        try {
+          await ChatController.sendMessage(io, senderId, receiverId, message);
+        } catch (e) { console.error("send_message error:", e.message); }
+      });
+
+      // Typing indicator
+      socket.on("typing", async ({ senderId, receiverId }) => {
+        try {
+          const targets = await UserOnline.findAll({ where: { userId: receiverId } });
+          targets.forEach(t =>
+            io.to(t.socketId).emit("user_typing", { userId: senderId })
+          );
+        } catch (e) { console.error("typing error:", e.message); }
+      });
+
+      // Cleanup on disconnect
       socket.on("disconnect", async () => {
-        await UserOnline.destroy({ where: { socketId: socket.id } });
-        const users = await UserOnline.findAll();
-        io.emit("update_online", users.map(u => u.userId));
+        try {
+          await UserOnline.destroy({ where: { socketId: socket.id } });
+          const online = await UserOnline.findAll();
+          io.emit("update_online", online.map(u => u.userId));
+          console.log("Socket disconnected:", socket.id);
+        } catch (e) { console.error("disconnect error:", e.message); }
       });
     });
 
-    // Get chat history
-    app.get("/api/chat/room/:user1/:user2", async (req, res) => {
+    // ── Chat REST endpoint ──────────────────────────────────────────────────
+    app.get("/api/chat/history/:user1/:user2", async (req, res) => {
       try {
         const messages = await ChatController.getRoomMessages(
           req.params.user1,
@@ -182,8 +196,8 @@ async function syncAndStart() {
         );
         res.json(messages);
       } catch (e) {
-        console.error(e);
-        res.status(500).json({ error: "Server error" });
+        console.error("chat history error:", e.message);
+        res.status(500).json({ error: "Failed to load messages" });
       }
     });
 
@@ -197,9 +211,12 @@ async function syncAndStart() {
     app.use("/api/unitimage", unitimageRoutes);
     app.use("/api/sale", saleRoutes);
     app.use("/api/saledocument", saledocumentRoutes);
+    app.use("/api/salepayment", salepaymentRoutes);
     app.use("/api/rent", rentRoutes);
     app.use("/api/rentdocument", rentdocumentRoutes);
+    app.use("/api/rentpayment", rentpaymentRoutes);
 // Expense and Inventory routes
+    app.use("/api/maintenance", maintenanceRoutes);
     app.use("/api/expense", expenseRoutes);
     app.use("/api/inventoryitem", inventoryitemRoutes);
     app.use("/api/inventorytransaction", inventorytransactionRoutes);

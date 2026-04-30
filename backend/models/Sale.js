@@ -27,6 +27,7 @@ module.exports = (sequelize, Sequelize) => {
 
     // SaleDocument association
     Sale.hasMany(db.SaleDocument, { foreignKey: "sale_id", as: "documents" });
+    Sale.hasMany(db.SalePayment,  { foreignKey: "sale_id", as: "payments" });
   };
 
   return Sale;

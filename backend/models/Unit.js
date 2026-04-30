@@ -34,6 +34,10 @@ module.exports = (sequelize, Sequelize) => {
 
     // Unit has many images
     Unit.hasMany(db.UnitImage, { as: "images", foreignKey: "unit_id" });
+
+    Unit.hasMany(db.MaintenanceRequest, { foreignKey: "unit_id", as: "maintenanceRequests" });
+    Unit.hasMany(db.Rent, { foreignKey: "unit_id", as: "rents" });
+    Unit.hasMany(db.Sale, { foreignKey: "unit_id", as: "sales" });
   };
 
   return Unit;

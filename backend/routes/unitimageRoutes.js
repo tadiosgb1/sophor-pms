@@ -7,6 +7,7 @@ const uploadFields = upload.fields([{ name: "image_url", maxCount: 1 }]);
 
 
 router.get("/", controller.getAll);
+router.get("/by-unit/:unit_id", controller.getByUnitId);
 router.get("/:id", controller.getOne);
 router.post("/", uploadFields, controller.create);
 router.put("/:id", uploadFields, controller.update);

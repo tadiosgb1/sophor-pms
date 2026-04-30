@@ -511,6 +511,18 @@ const routes = [
       
       { path: "roles", name: "roles", component: Roles },
  
+      {
+        path: "maintenance",
+        name: "Maintenance-view",
+        component: () => import('../views/closed/Maintenance/MaintenanceView.vue'),
+      },
+      {
+        path: "maintenance/detail/:id",
+        name: "Maintenance-detail",
+        component: () => import('../views/closed/Maintenance/MaintenanceDetail.vue'),
+        props: true,
+      },
+
       { path: "first-dash", name: "first-dash", component: first_dash },
       { path: "messages", name: "messages", component: Messages},
       { path: "inbox", name: "inbox", component: Inbox},

@@ -4,6 +4,7 @@ const controller = require("../controllers/SiteAmenityController");
 
 
 router.get("/", controller.getAll);
+router.get("/by-site/:site_id", controller.getBySiteId);
 router.get("/:id", controller.getOne);
 router.post("/",  controller.create);
 router.put("/:id",  controller.update);

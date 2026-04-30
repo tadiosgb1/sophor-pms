@@ -16,14 +16,17 @@ module.exports = {
       const searchableFields = ["document_name"];
       const searchConditions = searchableFields.map(field => ({ [field]: { [Op.like]: "%" + search + "%" } }));
       const where = search ? { [Op.or]: searchConditions } : {};
+      if (req.query.sale_id) where.sale_id = req.query.sale_id;
+
       const order = ordering.startsWith("-") ? [[ordering.slice(1), "DESC"]] : [[ordering, "ASC"]];
       const offset = (page - 1) * page_size;
 
-      const include = [db.Sale, db.User, db.User].filter(Boolean);
-      const findOptions = { where, order, offset, limit: page_size };
-      if (include.length) findOptions.include = include;
-
-      const { rows, count } = await SaleDocument.findAndCountAll(findOptions);
+      const include = [
+        { model: db.Sale },
+        { model: db.User, foreignKey: "owner_id", as: "owner" },
+        { model: db.User, foreignKey: "created_by", as: "createdBy" },
+      ];
+      const { rows, count } = await SaleDocument.findAndCountAll({ where, order, offset, limit: page_size, include });
 
       const host = `${req.protocol}://${req.get("host")}`;
       const dataWithFiles = rows.map(item => {
@@ -35,18 +38,24 @@ module.exports = {
       const total_pages = Math.ceil(count / page_size);
       const baseUrl = `${req.protocol}://${req.get("host")}${req.path}`;
 
-      res.json({
-        count,
-        total_pages,
-        current_page: page,
+      res.json({ count, total_pages, current_page: page,
         next: page < total_pages ? `${baseUrl}?page=${page + 1}&page_size=${page_size}` : null,
         previous: page > 1 ? `${baseUrl}?page=${page - 1}&page_size=${page_size}` : null,
-        page_size,
-        data: dataWithFiles
+        page_size, data: dataWithFiles });
+    } catch (e) { res.status(500).json({ error: e.message }); }
+  },
+
+  async getBySaleId(req, res) {
+    try {
+      const docs = await SaleDocument.findAll({ where: { sale_id: req.params.sale_id } });
+      const host = `${req.protocol}://${req.get("host")}`;
+      const result = docs.map(d => {
+        const obj = d.toJSON();
+        if (obj.document_url) obj.document_url = host + "/" + obj.document_url.replace(/\\/g, "/");
+        return obj;
       });
-    } catch (e) {
-      res.status(500).json({ error: e.message });
-    }
+      res.json(result);
+    } catch (e) { res.status(500).json({ error: e.message }); }
   },
 
   async getOne(req, res) {

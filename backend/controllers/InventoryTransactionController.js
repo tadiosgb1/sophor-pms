@@ -30,7 +30,10 @@ module.exports = {
         where,
         order,
         offset,
-        limit: page_size
+        limit: page_size,
+        include: [
+          { model: db.User, foreignKey: "created_by", attributes: ["id", "first_name", "last_name"] }
+        ]
       });
 
       const baseUrl = `${req.protocol}://${req.get("host")}${req.path}`;
@@ -50,7 +53,11 @@ module.exports = {
 
   async getOne(req, res) {
     try {
-      const data = await InventoryTransaction.findByPk(req.params.id);
+      const data = await InventoryTransaction.findByPk(req.params.id, {
+        include: [
+          { model: db.User, foreignKey: "created_by", attributes: ["id", "first_name", "last_name"] }
+        ]
+      });
       if (!data) return res.status(404).json({ error: "Not found" });
       res.json(data);
     } catch (e) { res.status(500).json({ error: e.message }); }

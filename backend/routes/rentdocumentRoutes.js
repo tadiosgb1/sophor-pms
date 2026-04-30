@@ -7,6 +7,7 @@ const uploadFields = upload.fields([{ name: "document_url", maxCount: 1 }]);
 
 
 router.get("/", controller.getAll);
+router.get("/by-rent/:rent_id", controller.getByRentId);
 router.get("/:id", controller.getOne);
 router.post("/", uploadFields, controller.create);
 router.put("/:id", uploadFields, controller.update);

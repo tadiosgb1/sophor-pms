@@ -65,12 +65,21 @@ async getOne(req, res) {
         { model: db.User, as: "owner" },
         { model: db.User, as: "createdBy" },
         { model: db.User, as: "updatedBy" },
-        { 
-          model: db.RentDocument, 
-          as: "documents", // alias defined in Rent model
+        {
+          model: db.RentDocument,
+          as: "documents",
           include: [
             { model: db.User, as: "owner" },
             { model: db.User, as: "createdBy" }
+          ]
+        },
+        {
+          model: db.RentPayment,
+          as: "payments",
+          order: [["cycle_from", "ASC"]],
+          include: [
+            { model: db.User, as: "payer",    attributes: ["id", "first_name", "last_name", "phone"] },
+            { model: db.User, as: "verifier", attributes: ["id", "first_name", "last_name"] },
           ]
         }
       ]
@@ -78,10 +87,9 @@ async getOne(req, res) {
 
     if (!rent) return res.status(404).json({ error: "Not found" });
 
-    const obj = rent.toJSON();
+    const obj  = rent.toJSON();
     const host = `${req.protocol}://${req.get("host")}`;
 
-    // Fix document URLs
     if (obj.documents && obj.documents.length > 0) {
       obj.documents = obj.documents.map(doc => ({
         ...doc,
@@ -89,8 +97,14 @@ async getOne(req, res) {
       }));
     }
 
-    res.json(obj);
+    if (obj.payments && obj.payments.length > 0) {
+      obj.payments = obj.payments.map(p => ({
+        ...p,
+        screenshot_url: p.screenshot_url ? host + "/" + p.screenshot_url.replace(/\\/g, "/") : null
+      }));
+    }
 
+    res.json(obj);
   } catch (e) {
     console.error(e);
     res.status(500).json({ error: e.message });
@@ -111,9 +125,18 @@ async getOne(req, res) {
   async update(req, res) {
     try {
       const body = { ...req.body };
-      
       await Rent.update(body, { where: { id: req.params.id } });
-      const updated = await Rent.findByPk(req.params.id);
+      const updated = await Rent.findByPk(req.params.id, {
+        include: [
+          { model: db.Unit },
+          { model: db.Site },
+          { model: db.User, as: "renter" },
+          { model: db.User, as: "owner" },
+          { model: db.User, as: "createdBy" },
+          { model: db.User, as: "updatedBy" },
+          { model: db.RentDocument, as: "documents" }
+        ]
+      });
       res.json(updated);
     } catch (e) {
       res.status(500).json({ error: e.message });

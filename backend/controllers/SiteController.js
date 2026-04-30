@@ -91,9 +91,13 @@ async getOne(req, res) {
       { model: db.User, as: "createdBy" },
       { model: db.User, as: "updatedBy" },
 
-      { model: db.SiteImage, as: "images" }
-    ];
+      { model: db.SiteImage, as: "images" },
 
+      { model: db.SiteAmenity, as: "siteAmenities", include: [{ model: db.Amenity }] },
+      { model: db.MaintenanceRequest, as: "maintenanceRequests", limit: 5, order: [["createdAt", "DESC"]] },
+      { model: db.Rent, as: "rents", limit: 5, order: [["createdAt", "DESC"]], include: [{ model: db.Unit }, { model: db.User, as: "renter", attributes: ["id", "first_name", "last_name", "email"] }] },
+      { model: db.Sale, as: "sales", limit: 5, order: [["createdAt", "DESC"]], include: [{ model: db.Unit }, { model: db.User, as: "buyer", attributes: ["id", "first_name", "last_name", "email"] }] },
+    ];
     const data = await Site.findByPk(req.params.id, { include });
 
     if (!data) return res.status(404).json({ error: "Not found" });

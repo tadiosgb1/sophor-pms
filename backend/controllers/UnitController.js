@@ -83,7 +83,11 @@ async getOne(req, res) {
         { model: db.User, as: "manager" },
         { model: db.User, as: "staff" },
         { model: db.User, as: "createdBy" },
-        { model: db.User, as: "updatedBy" }
+        { model: db.User, as: "updatedBy" },
+
+        { model: db.MaintenanceRequest, as: "maintenanceRequests", limit: 5, order: [["createdAt", "DESC"]] },
+        { model: db.Rent, as: "rents", limit: 5, order: [["createdAt", "DESC"]], include: [{ model: db.User, as: "renter", attributes: ["id", "first_name", "last_name", "email"] }] },
+        { model: db.Sale, as: "sales", limit: 5, order: [["createdAt", "DESC"]], include: [{ model: db.User, as: "buyer", attributes: ["id", "first_name", "last_name", "email"] }] },
       ]
     });
 
