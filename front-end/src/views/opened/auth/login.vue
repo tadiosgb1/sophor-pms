@@ -103,36 +103,57 @@
 <script>
 export default {
   name: "LoginPage",
+
   data() {
     return {
-      form: { email: "", password: "" },
+      form: {
+        email: "",
+        password: "",
+      },
       error: "",
       loading: false,
     };
   },
+
   methods: {
     async login() {
       this.error = "";
       this.loading = true;
+
       try {
         const payload = { ...this.form };
         const response = await this.$apiPost("/auth/login", payload);
 
-        console.log("respoonse login",response);
+        console.log("response login", response);
+
+        // Extract role names only
+        const roleNames = response.roles?.map(role => role.name) || [];
 
         localStorage.setItem("access", response.accessToken);
         localStorage.setItem("refresh", response.refreshToken);
         localStorage.setItem("userId", response.id);
         localStorage.setItem("email", response.email);
         localStorage.setItem("name", response.name);
-        localStorage.setItem("owner_id", response.owner_id);
-        localStorage.setItem("roles", response.roles);
-        localStorage.setItem("permissions", response.permissions);
+        localStorage.setItem("owner_id", response.owner_id ?? "");
 
-        this.$router.push({ path: "/dashboard/first-dash" });
+        // Store roles as ["Super", "Admin", ...]
+        localStorage.setItem("roles", JSON.stringify(roleNames));
+
+        // Store permissions
+        localStorage.setItem(
+          "permissions",
+          JSON.stringify(response.permissions || [])
+        );
+
+        this.$router.push({
+          path: "/dashboard/first-dash",
+        });
       } catch (err) {
-        console.log("error",err);
-        this.error = err.response?.data?.message || "Invalid credentials. Please try again.";
+        console.log("error", err);
+
+        this.error =
+          err.response?.data?.message ||
+          "Invalid credentials. Please try again.";
       } finally {
         this.loading = false;
       }
