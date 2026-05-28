@@ -1,11 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import Login from '../views/opened/auth/login.vue';
-import Cybersource from '../views/opened/PaymentButton.vue';
+import LandingHome from '../views/opened/landing/Home.vue';
 
-import ContactUs from '../views/opened/landing/contactUs.vue';
-import Services from '../views/opened/landing/services.vue';
-import About from '../views/opened/landing/about.vue';
+
 import ResetPassword from '../views/opened/auth/ResetPassword.vue';
 import ForgotPasssword from '../views/opened/auth/forgotPassword.vue';
 import Registration from '../views/opened/auth/login.vue'; // note: same file as login
@@ -23,16 +21,17 @@ import Messages  from '../views/closed/Messages/message.vue';
 import Inbox  from '../views/closed/inbox/view.vue';
 const routes = [
 
-  // Public routes
-  { path: "/", name: "home", component: Login, meta: { requiresGuest: true } },
+  // Landing / Public routes
+  { path: "/", name: "landing", component: LandingHome },
+  { path: "/about", name: "about", component: () => import('../views/opened/landing/About.vue') },
+  { path: "/properties", name: "properties", component: () => import('../views/opened/landing/Properties.vue') },
+  { path: "/news", name: "news", component: () => import('../views/opened/landing/News.vue') },
+  { path: "/contact", name: "contact", component: () => import('../views/opened/landing/Contact.vue') },
+  { path: "/faq", name: "faq", component: () => import('../views/opened/landing/FAQ.vue') },
 
   { path: "/login", name: "login", component: Login, meta: { requiresGuest: true } },
-  { path: "/cyber", name: "cyber", component: Cybersource, meta: { requiresGuest: true } },
 
   { path: "/register", name: "register", component: Registration, meta: { requiresGuest: true } },
-  { path: "/contact-us", name: "contact-us", component: ContactUs, meta: { requiresGuest: true } },
-  { path: "/about", name: "about", component: About, meta: { requiresGuest: true } },
-  { path: "/services", name: "services", component: Services, meta: { requiresGuest: true } },
   { path: "/forgot-password", name: "ForgotPassword", component: ForgotPasssword, props: true },
   { path: "/:lang/reset-password", name: "ResetPassword", component: ResetPassword, props: true },
   { path: "/reset/:token", name: "reset", component: Reset, meta: { requiresGuest: true } },
@@ -539,6 +538,11 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) return savedPosition;
+    if (to.hash) return { el: to.hash, behavior: 'smooth' };
+    return { top: 0, behavior: 'smooth' };
+  },
 });
 
 router.beforeEach((to, from, next) => {
