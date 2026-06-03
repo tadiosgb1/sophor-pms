@@ -3,7 +3,15 @@ const db = require("../models");
 const SalePayment = db.SalePayment;
 
 const include = [
-  { model: db.Sale, attributes: ["id", "sale_price", "status"] },
+  {
+    model: db.Sale,
+    attributes: ["id", "sale_price", "status"],
+    include: [
+      { model: db.Unit, attributes: ["id", "name", "house_number", "floor"] },
+      { model: db.Site, attributes: ["id", "name", "city"] },
+      { model: db.User, as: "buyer", attributes: ["id", "first_name", "last_name", "phone"] },
+    ]
+  },
   { model: db.User, as: "payer",     attributes: ["id", "first_name", "last_name", "email", "phone"] },
   { model: db.User, as: "verifier",  attributes: ["id", "first_name", "last_name"] },
   { model: db.User, as: "createdBy", attributes: ["id", "first_name", "last_name"] },

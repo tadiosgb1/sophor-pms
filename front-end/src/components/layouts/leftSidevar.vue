@@ -167,6 +167,12 @@ export default {
 
         // ── FINANCE & INVENTORY ───────────────────────────────────
         {
+          name: "Payments",
+          route: "Payments-view",
+          icon: "fas fa-money-bill-wave",
+          color: "#10b981",
+        },
+        {
           name: "Expenses",
           route: "Expense-view",
           icon: "fas fa-receipt",

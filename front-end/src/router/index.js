@@ -523,6 +523,12 @@ const routes = [
         props: true,
       },
 
+      {
+        path: "payments",
+        name: "Payments-view",
+        component: () => import('../views/closed/Payments/PaymentsView.vue'),
+      },
+
       { path: "first-dash", name: "first-dash", component: first_dash },
       { path: "messages", name: "messages", component: Messages},
       { path: "inbox", name: "inbox", component: Inbox},

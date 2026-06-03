@@ -3,7 +3,15 @@ const db = require("../models");
 const RentPayment = db.RentPayment;
 
 const include = [
-  { model: db.Rent, attributes: ["id", "rent_amount", "rent_period", "next_due_date", "status"] },
+  {
+    model: db.Rent,
+    attributes: ["id", "rent_amount", "rent_period", "next_due_date", "status"],
+    include: [
+      { model: db.Unit, attributes: ["id", "name", "house_number", "floor"] },
+      { model: db.Site, attributes: ["id", "name", "city"] },
+      { model: db.User, as: "renter", attributes: ["id", "first_name", "last_name", "phone"] },
+    ]
+  },
   { model: db.User, as: "payer",     attributes: ["id", "first_name", "last_name", "email", "phone"] },
   { model: db.User, as: "verifier",  attributes: ["id", "first_name", "last_name"] },
   { model: db.User, as: "createdBy", attributes: ["id", "first_name", "last_name"] },

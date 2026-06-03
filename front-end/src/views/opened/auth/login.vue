@@ -126,8 +126,10 @@ export default {
         localStorage.setItem("email", response.email);
         localStorage.setItem("name", response.name);
         localStorage.setItem("owner_id", response.owner_id);
-        localStorage.setItem("roles", response.roles);
-        localStorage.setItem("permissions", response.permissions);
+        // Store role names as a JSON array of strings e.g. ["Super"]
+        const roleNames = (response.roles || []).map(r => (typeof r === "string" ? r : r.name)).filter(Boolean);
+        localStorage.setItem("roles", JSON.stringify(roleNames));
+        localStorage.setItem("permissions", JSON.stringify(response.permissions || []));
 
         this.$router.push({ path: "/dashboard/first-dash" });
       } catch (err) {
