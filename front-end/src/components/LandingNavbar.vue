@@ -9,7 +9,7 @@
       <div class="flex items-center justify-between h-16 lg:h-20">
         <!-- Logo -->
         <router-link to="/" class="flex items-center gap-3 flex-shrink-0">
-          <img src="../assets/img/logo.png" alt="Sophor Logo" class="h-10 w-auto" />
+          <img src="../assets/img/logo.png" alt="Sophor Logo" class="h-10 w-auto rounded-xl" />
           <span :class="['text-xl font-bold tracking-tight', scrolled ? 'text-gray-900' : 'text-white']">
             Sophor
           </span>

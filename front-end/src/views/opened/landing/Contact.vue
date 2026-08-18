@@ -163,9 +163,9 @@ export default {
       submitted: false,
       form: { firstName: '', lastName: '', email: '', phone: '', subject: '', message: '' },
       contactCards: [
-        { icon: 'fas fa-map-marker-alt', label: 'Our Address', value: 'Mekelle, Tigray, Ethiopia', sub: 'Near Axum Hotel' },
-        { icon: 'fas fa-phone', label: 'Phone Number', value: '+251 900 000 000', sub: 'Mon–Fri 8AM–6PM' },
-        { icon: 'fas fa-envelope', label: 'Email Address', value: 'info@sophor.com', sub: 'We reply within 24hrs' },
+        { icon: 'fas fa-map-marker-alt', label: 'Our Address', value: 'Addis Ababa & Mekelle, Ethiopia', sub: 'Near Axum Hotel' },
+        { icon: 'fas fa-phone', label: 'Phone Number', value: '+251 998 890 220', sub: 'Mon–Fri 8AM–6PM' },
+        { icon: 'fas fa-envelope', label: 'Email Address', value: 'Email:sophortechnologies@gmail.com', sub: 'We reply within 24hrs' },
         { icon: 'fas fa-headset', label: 'Live Support', value: '24/7 Available', sub: 'For urgent matters' },
       ],
       officeHours: [

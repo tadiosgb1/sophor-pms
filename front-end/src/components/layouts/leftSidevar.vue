@@ -9,7 +9,7 @@
         class="flex flex-row items-center space-x-3 p-4 font-bold text-lg text-white bg-orange-500 sticky top-0 z-10"
       >
         <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center shrink-0">
-          <img src="../../assets/img/logo1.jpg" alt="Logo" class="h-9 w-9 rounded-full object-cover" />
+          <img src="../../assets/img/logo.png" alt="Logo" class="h-9 w-9 rounded-full object-cover" />
         </div>
         <span>Sophor</span>
       </div>

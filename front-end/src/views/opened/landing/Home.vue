@@ -23,7 +23,7 @@
         <div class="max-w-2xl">
           <div class="inline-flex items-center gap-2 bg-primary/20 border border-primary/40 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-6 backdrop-blur-sm">
             <i class="fas fa-star text-xs"></i>
-            Trusted Real Estate Partner in Tigray
+            Trusted Real Estate Partner in Ethiopia
           </div>
           <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight mb-6">
             Find Your
@@ -416,12 +416,12 @@ export default {
         { icon: 'fas fa-chart-line', label: 'Best Investment', sub: 'Maximize your returns' },
       ],
       properties: [
-        { id: 1, name: 'Luxury Villa in Mekelle', type: 'For Sale', price: 'ETB 4.5M', location: 'Mekelle, Tigray', beds: 4, baths: 3, area: '320 m²', featured: true },
-        { id: 2, name: 'Modern Apartment Complex', type: 'For Rent', price: 'ETB 15K/mo', location: 'Ayder, Mekelle', beds: 2, baths: 1, area: '95 m²', featured: false },
-        { id: 3, name: 'Commercial Office Space', type: 'For Sale', price: 'ETB 8.2M', location: 'Hawelti, Mekelle', beds: 0, baths: 2, area: '450 m²', featured: true },
-        { id: 4, name: 'Family Residence', type: 'For Rent', price: 'ETB 22K/mo', location: 'Adi Haki, Mekelle', beds: 3, baths: 2, area: '180 m²', featured: false },
-        { id: 5, name: 'Studio Apartment', type: 'For Rent', price: 'ETB 8K/mo', location: 'Semien, Mekelle', beds: 1, baths: 1, area: '55 m²', featured: false },
-        { id: 6, name: 'Prime Land Plot', type: 'For Sale', price: 'ETB 2.1M', location: 'Quiha, Tigray', beds: 0, baths: 0, area: '600 m²', featured: false },
+        { id: 1, name: 'Luxury Villa in Mekelle', type: 'For Sale', price: 'ETB 4.5M', location: 'Addis abeba,Ethiopia', beds: 4, baths: 3, area: '320 m²', featured: true },
+        { id: 2, name: 'Modern Apartment Complex', type: 'For Rent', price: 'ETB 15K/mo', location: 'Addis abeba,Ethiopia', beds: 2, baths: 1, area: '95 m²', featured: false },
+        { id: 3, name: 'Commercial Office Space', type: 'For Sale', price: 'ETB 8.2M', location: 'Addis abeba,Ethiopia', beds: 0, baths: 2, area: '450 m²', featured: true },
+        { id: 4, name: 'Family Residence', type: 'For Rent', price: 'ETB 22K/mo', location: 'Addis abeba,Ethiopia', beds: 3, baths: 2, area: '180 m²', featured: false },
+        { id: 5, name: 'Studio Apartment', type: 'For Rent', price: 'ETB 8K/mo', location: 'Addis abeba,Ethiopia', beds: 1, baths: 1, area: '55 m²', featured: false },
+        { id: 6, name: 'Prime Land Plot', type: 'For Sale', price: 'ETB 2.1M', location: 'Addis abeba,Ethiopia', beds: 0, baths: 0, area: '600 m²', featured: false },
       ],
       coreValues: [
         { icon: 'fas fa-handshake', title: 'Integrity', desc: 'Honest & transparent' },
@@ -464,9 +464,9 @@ export default {
         { q: 'Can I view properties before making a decision?', a: 'Absolutely. We offer both in-person tours and virtual property tours. Contact us to schedule a viewing at your convenience.' },
       ],
       contactHighlights: [
-        { icon: 'fas fa-phone', label: '+251 900 000 000' },
-        { icon: 'fas fa-envelope', label: 'info@sophor.com' },
-        { icon: 'fas fa-map-marker-alt', label: 'Mekelle, Tigray' },
+        { icon: 'fas fa-phone', label: '+251 998 890 220' },
+        { icon: 'fas fa-envelope', label: 'Email:sophortechnologies@gmail.com' },
+        { icon: 'fas fa-map-marker-alt', label: 'Addis Ababa & Mekelle, Ethiopia' },
         { icon: 'fas fa-clock', label: 'Mon–Fri 8AM–6PM' },
       ],
     };

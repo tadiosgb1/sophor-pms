@@ -134,9 +134,9 @@ export default {
         'Inventory Management',
       ],
       contactInfo: [
-        { icon: 'fas fa-map-marker-alt', label: 'Address', value: 'Mekelle, Tigray, Ethiopia' },
-        { icon: 'fas fa-phone', label: 'Phone', value: '+251 900 000 000' },
-        { icon: 'fas fa-envelope', label: 'Email', value: 'info@sophor.com' },
+        { icon: 'fas fa-map-marker-alt', label: 'Address', value: 'Tigray,Addis Ababa,Ethiopia' },
+        { icon: 'fas fa-phone', label: 'Phone', value: '+251 998 890 220' },
+        { icon: 'fas fa-envelope', label: 'Email', value: 'sophortechnologies@gmail.com' },
         { icon: 'fas fa-clock', label: 'Working Hours', value: 'Mon–Fri: 8AM – 6PM' },
       ],
     };

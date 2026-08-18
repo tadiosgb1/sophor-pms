@@ -22,6 +22,8 @@
           <p class="text-gray-500 mt-2 text-sm">Property Management Portal</p>
         </div>
 
+
+        
         <form @submit.prevent="login" class="space-y-6">
           <div>
             <label class="block text-gray-600 text-sm font-bold mb-2" for="email">
@@ -82,6 +84,13 @@
           </button>
         </form>
 
+           <p class="mt-8 text-center text-sm text-gray-500">
+            Try the platform free with our demo account:
+            <span class="ml-1 font-medium text-gray-700">
+              Email: Sophor@gmail.com · Password: 1234
+            </span>
+          </p>
+
         <p class="mt-8 text-center text-sm text-gray-500">
           Don't have an account?
           <router-link
@@ -91,6 +100,7 @@
             Request Access
           </router-link>
         </p>
+    
       </div>
     </section>
 
