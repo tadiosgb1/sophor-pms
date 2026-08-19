@@ -13,6 +13,7 @@ import apiClientPlugin from "./store/plugins/apiClientPlugin";
 import './assets/css/darkmode.css'; 
 import "animate.css";
 import VueParticles from "vue-particles";
+import { MotionPlugin } from '@vueuse/motion';
 //import toast from './components/Common/Toast.vue';
 //check
 //hii
@@ -37,6 +38,7 @@ createApp(App)
   .use(router)
   .use(i18n)
   .use(VueParticles)
+  .use(MotionPlugin)
   .use(apiClientPlugin)
   //.use(toast)
   .mount('#app');

@@ -8,12 +8,22 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16 lg:h-20">
         <!-- Logo -->
-        <router-link to="/" class="flex items-center gap-3 flex-shrink-0">
-          <img src="../assets/img/logo.png" alt="Sophor Logo" class="h-10 w-auto rounded-xl" />
-          <span :class="['text-xl font-bold tracking-tight', scrolled ? 'text-gray-900' : 'text-white']">
-            Sophor
-          </span>
-        </router-link>
+      <router-link to="/" class="flex items-center gap-3 flex-shrink-0">
+  <img
+    src="../assets/img/transparent-logo1.png"
+    alt="Sophor Logo"
+    class="h-12 w-auto object-contain"
+  />
+
+  <span
+    :class="[
+      'text-xl font-bold tracking-tight',
+      scrolled ? 'text-gray-900' : 'text-white'
+    ]"
+  >
+    Sophor
+  </span>
+</router-link>
 
         <!-- Desktop Nav Links -->
         <div class="hidden lg:flex items-center gap-1">
@@ -44,7 +54,7 @@
                 : 'border-white text-white hover:bg-white hover:text-gray-900'
             ]"
           >
-            Sign In
+            Login
           </router-link>
           <router-link
             to="/contact"
@@ -54,14 +64,27 @@
           </router-link>
         </div>
 
-        <!-- Mobile Menu Button -->
-        <button
-          @click="mobileOpen = !mobileOpen"
-          :class="['lg:hidden p-2 rounded-lg', scrolled ? 'text-gray-700' : 'text-white']"
-          aria-label="Toggle menu"
-        >
-          <i :class="mobileOpen ? 'fas fa-times text-xl' : 'fas fa-bars text-xl'"></i>
-        </button>
+        <!-- Mobile Login & Menu Button -->
+        <div class="lg:hidden flex items-center gap-2">
+          <router-link
+            to="/login"
+            :class="[
+              'px-4 py-2 rounded-lg text-sm font-semibold border-2 transition-all duration-200',
+              scrolled
+                ? 'border-primary text-primary hover:bg-primary hover:text-white'
+                : 'border-white text-white hover:bg-white hover:text-gray-900'
+            ]"
+          >
+            Login
+          </router-link>
+          <button
+            @click="mobileOpen = !mobileOpen"
+            :class="['p-2 rounded-lg', scrolled ? 'text-gray-700' : 'text-white']"
+            aria-label="Toggle menu"
+          >
+            <i :class="mobileOpen ? 'fas fa-times text-xl' : 'fas fa-bars text-xl'"></i>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -83,7 +106,7 @@
           <div class="pt-3 border-t border-gray-100 flex flex-col gap-2">
             <router-link to="/login" @click="mobileOpen = false"
               class="block text-center px-4 py-2.5 rounded-lg border-2 border-primary text-primary font-semibold hover:bg-primary hover:text-white transition-all">
-              Sign In
+              Login
             </router-link>
             <router-link to="/contact" @click="mobileOpen = false"
               class="block text-center px-4 py-2.5 rounded-lg bg-primary text-white font-semibold hover:bg-primary/90 transition-all">
@@ -108,7 +131,6 @@ export default {
         { to: '/properties', label: 'Properties', icon: 'fas fa-building' },
         { to: '/about', label: 'About Us', icon: 'fas fa-info-circle' },
         { to: '/news', label: 'News & Events', icon: 'fas fa-newspaper' },
-        { to: '/faq', label: 'FAQ', icon: 'fas fa-question-circle' },
         { to: '/contact', label: 'Contact', icon: 'fas fa-envelope' },
       ],
     };

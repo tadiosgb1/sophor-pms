@@ -6,7 +6,7 @@
       <!-- Logo / Brand (mobile only) -->
       <div
         v-if="showTitle"
-        class="flex flex-row items-center space-x-3 p-4 font-bold text-lg text-white bg-orange-500 sticky top-0 z-10"
+        class="flex flex-row items-center space-x-3 p-4 font-bold text-lg text-white bg-primary sticky top-0 z-10"
       >
         <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center shrink-0">
           <img src="../../assets/img/logo.png" alt="Logo" class="h-9 w-9 rounded-full object-cover" />
@@ -22,12 +22,12 @@
           <router-link
             v-if="!item.children"
             :to="{ name: item.route }"
-            class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition-colors duration-150"
-            :class="{ 'bg-orange-50 text-orange-600 font-semibold': $route.name === item.route }"
+            class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-green-50 hover:text-primary transition-colors duration-150"
+            :class="{ 'bg-green-50 text-primary font-semibold': $route.name === item.route }"
           >
             <i
               :class="[item.icon, 'w-4 text-center text-sm shrink-0']"
-              :style="{ color: $route.name === item.route ? '#f97316' : item.color }"
+              :style="{ color: $route.name === item.route ? '#10b981' : '#10b981' }"
             ></i>
             <span>{{ item.name }}</span>
           </router-link>
@@ -36,34 +36,33 @@
           <div v-else>
             <button
               @click="toggleSubmenu(item.name)"
-              class="flex items-center justify-between w-full px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition-colors duration-150"
-              :class="{ 'bg-orange-50 text-orange-600 font-semibold': isActiveParent(item) }"
+              class="flex items-center justify-between w-full px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-green-50 hover:text-primary transition-colors duration-150"
+              :class="{ 'bg-green-50 text-primary font-semibold': isActiveParent(item) }"
             >
               <div class="flex items-center gap-2.5">
                 <i
                   :class="[item.icon, 'w-4 text-center text-sm shrink-0']"
-                  :style="{ color: isActiveParent(item) ? '#f97316' : item.color }"
+                  :style="{ color: isActiveParent(item) ? '#10b981' : '#10b981' }"
                 ></i>
                 <span>{{ item.name }}</span>
               </div>
               <i
-                class="fas text-[10px] text-gray-400 transition-transform duration-200"
+                class="fas text-[10px] transition-transform duration-200 text-primary"
                 :class="isSubmenuOpen(item.name) ? 'fa-chevron-up' : 'fa-chevron-down'"
               ></i>
             </button>
 
             <!-- Submenu -->
             <transition name="submenu">
-              <ul v-if="isSubmenuOpen(item.name)" class="mt-1 ml-4 pl-3 border-l-2 border-orange-100 space-y-0.5">
+              <ul v-if="isSubmenuOpen(item.name)" class="mt-1 ml-4 pl-3 border-l-2 border-green-200 space-y-0.5">
                 <li v-for="sub in item.children" :key="sub.name">
                   <router-link
                     :to="{ name: sub.route }"
-                    class="flex items-center gap-2 px-2 py-1.5 rounded-md text-sm text-gray-600 hover:bg-orange-50 hover:text-orange-600 transition-colors duration-150"
-                    :class="{ 'text-orange-600 font-semibold bg-orange-50': $route.name === sub.route }"
+                    class="flex items-center gap-2 px-2 py-1.5 rounded-md text-sm text-gray-600 hover:bg-green-50 hover:text-primary transition-colors duration-150"
+                    :class="{ 'text-primary font-semibold bg-green-50': $route.name === sub.route }"
                   >
                     <i
-                      :class="[sub.icon, 'w-3.5 text-center text-xs shrink-0']"
-                      :style="{ color: $route.name === sub.route ? '#f97316' : sub.color }"
+                      :class="[sub.icon, 'w-3.5 text-center text-xs shrink-0 text-primary']"
                     ></i>
                     <span>{{ sub.name }}</span>
                   </router-link>
@@ -90,13 +89,13 @@ export default {
           name: "Dashboard",
           route: "first-dash",
           icon: "fas fa-gauge",
-          color: "#f97316",
+          color: "#10b981",
         },
         {
           name: "Chat",
           route: "chat",
           icon: "fas fa-comments",
-          color: "#8b5cf6",
+          color: "#10b981",
         },
 
         // ── ADMINISTRATION ────────────────────────────────────────
@@ -104,30 +103,30 @@ export default {
           name: "Company",
           route: "Company-view",
           icon: "fas fa-building",
-          color: "#0ea5e9",
+          color: "#10b981",
         },
         {
           name: "User Management",
           icon: "fas fa-users-cog",
-          color: "#6366f1",
+          color: "#10b981",
           children: [
             {
               name: "Users",
               route: "Users-view",
               icon: "fas fa-user",
-              color: "#6366f1",
+              color: "#10b981",
             },
             {
               name: "Roles",
               route: "Roles-view",
               icon: "fas fa-shield-halved",
-              color: "#6366f1",
+              color: "#10b981",
             },
             {
               name: "Permissions",
               route: "Permissions-view",
               icon: "fas fa-key",
-              color: "#6366f1",
+              color: "#10b981",
             },
           ],
         },
@@ -143,7 +142,7 @@ export default {
           name: "Units",
           route: "Unit-view",
           icon: "fas fa-door-open",
-          color: "#14b8a6",
+          color: "#10b981",
         },
         {
           name: "Amenities",
@@ -156,13 +155,13 @@ export default {
           name: "Sales",
           route: "Sale-view",
           icon: "fas fa-handshake",
-          color: "#f59e0b",
+          color: "#10b981",
         },
         {
           name: "Rentals",
           route: "Rent-view",
           icon: "fas fa-house-user",
-          color: "#ec4899",
+          color: "#10b981",
         },
 
         // ── FINANCE & INVENTORY ───────────────────────────────────
@@ -176,30 +175,30 @@ export default {
           name: "Expenses",
           route: "Expense-view",
           icon: "fas fa-receipt",
-          color: "#ef4444",
+          color: "#10b981",
         },
         {
           name: "Maintenance",
           route: "Maintenance-view",
           icon: "fas fa-wrench",
-          color: "#f97316",
+          color: "#10b981",
         },
         {
           name: "Inventory",
           icon: "fas fa-boxes-stacked",
-          color: "#f97316",
+          color: "#10b981",
           children: [
             {
               name: "Items",
               route: "Inventoryitem-view",
               icon: "fas fa-box",
-              color: "#f97316",
+              color: "#10b981",
             },
             {
               name: "Transactions",
               route: "Inventorytransaction-view",
               icon: "fas fa-arrow-right-arrow-left",
-              color: "#f97316",
+              color: "#10b981",
             },
           ],
         },

@@ -3,15 +3,22 @@
     <LandingNavbar />
 
     <!-- Page Hero -->
-    <section class="relative pt-32 pb-16 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 overflow-hidden">
+    <section class="relative pt-32 pb-16 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 overflow-hidden" 
+      v-motion :initial="{ opacity: 0 }" :visible="{ opacity: 1, transition: { duration: 800 } }">
       <div class="absolute inset-0 opacity-20">
         <div class="absolute top-0 right-0 w-96 h-96 bg-primary rounded-full translate-x-1/2 -translate-y-1/2"></div>
       </div>
       <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <span class="text-primary font-semibold text-sm uppercase tracking-widest">Our Portfolio</span>
-        <h1 class="text-4xl lg:text-5xl font-black text-white mt-3 mb-4">Browse Properties</h1>
-        <p class="text-gray-300 max-w-xl mx-auto">Find your perfect property from our curated selection of premium listings for sale and rent.</p>
-        <div class="flex items-center justify-center gap-2 mt-5 text-sm text-gray-400">
+        <span class="text-primary font-semibold text-sm uppercase tracking-widest" 
+          v-motion :initial="{ opacity: 0, y: 20 }" :visible="{ opacity: 1, y: 0, transition: { duration: 600 } }">Our Portfolio</span>
+        <h1 class="text-4xl lg:text-5xl font-black text-white mt-3 mb-4" 
+          v-motion :initial="{ opacity: 0, y: 30 }" :visible="{ opacity: 1, y: 0, transition: { duration: 600, delay: 100 } }">Browse Properties</h1>
+        <p class="text-gray-300 max-w-xl mx-auto" 
+          v-motion :initial="{ opacity: 0, y: 20 }" :visible="{ opacity: 1, y: 0, transition: { duration: 600, delay: 200 } }">
+          Find your perfect property from our curated selection of premium listings for sale and rent.
+        </p>
+        <div class="flex items-center justify-center gap-2 mt-5 text-sm text-gray-400" 
+          v-motion :initial="{ opacity: 0 }" :visible="{ opacity: 1, transition: { duration: 600, delay: 300 } }">
           <router-link to="/" class="hover:text-primary transition-colors">Home</router-link>
           <i class="fas fa-chevron-right text-xs"></i>
           <span class="text-primary">Properties</span>
@@ -52,15 +59,16 @@
     </section>
 
     <!-- Properties Grid -->
-    <section class="py-16 bg-gray-50">
+    <section class="py-16 bg-gray-50" v-motion :initial="{ opacity: 0 }" :visible="{ opacity: 1, transition: { duration: 800 } }">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div v-if="filteredProperties.length" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          <div v-for="prop in filteredProperties" :key="prop.id"
+          <div v-for="(prop, index) in filteredProperties" :key="prop.id"
+            v-motion
+            :initial="{ opacity: 0, y: 40 }"
+            :visible="{ opacity: 1, y: 0, transition: { duration: 500, delay: index * 80 } }"
             class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group">
             <div class="relative overflow-hidden h-52">
-              <div class="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
-                <i :class="prop.icon + ' text-5xl text-gray-400'"></i>
-              </div>
+              <img :src="propertyImage" alt="Property" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               <div class="absolute top-3 left-3 flex gap-2">
                 <span :class="['px-3 py-1 rounded-full text-xs font-bold', prop.type === 'For Sale' ? 'bg-secondary text-white' : 'bg-primary text-white']">
                   {{ prop.type }}
@@ -122,12 +130,14 @@
 <script>
 import LandingNavbar from '../../../components/LandingNavbar.vue';
 import LandingFooter from '../../../components/LandingFooter.vue';
+import propertyImg from '../../../assets/img/Properties/realstate1.jpg';
 
 export default {
   name: 'PropertiesPage',
   components: { LandingNavbar, LandingFooter },
   data() {
     return {
+      propertyImage: propertyImg,
       filters: { type: '', category: '', beds: '', search: '' },
       properties: [
         { id: 1, name: 'Luxury Villa in Mekelle', type: 'For Sale', category: 'Villa', price: 'ETB 4.5M', location: 'Mekelle, Tigray', beds: 4, baths: 3, area: '320 m²', icon: 'fas fa-home', desc: 'Stunning luxury villa with panoramic city views, private garden, and premium finishes throughout.' },

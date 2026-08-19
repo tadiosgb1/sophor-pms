@@ -6,7 +6,7 @@
         <!-- Brand Column -->
         <div class="lg:col-span-1">
           <div class="flex items-center gap-3 mb-4">
-            <img src="../assets/img/logo.png" alt="Sophor" class="h-10 w-auto brightness-200" />
+            <img src="../assets/img/transparent-logo1.png" alt="Sophor" class="h-12 w-auto" />
             <span class="text-xl font-bold text-white">Sophor</span>
           </div>
           <p class="text-sm text-gray-400 leading-relaxed mb-6">

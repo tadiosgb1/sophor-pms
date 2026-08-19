@@ -3,18 +3,23 @@
     <LandingNavbar />
 
     <!-- Page Hero -->
-    <section class="relative pt-32 pb-20 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 overflow-hidden">
+    <section class="relative pt-32 pb-20 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 overflow-hidden" 
+      v-motion :initial="{ opacity: 0 }" :visible="{ opacity: 1, transition: { duration: 800 } }">
       <div class="absolute inset-0 opacity-20">
         <div class="absolute top-0 right-0 w-96 h-96 bg-primary rounded-full translate-x-1/2 -translate-y-1/2"></div>
         <div class="absolute bottom-0 left-0 w-64 h-64 bg-secondary rounded-full -translate-x-1/2 translate-y-1/2"></div>
       </div>
       <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <span class="text-primary font-semibold text-sm uppercase tracking-widest">Our Story</span>
-        <h1 class="text-4xl lg:text-6xl font-black text-white mt-3 mb-5">About Sophor</h1>
-        <p class="text-gray-300 text-lg max-w-2xl mx-auto">
+        <span class="text-primary font-semibold text-sm uppercase tracking-widest" 
+          v-motion :initial="{ opacity: 0, y: 20 }" :visible="{ opacity: 1, y: 0, transition: { duration: 600 } }">Our Story</span>
+        <h1 class="text-4xl lg:text-6xl font-black text-white mt-3 mb-5" 
+          v-motion :initial="{ opacity: 0, y: 30 }" :visible="{ opacity: 1, y: 0, transition: { duration: 600, delay: 100 } }">About Sophor</h1>
+        <p class="text-gray-300 text-lg max-w-2xl mx-auto" 
+          v-motion :initial="{ opacity: 0, y: 20 }" :visible="{ opacity: 1, y: 0, transition: { duration: 600, delay: 200 } }">
           A decade of excellence in real estate — building communities, creating homes, and managing properties with integrity.
         </p>
-        <div class="flex items-center justify-center gap-2 mt-6 text-sm text-gray-400">
+        <div class="flex items-center justify-center gap-2 mt-6 text-sm text-gray-400" 
+          v-motion :initial="{ opacity: 0 }" :visible="{ opacity: 1, transition: { duration: 600, delay: 300 } }">
           <router-link to="/" class="hover:text-primary transition-colors">Home</router-link>
           <i class="fas fa-chevron-right text-xs"></i>
           <span class="text-primary">About Us</span>
@@ -23,54 +28,124 @@
     </section>
 
     <!-- Our Story -->
-    <section class="py-20 bg-white">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <div>
-            <span class="text-primary font-semibold text-sm uppercase tracking-widest">Our Background</span>
-            <h2 class="text-3xl lg:text-4xl font-black text-gray-900 mt-2 mb-6 leading-tight">
-              From Humble Beginnings to<br /><span class="text-primary">Regional Excellence</span>
-            </h2>
-            <p class="text-gray-500 leading-relaxed mb-4">
-              Founded over a decade ago in the heart of Mekelle, Sophor began as a small property consultancy with a big vision: to transform how real estate is bought, sold, and managed in Tigray. What started with a handful of properties has grown into a comprehensive real estate company managing hundreds of units across the region.
-            </p>
-            <p class="text-gray-500 leading-relaxed mb-4">
-              Our journey has been defined by an unwavering commitment to our clients, a passion for quality, and a belief that every person deserves a place they can call home. We have navigated challenges, celebrated milestones, and continuously evolved to meet the changing needs of our community.
-            </p>
-            <p class="text-gray-500 leading-relaxed mb-8">
-              Today, Sophor stands as a trusted name in Tigray real estate — offering not just properties, but a complete ecosystem of services powered by our state-of-the-art property management system.
-            </p>
-            <div class="grid grid-cols-3 gap-6">
-              <div v-for="s in aboutStats" :key="s.label" class="text-center p-4 bg-gray-50 rounded-2xl">
-                <div class="text-2xl font-black text-primary">{{ s.value }}</div>
-                <div class="text-xs text-gray-500 mt-1">{{ s.label }}</div>
-              </div>
+<section
+  class="py-20 bg-white"
+  v-motion
+  :initial="{ opacity: 0 }"
+  :visible="{ opacity: 1, transition: { duration: 800 } }"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+
+      <!-- Left: Background Content -->
+      <div
+        v-motion
+        :initial="{ opacity: 0, x: -50 }"
+        :visible="{
+          opacity: 1,
+          x: 0,
+          transition: { duration: 700 }
+        }"
+      >
+        <span class="text-primary font-semibold text-sm uppercase tracking-widest">
+          Our Background
+        </span>
+
+        <h2 class="text-3xl lg:text-4xl font-black text-gray-900 mt-2 mb-6 leading-tight">
+          From Humble Beginnings to<br />
+          <span class="text-primary">Regional Excellence</span>
+        </h2>
+
+        <p class="text-gray-500 leading-relaxed mb-4">
+          Founded over a decade ago in the heart of Mekelle, Sophor began as
+          a small property consultancy with a big vision: to transform how
+          real estate is bought, sold, and managed in Tigray. What started
+          with a handful of properties has grown into a comprehensive real
+          estate company managing hundreds of units across the region.
+        </p>
+
+        <p class="text-gray-500 leading-relaxed mb-4">
+          Our journey has been defined by an unwavering commitment to our
+          clients, a passion for quality, and a belief that every person
+          deserves a place they can call home. We have navigated challenges,
+          celebrated milestones, and continuously evolved to meet the changing
+          needs of our community.
+        </p>
+
+        <p class="text-gray-500 leading-relaxed mb-8">
+          Today, Sophor stands as a trusted name in Tigray real estate —
+          offering not just properties, but a complete ecosystem of services
+          powered by our state-of-the-art property management system.
+        </p>
+
+        <!-- Statistics -->
+        <div class="grid grid-cols-3 gap-6">
+          <div
+            v-for="(s, index) in aboutStats"
+            :key="s.label"
+            v-motion
+            :initial="{ opacity: 0, scale: 0.8 }"
+            :visible="{
+              opacity: 1,
+              scale: 1,
+              transition: {
+                duration: 500,
+                delay: index * 100
+              }
+            }"
+            class="text-center p-4 bg-gray-50 rounded-2xl"
+          >
+            <div class="text-2xl font-black text-primary">
+              {{ s.value }}
             </div>
-          </div>
-          <div class="grid grid-cols-2 gap-4">
-            <div class="col-span-2 h-64 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-2xl flex items-center justify-center">
-              <i class="fas fa-city text-8xl text-primary/30"></i>
-            </div>
-            <div class="h-40 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center">
-              <i class="fas fa-home text-5xl text-gray-400"></i>
-            </div>
-            <div class="h-40 bg-gradient-to-br from-primary/10 to-primary/30 rounded-2xl flex items-center justify-center">
-              <i class="fas fa-handshake text-5xl text-primary/50"></i>
+
+            <div class="text-xs text-gray-500 mt-1">
+              {{ s.label }}
             </div>
           </div>
         </div>
       </div>
-    </section>
 
+      <!-- Right: Full Image -->
+      <div
+        class="grid grid-cols-2 gap-4"
+        v-motion
+        :initial="{ opacity: 0, x: 50 }"
+        :visible="{
+          opacity: 1,
+          x: 0,
+          transition: {
+            duration: 700,
+            delay: 200
+          }
+        }"
+      >
+        <div
+          class="col-span-2 rounded-2xl overflow-hidden flex items-center justify-center"
+        >
+          <img
+            :src="aboutImage"
+            alt="About Sophor"
+            class="w-full h-auto object-contain"
+          />
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
     <!-- Mission, Vision, Values -->
-    <section class="py-20 bg-gray-50">
+    <section class="py-20 bg-gray-50" v-motion :initial="{ opacity: 0 }" :visible="{ opacity: 1, transition: { duration: 800 } }">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-14">
+        <div class="text-center mb-14" v-motion :initial="{ opacity: 0, y: 30 }" :visible="{ opacity: 1, y: 0, transition: { duration: 600 } }">
           <span class="text-primary font-semibold text-sm uppercase tracking-widest">Our Foundation</span>
           <h2 class="text-3xl lg:text-4xl font-black text-gray-900 mt-2">Mission, Vision & Values</h2>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-          <div v-for="mvv in missionVisionValues" :key="mvv.title"
+          <div v-for="(mvv, index) in missionVisionValues" :key="mvv.title"
+            v-motion
+            :initial="{ opacity: 0, y: 40 }"
+            :visible="{ opacity: 1, y: 0, transition: { duration: 500, delay: index * 150 } }"
             class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all border border-gray-100 text-center group">
             <div class="w-16 h-16 rounded-2xl bg-primary/10 group-hover:bg-primary flex items-center justify-center mx-auto mb-5 transition-all duration-300">
               <i :class="mvv.icon + ' text-2xl text-primary group-hover:text-white transition-colors duration-300'"></i>
@@ -81,11 +156,14 @@
         </div>
 
         <!-- Core Values Grid -->
-        <div class="text-center mb-10">
+        <div class="text-center mb-10" v-motion :initial="{ opacity: 0 }" :visible="{ opacity: 1, transition: { duration: 600 } }">
           <h3 class="text-2xl font-black text-gray-900">Our Core Values</h3>
         </div>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-          <div v-for="val in coreValues" :key="val.title"
+          <div v-for="(val, index) in coreValues" :key="val.title"
+            v-motion
+            :initial="{ opacity: 0, scale: 0.9 }"
+            :visible="{ opacity: 1, scale: 1, transition: { duration: 500, delay: index * 80 } }"
             class="bg-white rounded-2xl p-6 text-center shadow-sm hover:shadow-md transition-all border border-gray-100 hover:border-primary/30">
             <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
               <i :class="val.icon + ' text-xl text-primary'"></i>
@@ -98,15 +176,18 @@
     </section>
 
     <!-- Team Section -->
-    <section class="py-20 bg-white">
+    <section class="py-20 bg-white" v-motion :initial="{ opacity: 0 }" :visible="{ opacity: 1, transition: { duration: 800 } }">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-14">
+        <div class="text-center mb-14" v-motion :initial="{ opacity: 0, y: 30 }" :visible="{ opacity: 1, y: 0, transition: { duration: 600 } }">
           <span class="text-primary font-semibold text-sm uppercase tracking-widest">Our People</span>
           <h2 class="text-3xl lg:text-4xl font-black text-gray-900 mt-2 mb-4">Meet Our Leadership Team</h2>
           <p class="text-gray-500 max-w-xl mx-auto">Experienced professionals dedicated to delivering exceptional real estate services.</p>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          <div v-for="member in team" :key="member.name"
+          <div v-for="(member, index) in team" :key="member.name"
+            v-motion
+            :initial="{ opacity: 0, y: 40 }"
+            :visible="{ opacity: 1, y: 0, transition: { duration: 500, delay: index * 100 } }"
             class="text-center group">
             <div class="w-24 h-24 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center mx-auto mb-4 text-3xl font-black text-primary group-hover:scale-110 transition-transform duration-300">
               {{ member.name[0] }}
@@ -125,14 +206,18 @@
     </section>
 
     <!-- Why Choose Us -->
-    <section class="py-20 bg-gray-900 text-white">
+    <section class="py-20 bg-gray-900 text-white" v-motion :initial="{ opacity: 0 }" :visible="{ opacity: 1, transition: { duration: 800 } }">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <div>
+          <div v-motion :initial="{ opacity: 0, x: -50 }" :visible="{ opacity: 1, x: 0, transition: { duration: 700 } }">
             <span class="text-primary font-semibold text-sm uppercase tracking-widest">Our Advantage</span>
             <h2 class="text-3xl lg:text-4xl font-black mt-2 mb-6">Why Sophor Stands Apart</h2>
             <div class="space-y-5">
-              <div v-for="adv in advantages" :key="adv.title" class="flex items-start gap-4">
+              <div v-for="(adv, index) in advantages" :key="adv.title" 
+                v-motion
+                :initial="{ opacity: 0, x: -20 }"
+                :visible="{ opacity: 1, x: 0, transition: { duration: 500, delay: index * 100 } }"
+                class="flex items-start gap-4">
                 <div class="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center flex-shrink-0">
                   <i :class="adv.icon + ' text-primary'"></i>
                 </div>
@@ -143,8 +228,11 @@
               </div>
             </div>
           </div>
-          <div class="grid grid-cols-2 gap-4">
-            <div v-for="stat in bigStats" :key="stat.label"
+          <div class="grid grid-cols-2 gap-4" v-motion :initial="{ opacity: 0, x: 50 }" :visible="{ opacity: 1, x: 0, transition: { duration: 700, delay: 200 } }">
+            <div v-for="(stat, index) in bigStats" :key="stat.label"
+              v-motion
+              :initial="{ opacity: 0, scale: 0.8 }"
+              :visible="{ opacity: 1, scale: 1, transition: { duration: 500, delay: index * 100 } }"
               class="bg-gray-800 rounded-2xl p-6 text-center border border-gray-700 hover:border-primary/50 transition-all">
               <div class="text-3xl font-black text-primary mb-2">{{ stat.value }}</div>
               <div class="text-white font-semibold text-sm">{{ stat.label }}</div>
@@ -162,12 +250,14 @@
 <script>
 import LandingNavbar from '../../../components/LandingNavbar.vue';
 import LandingFooter from '../../../components/LandingFooter.vue';
+import aboutImg from '../../../assets/img/logo.png';
 
 export default {
   name: 'AboutPage',
   components: { LandingNavbar, LandingFooter },
   data() {
     return {
+      aboutImage: aboutImg,
       aboutStats: [
         { value: '10+', label: 'Years Experience' },
         { value: '500+', label: 'Properties' },
