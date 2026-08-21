@@ -1,32 +1,28 @@
 <template>
   <div class="flex h-[calc(100vh-4rem)] bg-gray-100 overflow-hidden">
 
-    <!-- ── SIDEBAR: user list ─────────────────────────────────────────── -->
     <aside class="w-72 flex flex-col bg-white border-r shrink-0">
 
-      <!-- Header -->
       <div class="px-4 py-3 border-b">
         <h2 class="font-semibold text-gray-800 text-sm">Messages</h2>
         <input
           v-model="search"
           type="text"
           placeholder="Search users…"
-          class="mt-2 w-full text-xs border rounded-lg px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-orange-400"
+          class="mt-2 w-full text-xs border rounded-lg px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-primary"
         />
       </div>
 
-      <!-- User list -->
       <ul class="flex-1 overflow-y-auto divide-y">
         <li
           v-for="u in filteredUsers"
           :key="u.id"
           @click="openConversation(u)"
-          class="flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-orange-50 transition-colors"
-          :class="{ 'bg-orange-50': selectedUser?.id === u.id }"
+          class="flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-primary/10 transition-colors"
+          :class="{ 'bg-primary/10': selectedUser?.id === u.id }"
         >
-          <!-- Avatar -->
           <div class="relative shrink-0">
-            <div class="w-9 h-9 rounded-full bg-orange-200 flex items-center justify-center text-orange-700 font-semibold text-sm uppercase">
+            <div class="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center text-primary font-semibold text-sm uppercase">
               {{ initials(u) }}
             </div>
             <span
@@ -35,14 +31,13 @@
             ></span>
           </div>
 
-          <!-- Name + last message preview -->
           <div class="flex-1 min-w-0">
             <div class="flex items-center justify-between">
               <span class="text-sm font-medium text-gray-800 truncate">
                 {{ u.first_name }} {{ u.last_name }}
               </span>
               <span v-if="unread[u.id]"
-                class="ml-1 shrink-0 text-[10px] bg-orange-500 text-white rounded-full px-1.5 py-0.5 font-bold">
+                class="ml-1 shrink-0 text-[10px] bg-primary text-white rounded-full px-1.5 py-0.5 font-bold">
                 {{ unread[u.id] }}
               </span>
             </div>
@@ -58,21 +53,18 @@
       </ul>
     </aside>
 
-    <!-- ── MAIN: chat window ──────────────────────────────────────────── -->
     <div class="flex flex-col flex-1 min-w-0">
 
-      <!-- Empty state -->
       <div v-if="!selectedUser" class="flex-1 flex flex-col items-center justify-center text-gray-400 gap-3">
-        <i class="fas fa-comments text-5xl text-orange-200"></i>
+        <i class="fas fa-comments text-5xl text-primary/40"></i>
         <p class="text-sm">Select a conversation to start chatting</p>
       </div>
 
       <template v-else>
 
-        <!-- Chat header -->
         <div class="flex items-center gap-3 px-5 py-3 bg-white border-b shadow-sm shrink-0">
           <div class="relative">
-            <div class="w-9 h-9 rounded-full bg-orange-200 flex items-center justify-center text-orange-700 font-semibold text-sm uppercase">
+            <div class="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center text-primary font-semibold text-sm uppercase">
               {{ initials(selectedUser) }}
             </div>
             <span
@@ -90,13 +82,12 @@
           </div>
         </div>
 
-        <!-- Messages area -->
         <div
           ref="msgArea"
           class="flex-1 overflow-y-auto px-5 py-4 space-y-3 bg-gray-50"
         >
           <div v-if="loadingMessages" class="flex justify-center py-8">
-            <i class="fas fa-spinner fa-spin text-orange-400 text-xl"></i>
+            <i class="fas fa-spinner fa-spin text-primary text-xl"></i>
           </div>
 
           <template v-else>
@@ -106,10 +97,9 @@
               class="flex"
               :class="msg.senderId === currentUserId ? 'justify-end' : 'justify-start'"
             >
-              <!-- Incoming avatar -->
               <div
                 v-if="msg.senderId !== currentUserId"
-                class="w-7 h-7 rounded-full bg-orange-200 flex items-center justify-center text-orange-700 text-xs font-semibold uppercase mr-2 shrink-0 self-end"
+                class="w-7 h-7 rounded-full bg-primary/20 flex items-center justify-center text-primary text-xs font-semibold uppercase mr-2 shrink-0 self-end"
               >
                 {{ initials(selectedUser) }}
               </div>
@@ -119,7 +109,7 @@
                 <div
                   class="px-3.5 py-2 rounded-2xl text-sm leading-relaxed break-words"
                   :class="msg.senderId === currentUserId
-                    ? 'bg-orange-500 text-white rounded-br-sm'
+                    ? 'bg-primary text-white rounded-br-sm'
                     : 'bg-white text-gray-800 shadow-sm rounded-bl-sm'"
                 >
                   {{ msg.message }}
@@ -130,9 +120,8 @@
               </div>
             </div>
 
-            <!-- Typing indicator -->
             <div v-if="isTyping" class="flex items-end gap-2">
-              <div class="w-7 h-7 rounded-full bg-orange-200 flex items-center justify-center text-orange-700 text-xs font-semibold uppercase shrink-0">
+              <div class="w-7 h-7 rounded-full bg-primary/20 flex items-center justify-center text-primary text-xs font-semibold uppercase shrink-0">
                 {{ initials(selectedUser) }}
               </div>
               <div class="bg-white shadow-sm rounded-2xl rounded-bl-sm px-4 py-2.5 flex gap-1 items-center">
@@ -144,7 +133,6 @@
           </template>
         </div>
 
-        <!-- Input bar -->
         <div class="px-4 py-3 bg-white border-t flex items-end gap-2 shrink-0">
           <textarea
             v-model="draft"
@@ -152,12 +140,12 @@
             @input="onTyping"
             rows="1"
             placeholder="Type a message… (Enter to send)"
-            class="flex-1 resize-none border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-orange-400 max-h-32 overflow-y-auto"
+            class="flex-1 resize-none border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary max-h-32 overflow-y-auto"
           ></textarea>
           <button
             @click="sendMessage"
             :disabled="!draft.trim()"
-            class="shrink-0 w-10 h-10 rounded-xl bg-orange-500 hover:bg-orange-600 disabled:opacity-40 disabled:cursor-not-allowed text-white flex items-center justify-center transition-colors"
+            class="shrink-0 w-10 h-10 rounded-xl bg-primary hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed text-white flex items-center justify-center transition-opacity"
           >
             <i class="fas fa-paper-plane text-sm"></i>
           </button>
@@ -227,7 +215,6 @@ export default {
     async fetchUsers() {
       try {
         const res = await this.$apiGet("/users", { page_size: 500 });
-        // $apiGet returns the full response body; paginated endpoint wraps in { data: [...] }
         const list = Array.isArray(res) ? res : (res.data || []);
         this.users = list.filter(u => u.id !== this.currentUserId);
       } catch (e) {

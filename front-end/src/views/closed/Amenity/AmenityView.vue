@@ -7,7 +7,7 @@
     <!-- Page Header -->
     <div class="flex items-center justify-between mb-6 border-b pb-4 border-gray-200">
       <h1 class="text-lg font-bold text-gray-800">Amenity</h1>
-      <button @click="openAddModal" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-medium shadow-md flex items-center space-x-1 text-sm">
+      <button @click="openAddModal" class="bg-primary hover:bg-primary text-white px-4 py-2 rounded-lg font-medium shadow-md flex items-center space-x-1 text-sm">
         <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
         </svg>

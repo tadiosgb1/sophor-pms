@@ -19,7 +19,7 @@
           :visible="{ opacity: 1, y: 0, transition: { duration: 500, delay: index * 100 } }"
           class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 group">
           <div class="h-44 relative overflow-hidden">
-            <img :src="newsImage" alt="News" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+            <img :src="news.image" :alt="news.title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
             <span class="absolute top-3 left-3 bg-primary text-white text-xs font-bold px-3 py-1 rounded-full">{{ news.category }}</span>
           </div>
           <div class="p-6">
@@ -36,17 +36,35 @@
 </template>
 
 <script>
-import newsImg from '../../assets/img/News/news1.JPG';
-
+import newsImg from '../../assets/img/News/event1.jpg';
+import newsImg1 from '../../assets/img/News/event.jpg';
+import newsImg2 from '../../assets/img/News/lwam.jpg';
 export default {
   name: 'NewsSection',
   data() {
     return {
-      newsImage: newsImg,
       newsItems: [
-        { category: 'News', date: 'May 20, 2026', title: 'Sophor Launches New Premium Residential Complex in Mekelle', excerpt: 'Our latest development features 120 modern units with state-of-the-art amenities and smart home technology.' },
-        { category: 'Event', date: 'June 5, 2026', title: 'Annual Real Estate Investment Forum 2026', excerpt: 'Join us for our flagship event bringing together investors, developers, and property experts from across Ethiopia.' },
-        { category: 'Market', date: 'May 15, 2026', title: 'Tigray Real Estate Market Shows Strong Growth in Q1 2026', excerpt: 'Property values in Mekelle have increased by 18% year-over-year, signaling a robust recovery and investment opportunity.' },
+        { 
+          category: 'News', 
+          date: 'May 20, 2026', 
+          title: 'Sophor Launches New Premium Residential Complex in Mekelle', 
+          excerpt: 'Our latest development features 120 modern units with state-of-the-art amenities and smart home technology.',
+          image: newsImg
+        },
+        { 
+          category: 'Event', 
+          date: 'June 5, 2026', 
+          title: 'Annual Real Estate Investment Forum 2026', 
+          excerpt: 'Join us for our flagship event bringing together investors, developers, and property experts from across Ethiopia.',
+          image: newsImg1
+        },
+        { 
+          category: 'Market', 
+          date: 'May 15, 2026', 
+          title: 'Tigray Real Estate Market Shows Strong Growth in Q1 2026', 
+          excerpt: 'Property values in Mekelle have increased by 18% year-over-year, signaling a robust recovery and investment opportunity.',
+          image: newsImg2
+        },
       ],
     };
   },

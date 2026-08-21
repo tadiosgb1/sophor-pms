@@ -10,7 +10,7 @@
       </div>
       <button
         @click="openAddModal"
-        class="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-medium shadow transition-colors"
+        class="flex items-center gap-2 bg-primary hover:bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium shadow transition-colors"
       >
         <i class="fas fa-plus text-xs"></i>
         Add Company

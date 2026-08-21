@@ -8,8 +8,12 @@
         v-if="showTitle"
         class="flex flex-row items-center space-x-3 p-4 font-bold text-lg text-white bg-primary sticky top-0 z-10"
       >
-        <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center shrink-0">
-          <img src="../../assets/img/logo.png" alt="Logo" class="h-9 w-9 rounded-full object-cover" />
+        <div class="w-10 h-10  flex items-center justify-center shrink-0">
+          <img
+    src="../../assets/img/transparent-logo1.png"
+    alt="Sophor Logo"
+    class="h-12 w-auto"
+  />
         </div>
         <span>Sophor</span>
       </div>
