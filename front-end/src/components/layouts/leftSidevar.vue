@@ -154,6 +154,12 @@ export default {
           icon: "fas fa-star",
           color: "#10b981",
         },
+          {
+          name: "Types",
+          route: "Type-view",
+          icon: "fas fa-star",
+          color: "#10b981",
+        },
         // ── TRANSACTIONS ──────────────────────────────────────────
         {
           name: "Sales",

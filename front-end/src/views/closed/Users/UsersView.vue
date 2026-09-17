@@ -90,7 +90,7 @@
               <td class="px-6 py-4 space-x-3 text-center">
                 <button @click="viewRoles(item.id)" class="text-green-500 hover:text-green-700">View Roles</button>
                 <button @click="viewPermissions(item.id)" class="text-green-500 hover:text-green-700">View Permissions</button>
-                <button @click="viewDetails(item.id)" class="text-green-500 hover:text-green-700"><i class="fas fa-eye"></i></button>
+              
                 <button @click="editItem(item)" class="text-blue-500 hover:text-blue-700"><i class="fas fa-edit"></i></button>
                 <button @click="openDeleteModal(item.id)" class="text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button>
               </td>

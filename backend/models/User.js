@@ -6,69 +6,75 @@ module.exports = (sequelize, DataTypes) => {
       middle_name: DataTypes.STRING,
       last_name: DataTypes.STRING,
       phone: DataTypes.STRING,
-      email: { type: DataTypes.STRING, unique: true },
-      address:DataTypes.STRING,
+      email: { 
+        type: DataTypes.STRING, 
+        allowNull: false 
+      },
+      address: DataTypes.STRING,
       password: DataTypes.STRING,
       resetToken: DataTypes.STRING,
       resetTokenExpiry: DataTypes.DATE,
 
-
       owner_id: {
         type: DataTypes.INTEGER,
-        allowNull: true, // can be null
-        references: {
-          model: "users", // MUST match the actual table name (lowercase)
-          key: "id"
-        },
-        onUpdate: "CASCADE",
-        onDelete: "SET NULL" // if creator is deleted, user remains
+        allowNull: true
       },
-      // NEW FIELD
-     created_by: {
+      created_by: {
         type: DataTypes.INTEGER,
-        allowNull: true,
-        references: {
-          model: "users",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "SET NULL",
+        allowNull: true
       },
-
       updated_by: {
         type: DataTypes.INTEGER,
-        allowNull: true,
-        references: {
-          model: "users",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "SET NULL",
-      },
-    
+        allowNull: true
+      }
     },
-    
     {
       tableName: "users",
       freezeTableName: true,
-      underscored: true
+      underscored: true,
+      // Fixes ER_TOO_MANY_KEYS by giving the unique constraint a fixed name
+      indexes: [
+        {
+          name: "users_email_unique",
+          unique: true,
+          fields: ["email"]
+        }
+      ]
     }
   );
 
-  User.associate = models => {
-    // existing relations
+  User.associate = (models) => {
+    // Role & Permission associations
     User.belongsToMany(models.Role, { through: "UserRoles" });
     User.belongsToMany(models.Permission, { through: "UserPermissions" });
 
-    // SELF RELATION (creator)
+    // Self-referencing Creator association (Using snake_case created_by)
     User.belongsTo(models.User, {
       as: "creator",
-      foreignKey: "createdBy"
+      foreignKey: "created_by",
+      onDelete: "SET NULL",
+      onUpdate: "CASCADE"
     });
 
     User.hasMany(models.User, {
       as: "createdUsers",
-      foreignKey: "createdBy"
+      foreignKey: "created_by"
+    });
+
+    // Self-referencing Updater association
+    User.belongsTo(models.User, {
+      as: "updater",
+      foreignKey: "updated_by",
+      onDelete: "SET NULL",
+      onUpdate: "CASCADE"
+    });
+
+    // Self-referencing Owner association
+    User.belongsTo(models.User, {
+      as: "owner",
+      foreignKey: "owner_id",
+      onDelete: "SET NULL",
+      onUpdate: "CASCADE"
     });
   };
 

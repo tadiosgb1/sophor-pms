@@ -10,11 +10,27 @@ module.exports = (sequelize, Sequelize) => {
     tableName: "amenities"
   });
 
-  Amenity.associate = (db) => {
-    Amenity.belongsTo(db.User, { foreignKey: "owner_id" });
-    Amenity.belongsTo(db.User, { foreignKey: "created_by" });
-    Amenity.belongsTo(db.User, { foreignKey: "updated_by" });
-  };
+// inside models/amenity.js
+
+Amenity.associate = (models) => {
+  // Alias 'owner' for owner_id
+  Amenity.belongsTo(models.User, {
+    foreignKey: 'owner_id',
+    as: 'owner'
+  });
+
+  // Alias 'creator' for created_by
+  Amenity.belongsTo(models.User, {
+    foreignKey: 'created_by',
+    as: 'creator'
+  });
+
+  // Alias 'updater' for updated_by
+  Amenity.belongsTo(models.User, {
+    foreignKey: 'updated_by',
+    as: 'updater'
+  });
+};
 
   return Amenity;
 };

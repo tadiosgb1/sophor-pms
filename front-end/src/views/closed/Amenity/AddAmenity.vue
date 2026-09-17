@@ -34,7 +34,7 @@ export default {
       form: {
         name: this.data?.name || '',
         description: this.data?.description || '',
-        owner_id: localStorage.getItem("owner_id"),
+        owner_id: localStorage.getItem("owner_id") || localStorage.getItem("userId"),
         created_by: localStorage.getItem("userId"),
         updated_by: localStorage.getItem("userId"),
       }

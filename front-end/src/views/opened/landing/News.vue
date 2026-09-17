@@ -181,8 +181,9 @@
 <script>
 import LandingNavbar from '../../../components/LandingNavbar.vue';
 import LandingFooter from '../../../components/LandingFooter.vue';
-import newsImg from '../../../assets/img/News/event1.jpg';
-import newsImg1 from '../../../assets/img/News/event.jpg';
+import newsImg from '../../../assets/img/News/event4.jpg';
+import newsImg1 from '../../../assets/img/News/event5.jpg';
+import newsImg3 from '../../../assets/img/News/event6.jpg';
 import newsImg2 from '../../../assets/img/News/lwam.jpg';
 export default {
   name: 'NewsPage',
@@ -205,7 +206,7 @@ export default {
       newsItems: [
         { title: 'Tigray Real Estate Market Shows Strong Growth in Q1 2026', category: 'Market', date: 'May 15, 2026', readTime: '4 min read', author: 'Market Team', image: newsImg1, excerpt: 'Property values in Mekelle have increased by 18% year-over-year, signaling a robust recovery and strong investment opportunity.' },
         { title: 'Annual Real Estate Investment Forum 2026 — Registration Open', category: 'Event', date: 'May 10, 2026', readTime: '2 min read', author: 'Events Team', image: newsImg, excerpt: 'Join us for our flagship event bringing together investors, developers, and property experts from across Ethiopia.' },
-        { title: 'Sophor Introduces Smart Maintenance Request System', category: 'Company', date: 'May 5, 2026', readTime: '3 min read', author: 'Tech Team', image: newsImg2, excerpt: 'Our new digital maintenance portal allows tenants to submit, track, and receive updates on requests in real time.' },
+        { title: 'Sophor Introduces Smart Maintenance Request System', category: 'Company', date: 'May 5, 2026', readTime: '3 min read', author: 'Tech Team', image: newsImg3, excerpt: 'Our new digital maintenance portal allows tenants to submit, track, and receive updates on requests in real time.' },
      ],
       upcomingEvents: [
         { day: '05', month: 'JUN', title: 'Annual Real Estate Investment Forum 2026', desc: 'A full-day conference featuring keynote speakers, panel discussions, and networking.', location: 'Axum Hotel, Mekelle', time: '9:00 AM – 6:00 PM', image: newsImg1 },

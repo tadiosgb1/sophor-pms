@@ -51,9 +51,9 @@
                  <td class="px-6 py-4 whitespace-nowrap">{{ item.code }}</td>
               <td class="px-6 py-4 whitespace-nowrap">{{ item.description }}</td>
               <td class="px-6 py-4 text-center space-x-3">
-                <button @click="viewDetails(item.id)" class="text-green-500 hover:text-green-700"><i class="fas fa-eye"></i></button>
-                <button @click="editItem(item)" class="text-blue-500 hover:text-blue-700"><i class="fas fa-edit"></i></button>
-                <button @click="openDeleteModal(item.id)" class="text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button>
+              
+                <!-- <button @click="editItem(item)" class="text-blue-500 hover:text-blue-700"><i class="fas fa-edit"></i></button>
+                -->
               </td>
             </tr>
             <tr v-if="items.length === 0">
@@ -70,9 +70,9 @@
         <div class="flex justify-between mb-3">
           <h2 class="font-bold text-gray-800">Permissions #{{ index + 1 }}</h2>
           <div class="flex gap-3 text-sm">
-            <button @click="viewDetails(item.id)" class="text-green-500 hover:text-green-700"><i class="fas fa-eye"></i></button>
-            <button @click="editItem(item)" class="text-blue-500 hover:text-blue-700"><i class="fas fa-edit"></i></button>
-            <button @click="openDeleteModal(item.id)" class="text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button>
+           
+            <!-- <button @click="editItem(item)" class="text-blue-500 hover:text-blue-700"><i class="fas fa-edit"></i></button>
+             -->
           </div>
         </div>
         <div class="grid grid-cols-2 gap-y-1 text-sm text-gray-700">

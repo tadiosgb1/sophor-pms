@@ -36,9 +36,9 @@
 </template>
 
 <script>
-import newsImg from '../../assets/img/News/event1.jpg';
-import newsImg1 from '../../assets/img/News/event.jpg';
-import newsImg2 from '../../assets/img/News/lwam.jpg';
+import newsImg from '../../assets/img/News/event4.jpg';
+import newsImg1 from '../../assets/img/News/event6.jpg';
+import newsImg2 from '../../assets/img/News/event5.jpg';
 export default {
   name: 'NewsSection',
   data() {

@@ -1,8 +1,10 @@
 <template>
-  <div class="flex h-[calc(100vh-4rem)] bg-gray-100 overflow-hidden">
+  <div class="flex h-[calc(100vh-4rem)] bg-gray-100 overflow-hidden relative">
 
-    <aside class="w-72 flex flex-col bg-white border-r shrink-0">
-
+    <aside
+      class="w-full md:w-72 flex flex-col bg-white border-r shrink-0 transition-all duration-300"
+      :class="{ 'hidden md:flex': selectedUser }"
+    >
       <div class="px-4 py-3 border-b">
         <h2 class="font-semibold text-gray-800 text-sm">Messages</h2>
         <input
@@ -53,17 +55,26 @@
       </ul>
     </aside>
 
-    <div class="flex flex-col flex-1 min-w-0">
-
-      <div v-if="!selectedUser" class="flex-1 flex flex-col items-center justify-center text-gray-400 gap-3">
+    <div
+      class="flex flex-col flex-1 min-w-0 bg-gray-50 h-full"
+      :class="{ 'hidden md:flex': !selectedUser }"
+    >
+      <div v-if="!selectedUser" class="hidden md:flex flex-1 flex-col items-center justify-center text-gray-400 gap-3">
         <i class="fas fa-comments text-5xl text-primary/40"></i>
         <p class="text-sm">Select a conversation to start chatting</p>
       </div>
 
       <template v-else>
+        <div class="flex items-center gap-3 px-4 md:px-5 py-3 bg-white border-b shadow-sm shrink-0">
+          <button
+            @click="selectedUser = null"
+            class="md:hidden p-1.5 text-gray-600 hover:text-gray-900 focus:outline-none"
+            aria-label="Back to contacts"
+          >
+            <i class="fas fa-arrow-left text-lg"></i>
+          </button>
 
-        <div class="flex items-center gap-3 px-5 py-3 bg-white border-b shadow-sm shrink-0">
-          <div class="relative">
+          <div class="relative shrink-0">
             <div class="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center text-primary font-semibold text-sm uppercase">
               {{ initials(selectedUser) }}
             </div>
@@ -72,11 +83,11 @@
               :class="onlineUsers.includes(selectedUser.id) ? 'bg-green-500' : 'bg-gray-300'"
             ></span>
           </div>
-          <div>
-            <p class="text-sm font-semibold text-gray-800">
+          <div class="min-w-0 flex-1">
+            <p class="text-sm font-semibold text-gray-800 truncate">
               {{ selectedUser.first_name }} {{ selectedUser.last_name }}
             </p>
-            <p class="text-xs" :class="onlineUsers.includes(selectedUser.id) ? 'text-green-500' : 'text-gray-400'">
+            <p class="text-xs truncate" :class="onlineUsers.includes(selectedUser.id) ? 'text-green-500' : 'text-gray-400'">
               {{ onlineUsers.includes(selectedUser.id) ? 'Online' : 'Offline' }}
             </p>
           </div>
@@ -84,7 +95,7 @@
 
         <div
           ref="msgArea"
-          class="flex-1 overflow-y-auto px-5 py-4 space-y-3 bg-gray-50"
+          class="flex-1 overflow-y-auto px-4 md:px-5 py-4 space-y-3"
         >
           <div v-if="loadingMessages" class="flex justify-center py-8">
             <i class="fas fa-spinner fa-spin text-primary text-xl"></i>
@@ -104,7 +115,7 @@
                 {{ initials(selectedUser) }}
               </div>
 
-              <div class="max-w-[65%] flex flex-col"
+              <div class="max-w-[85%] sm:max-w-[75%] md:max-w-[65%] flex flex-col"
                 :class="msg.senderId === currentUserId ? 'items-end' : 'items-start'">
                 <div
                   class="px-3.5 py-2 rounded-2xl text-sm leading-relaxed break-words"
@@ -133,14 +144,14 @@
           </template>
         </div>
 
-        <div class="px-4 py-3 bg-white border-t flex items-end gap-2 shrink-0">
+        <div class="px-3 md:px-4 py-3 bg-white border-t flex items-end gap-2 shrink-0">
           <textarea
             v-model="draft"
             @keydown.enter.exact.prevent="sendMessage"
             @input="onTyping"
             rows="1"
-            placeholder="Type a message… (Enter to send)"
-            class="flex-1 resize-none border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary max-h-32 overflow-y-auto"
+            placeholder="Type a message…"
+            class="flex-1 resize-none border rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary max-h-32 overflow-y-auto"
           ></textarea>
           <button
             @click="sendMessage"
@@ -150,7 +161,6 @@
             <i class="fas fa-paper-plane text-sm"></i>
           </button>
         </div>
-
       </template>
     </div>
   </div>

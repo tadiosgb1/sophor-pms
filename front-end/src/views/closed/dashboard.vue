@@ -17,19 +17,19 @@
           </button>
 
           <!-- Logo and title -->
-          <div class="flex items-center space-x-2">
-            <img
-              src="../../assets/img/logo.png"
-              alt="Logo"
-              class="h-10 w-10 rounded-full flex-shrink-0"
-            />
-            <h1
-              class="text-xl md:text-2xl font-extrabold text-blue-400 truncate"
-              title="NePAF"
-            >
-              Sophor
-            </h1>
-          </div>
+        <div class="flex items-center space-x-2">
+  <img
+    src="../../assets/img/logo.png"
+    alt="Logo"
+    class="hidden lg:block h-10 w-10 rounded-full flex-shrink-0"
+  />
+  <h1
+    class="text-xl md:text-2xl font-extrabold text-blue-400 truncate"
+    title="NePAF"
+  >
+    Sophor
+  </h1>
+</div>
         </div>
 
         <!-- Right side: Notifications + Welcome + Profile -->

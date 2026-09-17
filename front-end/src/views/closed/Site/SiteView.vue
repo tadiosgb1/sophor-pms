@@ -52,12 +52,12 @@
             <!-- Site name + first image thumbnail -->
             <td class="px-5 py-3">
               <div class="flex items-center gap-3">
-                <img v-if="item.images && item.images[0]" :src="item.images[0].image_url"
+                <!-- <img v-if="item.images && item.images[0]" :src="item.images[0].image_url"
                   class="w-9 h-9 rounded-lg object-cover border border-gray-200 shrink-0" />
                 <div v-else
                   class="w-9 h-9 rounded-lg bg-orange-100 flex items-center justify-center text-orange-500 font-bold text-sm shrink-0">
                   <i class="fas fa-map-pin text-xs"></i>
-                </div>
+                </div> -->
                 <div>
                   <p class="font-medium text-gray-800">{{ item.name }}</p>
                   <p class="text-xs text-gray-400">{{ item.area_size || '' }}</p>

@@ -1,4 +1,3 @@
-
 <template>
   <div class="p-6 bg-gray-50 min-h-screen text-sm text-gray-800 relative">
     <!-- Loading -->
@@ -35,16 +34,24 @@
           <thead class="bg-gray-100 text-gray-700 uppercase text-xs font-semibold">
             <tr>
               <th class="px-6 py-3 text-left">#</th>
-              <th class="px-6 py-3 text-left">Name</th><th class="px-6 py-3 text-left">Description</th><th class="px-6 py-3 text-left">Owner_id</th><th class="px-6 py-3 text-left">Created_by</th><th class="px-6 py-3 text-left">Updated_by</th>
+              <th class="px-6 py-3 text-left">Name</th>
+              <th class="px-6 py-3 text-left">Description</th>
+              <th class="px-6 py-3 text-left">Owner</th>
+              <th class="px-6 py-3 text-left">Created By</th>
+              <th class="px-6 py-3 text-left">Updated By</th>
               <th class="px-6 py-3 text-center">Actions</th>
             </tr>
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
             <tr v-for="(item, index) in items" :key="item.id" class="hover:bg-green-50 transition duration-150">
               <td class="px-6 py-4">{{ index + 1 }}</td>
-              <td class="px-6 py-4 whitespace-nowrap">{{ item.name }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.description }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.owner_id }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.created_by }}</td><td class="px-6 py-4 whitespace-nowrap">{{ item.updated_by }}</td>
+              <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">{{ item.name }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">{{ item.description || '-' }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">{{ getUserName(item.owner) }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">{{ getUserName(item.creator) }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">{{ getUserName(item.updater) }}</td>
               <td class="px-6 py-4 text-center space-x-3">
-                <button @click="viewDetails(item.id)" class="text-green-500 hover:text-green-700"><i class="fas fa-eye"></i></button>
+               
                 <button @click="editItem(item)" class="text-blue-500 hover:text-blue-700"><i class="fas fa-edit"></i></button>
                 <button @click="openDeleteModal(item.id)" class="text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button>
               </td>
@@ -63,33 +70,32 @@
         <div class="flex justify-between mb-3">
           <h2 class="font-bold text-gray-800">Amenity #{{ index + 1 }}</h2>
           <div class="flex gap-3 text-sm">
-            <button @click="viewDetails(item.id)" class="text-green-500 hover:text-green-700"><i class="fas fa-eye"></i></button>
+            
             <button @click="editItem(item)" class="text-blue-500 hover:text-blue-700"><i class="fas fa-edit"></i></button>
             <button @click="openDeleteModal(item.id)" class="text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button>
           </div>
         </div>
         <div class="grid grid-cols-2 gap-y-1 text-sm text-gray-700">
-          
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">Name:</span>
-              {{ item.name }}
-            </div>
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">Description:</span>
-              {{ item.description }}
-            </div>
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">Owner_id:</span>
-              {{ item.owner_id }}
-            </div>
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">Created_by:</span>
-              {{ item.created_by }}
-            </div>
-            <div class="col-span-2">
-              <span class="font-medium text-gray-600">Updated_by:</span>
-              {{ item.updated_by }}
-            </div>
+          <div class="col-span-2">
+            <span class="font-medium text-gray-600">Name:</span>
+            {{ item.name }}
+          </div>
+          <div class="col-span-2">
+            <span class="font-medium text-gray-600">Description:</span>
+            {{ item.description || '-' }}
+          </div>
+          <div class="col-span-2">
+            <span class="font-medium text-gray-600">Owner:</span>
+            {{ getUserName(item.owner) }}
+          </div>
+          <div class="col-span-2">
+            <span class="font-medium text-gray-600">Created By:</span>
+            {{ getUserName(item.creator) }}
+          </div>
+          <div class="col-span-2">
+            <span class="font-medium text-gray-600">Updated By:</span>
+            {{ getUserName(item.updater) }}
+          </div>
         </div>
       </div>
       <p v-if="items.length === 0" class="text-center text-gray-400 py-6 italic">No data found.</p>
@@ -154,6 +160,14 @@ export default {
   },
 
   methods: {
+    // Formats full user name gracefully with safe null checks
+    getUserName(user) {
+      if (!user) return "-";
+      return [user.first_name, user.middle_name, user.last_name]
+        .filter(Boolean)
+        .join(" ") || user.email;
+    },
+
     async fetchItems(page = 1) {
       this.loading = true;
       this.currentPage = page;
@@ -164,21 +178,22 @@ export default {
         this.count = response.count || 0;
         this.nextPage = response.next || null;
         this.previousPage = response.previous || null;
-      } catch(e) { console.error(e); }
-      finally { this.loading = false; }
+      } catch(e) { 
+        console.error(e); 
+      } finally { 
+        this.loading = false; 
+      }
     },
 
     openAddModal() { this.editMode = false; this.selectedItem = null; this.showModal = true; },
     editItem(item) { this.editMode = true; this.selectedItem = item; this.showModal = true; },
     
-    // Navigate using static route name
     viewDetails(id) { 
       this.$router.push({ name: 'Amenity-detail', params: { id } });
     },
 
     openDeleteModal(id) { this.deleteId = id; this.deleteModalVisible = true; },
 
-    // Delete with toast
     async confirmDelete() {
       const res = await this.$apiDelete('/amenity', this.deleteId);
       if(res) {
