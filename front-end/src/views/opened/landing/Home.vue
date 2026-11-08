@@ -1,49 +1,24 @@
 <template>
-  <div class="min-h-screen font-sans">
-    <LandingNavbar />
-
-    <!-- Section Components -->
-    <HeroSection />
-    <FeaturesStrip />
-    <FeaturedProperties />
-    <AboutSection />
-    <FeaturesSection />
-    <TestimonialsSection />
-    <NewsSection />
-    <FaqSection />
-    <ContactCta />
-
-    <LandingFooter />
-  </div>
-</template>
-
+<main class="site"><LandingNavbar/>
+<section class="hero"><div class="hero-inner"><div class="hero-copy"><span class="eyebrow">● ENGINEERING DIGITAL PROGRESS</span><h1>We build the software that <em>moves business forward.</em></h1><p>We design, engineer and support secure digital products, intelligent platforms and modern business systems for ambitious organizations.</p><div class="actions"><router-link to="/contact" class="primary">Talk to an engineer ↗</router-link><a href="#services" class="secondary">Explore capabilities ↓</a></div><div class="proof"><b>SOPHOR TECHNOLOGIES PLC</b><small>Thoughtful engineering. Practical innovation. Real impact.</small></div></div><div class="visual"><div class="code"><div class="bar">● ● ● <span>sophor / solutions.ts</span><b>● LIVE</b></div><pre><i>01</i> <b>const</b> future = build({
+<i>02</i>   strategy: <strong>'your vision'</strong>,
+<i>03</i>   engineering: [
+<i>04</i>     <strong>'software'</strong>, <strong>'AI'</strong>,
+<i>05</i>     <strong>'cloud'</strong>, <strong>'mobile'</strong>
+<i>06</i>   ],
+<i>07</i>   outcome: <strong>'real impact'</strong>
+<i>08</i> });
+<i>09</i> <small>// Make it happen with Sophor.</small></pre><div class="status">✓ Build completed <span>● systems ready</span></div></div><div class="float one">✦ <b>AI solutions</b><small>Intelligence at work</small></div><div class="float two">☁ <b>Cloud systems</b><small>Reliable by design</small></div></div></div><div class="hero-foot"><span>SOFTWARE ENGINEERING</span><span>ARTIFICIAL INTELLIGENCE</span><span>CLOUD & DEVOPS</span><span>DIGITAL TRANSFORMATION</span></div></section>
+<section class="intro"><b>S.</b><p>One technology partner.<br><strong>End-to-end digital capability.</strong></p><span>From first discovery to long-term support.</span></section>
+<section id="services" class="section"><div class="heading"><div><label>WHAT WE DO</label><h2>Technology services,<br><em>designed for what’s next.</em></h2></div><p>Business understanding, product thinking and engineering discipline—together to solve complex challenges.</p></div><div class="cards"><article v-for="(s,i) in services" :key="s.title"><small>0{{i+1}}</small><i :class="s.icon"></i><h3>{{s.title}}</h3><p>{{s.desc}}</p><router-link to="/services">Explore service →</router-link></article></div><div class="more"><router-link to="/services">Discover all services →</router-link></div></section>
+<section class="tech"><div><label>OUR ENGINEERING TOOLKIT</label><h2>Modern technology.<br><em>Purposeful application.</em></h2><p>We select the right tools for the problem—not the other way around. Explore the disciplines and platforms that shape our delivery approach.</p><router-link to="/technologies" class="primary">Explore technologies →</router-link></div><div class="tech-grid"><span v-for="t in tech" :key="t"><b>✦</b>{{t}}</span></div></section>
+<section class="section"><div class="heading"><div><label>PRODUCT THINKING</label><h2>Solutions that turn<br><em>complexity into clarity.</em></h2></div><p>Reusable platforms and custom enterprise systems that help teams work smarter.</p></div><div class="products"><article v-for="p in products" :key="p.title"><div :class="['art',p.color]">{{p.icon}}</div><div class="product-copy"><label>{{p.category}}</label><h3>{{p.title}}</h3><p>{{p.desc}}</p><router-link to="/products">View solution →</router-link></div></article></div><div class="more"><router-link to="/products">Explore product portfolio →</router-link></div></section>
+<section class="process"><div class="section"><div class="heading"><div><label>HOW WE WORK</label><h2>Clear process.<br><em>Confident delivery.</em></h2></div><p>Collaborative from day one. Transparent at every milestone. Focused on outcomes that last.</p></div><div class="steps"><article v-for="(s,i) in steps" :key="s.title"><b>0{{i+1}}</b><h3>{{s.title}}</h3><p>{{s.desc}}</p></article></div></div></section>
+<section class="cta"><div><label>HAVE A CHALLENGE IN MIND?</label><h2>Let’s engineer your<br><em>next big idea.</em></h2></div><router-link to="/contact">Start a conversation ↗</router-link></section><LandingFooter/></main></template>
 <script>
-import LandingNavbar from '../../../components/LandingNavbar.vue';
-import LandingFooter from '../../../components/LandingFooter.vue';
-import HeroSection from '../../../components/sections/HeroSection.vue';
-import FeaturesStrip from '../../../components/sections/FeaturesStrip.vue';
-import FeaturedProperties from '../../../components/sections/FeaturedProperties.vue';
-import AboutSection from '../../../components/sections/AboutSection.vue';
-import FeaturesSection from '../../../components/sections/FeaturesSection.vue';
-import TestimonialsSection from '../../../components/sections/TestimonialsSection.vue';
-import NewsSection from '../../../components/sections/NewsSection.vue';
-import FaqSection from '../../../components/sections/FaqSection.vue';
-import ContactCta from '../../../components/sections/ContactCta.vue';
-
-export default {
-  name: 'LandingHome',
-  components: { 
-    LandingNavbar, 
-    LandingFooter,
-    HeroSection,
-    FeaturesStrip,
-    FeaturedProperties,
-    AboutSection,
-    FeaturesSection,
-    TestimonialsSection,
-    NewsSection,
-    FaqSection,
-    ContactCta
-  },
-};
+import LandingNavbar from '../../../components/LandingNavbar.vue';import LandingFooter from '../../../components/LandingFooter.vue';
+export default{name:'LandingHome',components:{LandingNavbar,LandingFooter},data(){return{services:[{icon:'fas fa-code',title:'Custom Software Development',desc:'Purpose-built web platforms, enterprise applications and business systems engineered around your workflows.'},{icon:'fas fa-brain',title:'Artificial Intelligence',desc:'Practical AI, machine learning and intelligent automation that turn data into better decisions.'},{icon:'fas fa-mobile-alt',title:'Web & Mobile Applications',desc:'Accessible, responsive digital experiences for customers, teams and connected services.'},{icon:'fas fa-cloud',title:'Cloud & DevOps Engineering',desc:'Reliable cloud architecture, CI/CD pipelines, deployment automation and infrastructure operations.'},{icon:'fas fa-compass-drafting',title:'IT Consultancy',desc:'Technology strategy, architecture reviews and delivery guidance aligned to business priorities.'},{icon:'fas fa-screwdriver-wrench',title:'Maintenance & Support',desc:'Continuous improvement, monitoring, security updates and dependable application support.'}],tech:['AI & Machine Learning','Vue.js & React','Node.js & Python','PostgreSQL & MySQL','Cloud Platforms','Docker & DevOps'],products:[{icon:'✚',color:'blue',category:'HEALTHCARE',title:'Digital Health Platforms',desc:'Connected workflows and information systems for modern healthcare teams.'},{icon:'⌘',color:'violet',category:'EDUCATION',title:'Education & Learning',desc:'Digital learning environments and academic workflows.'},{icon:'↗',color:'orange',category:'ENTERPRISE',title:'Enterprise Applications',desc:'Integrated operations, reporting and business management.'}],steps:[{title:'Discover',desc:'Understand goals, users, constraints and the real problem to solve.'},{title:'Design',desc:'Shape the architecture, experience and delivery roadmap together.'},{title:'Engineer',desc:'Build, test and refine with clear communication and quality controls.'},{title:'Evolve',desc:'Launch with confidence, measure impact and continuously improve.'}]}}}
 </script>
+<style>
+.site{--blue:#2868f5;color:#132238;font-family:Inter,Arial,sans-serif}.hero{background:#091426;color:white;padding:145px max(calc((100vw - 1160px)/2),6vw) 0;position:relative;overflow:hidden}.hero:before{content:"";position:absolute;inset:0;background-image:linear-gradient(#a9caff0c 1px,transparent 1px),linear-gradient(90deg,#a9caff0c 1px,transparent 1px);background-size:50px 50px}.hero-inner{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center;padding:40px 0 75px}.eyebrow,label{font-size:10px;letter-spacing:.18em;font-weight:900;color:#70a4ff}.hero h1{font-size:clamp(42px,5vw,66px);line-height:1.06;letter-spacing:-.05em;margin:25px 0;font-weight:850}.hero em,.heading em,.tech em,.cta em{font-style:normal;color:#76a8ff}.hero-copy>p{color:#aab8cb;line-height:1.85;font-size:14px;max-width:540px}.actions{display:flex;gap:18px;align-items:center;margin-top:30px;flex-wrap:wrap}.primary,.cta>a{display:inline-block;background:var(--blue);color:white;padding:14px 19px;border-radius:6px;font-size:11px;font-weight:800}.secondary{font-size:11px;font-weight:800;color:#d5e2f5}.proof{margin-top:45px;border-left:2px solid #397bfa;padding-left:13px}.proof b,.proof small{display:block}.proof b{font-size:10px;letter-spacing:.1em}.proof small{font-size:9px;color:#8194af;margin-top:5px}.visual{position:relative;min-height:390px;display:grid;place-items:center}.code{width:min(100%,440px);background:#102038;border:1px solid #344861;border-radius:12px;box-shadow:0 30px 80px #0008;transform:rotate(-2deg)}.bar{padding:14px;border-bottom:1px solid #2b405c;font-size:9px;color:#8095b1}.bar span{margin-left:20px}.bar b{float:right;color:#5bd8ad}.code pre{padding:24px;font:12px/2.2 monospace;color:#dce6f5;white-space:pre-wrap}.code pre i{color:#526d91;font-style:normal;margin-right:14px}.code pre b{color:#c59bff}.code pre strong{color:#6fd6b2}.code pre small{color:#7e94b2}.status{border-top:1px solid #2b405c;padding:12px 16px;color:#68d9ad;font-size:9px}.status span{float:right;color:#91a4bd}.float{position:absolute;background:white;color:#16283e;padding:12px 15px;border-radius:8px;box-shadow:0 15px 30px #0004;font-size:13px}.float b,.float small{display:block}.float b{font-size:10px}.float small{font-size:9px;color:#8090a4;margin-top:3px}.one{top:35px;right:-10px}.two{bottom:30px;left:-20px}.hero-foot{position:relative;border-top:1px solid #2b3c55;display:flex;justify-content:space-between;gap:12px;padding:22px 0;color:#8092ab;font-size:8px;letter-spacing:.15em;font-weight:800}.intro{padding:24px max(calc((100vw - 1160px)/2),6vw);display:flex;align-items:center;gap:14px;border-bottom:1px solid #e8edf4}.intro>b{font-size:27px;color:var(--blue)}.intro p{font-size:11px;color:#7d899a;line-height:1.6}.intro strong{color:#182b43}.intro>span{margin-left:auto;font-size:10px;color:#8190a4}.section{max-width:1160px;margin:auto;padding:90px 25px}.heading{display:flex;justify-content:space-between;align-items:end;gap:35px;margin-bottom:38px}.heading h2,.tech h2,.cta h2{font-size:clamp(32px,4vw,46px);line-height:1.12;letter-spacing:-.045em;margin:13px 0;font-weight:850}.heading>p{max-width:370px;color:#748197;font-size:12px;line-height:1.85}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.cards article{border:1px solid #e5ebf3;padding:24px;border-radius:9px;min-height:225px;transition:.2s}.cards article:hover,.products article:hover{transform:translateY(-4px);box-shadow:0 18px 40px #162b4612}.cards small{color:#9aa8bb;font-weight:900}.cards i{float:right;background:#edf3ff;color:var(--blue);padding:13px;border-radius:8px}.cards h3{font-size:15px;margin:25px 0 8px}.cards p,.products p{font-size:11px;line-height:1.8;color:#78869a}.cards a,.products a,.more a{font-size:10px;font-weight:900;color:var(--blue)}.more{text-align:center;margin-top:32px}.tech{background:#0c192c;color:white;padding:80px max(calc((100vw - 1110px)/2),6vw);display:grid;grid-template-columns:1fr 1fr;gap:55px;align-items:center}.tech p{font-size:12px;color:#9bacc2;line-height:1.85;max-width:440px;margin:20px 0 25px}.tech-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.tech-grid span{padding:18px;background:#142640;border:1px solid #2b405c;border-radius:7px;font-size:10px;font-weight:800}.tech-grid b{color:#79aaff;margin-right:10px}.products{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.products article{border:1px solid #e5ebf3;border-radius:9px;overflow:hidden;transition:.2s}.art{height:145px;display:grid;place-items:center;font-size:54px}.art.blue{background:linear-gradient(135deg,#e4efff,#c5dcff);color:#2868f5}.art.violet{background:linear-gradient(135deg,#eee8ff,#d8ccff);color:#7758cf}.art.orange{background:linear-gradient(135deg,#fff0dc,#ffdab0);color:#cb7c25}.product-copy{padding:20px}.product-copy label{font-size:8px}.product-copy h3{font-size:15px;margin:9px 0}.process{background:#f5f8fc}.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}.steps article{border-top:1px solid #dce4ef;padding-top:17px}.steps b{color:var(--blue);font-size:11px}.steps h3{font-size:15px}.steps p{font-size:11px;line-height:1.8;color:#78869a}.cta{background:#2059d5;color:white;padding:60px max(calc((100vw - 1110px)/2),6vw);display:flex;align-items:center;justify-content:space-between;gap:25px}.cta label{color:#c5d9ff}.cta>a{background:white;color:#2059d5;white-space:nowrap}@media(max-width:850px){.hero-inner,.tech{grid-template-columns:1fr}.hero-inner{gap:15px}.heading{display:block}.cards{grid-template-columns:1fr 1fr}.products{grid-template-columns:1fr 1fr}.hero-foot{flex-wrap:wrap}.cta{align-items:flex-start;flex-direction:column}}@media(max-width:560px){.hero{padding-top:120px}.hero-inner{padding-top:25px}.hero h1{font-size:42px}.visual{min-height:320px}.float{font-size:10px}.hero-foot{font-size:7px}.intro{flex-wrap:wrap}.intro>span{margin-left:0;width:100%}.section{padding:60px 22px}.cards,.products,.steps{grid-template-columns:1fr}.tech{padding:60px 22px}.tech-grid{gap:8px}.tech-grid span{padding:13px 9px;font-size:9px}.cta h2{font-size:34px}}
+</style>

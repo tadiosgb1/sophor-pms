@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import Login from '../views/opened/auth/login.vue';
 import LandingHome from '../views/opened/landing/Home.vue';
+import SolutionsPage from '../views/opened/landing/Solutions.vue';
 
 
 import ResetPassword from '../views/opened/auth/ResetPassword.vue';
@@ -23,9 +24,15 @@ const routes = [
 
   // Landing / Public routes
   { path: "/", name: "landing", component: LandingHome },
-  { path: "/about", name: "about", component: () => import('../views/opened/landing/About.vue') },
-  { path: "/properties", name: "properties", component: () => import('../views/opened/landing/Properties.vue') },
-  { path: "/news", name: "news", component: () => import('../views/opened/landing/News.vue') },
+  { path: "/about", name: "about", component: () => import('../views/opened/landing/about.vue') },
+  { path: "/properties", redirect: "/products" },
+  { path: "/services", name: "services", component: SolutionsPage },
+  { path: "/technologies", name: "technologies", component: SolutionsPage },
+  { path: "/products", name: "products", component: SolutionsPage },
+  { path: "/projects", name: "projects", component: SolutionsPage },
+  { path: "/opportunities", name: "opportunities", component: SolutionsPage },
+  { path: "/privacy", name: "privacy", component: SolutionsPage },
+  { path: "/news", name: "news", component: SolutionsPage },
   { path: "/contact", name: "contact", component: () => import('../views/opened/landing/Contact.vue') },
   { path: "/faq", name: "faq", component: () => import('../views/opened/landing/FAQ.vue') },
 
